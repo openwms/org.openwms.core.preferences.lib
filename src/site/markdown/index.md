@@ -1,0 +1,2 @@
+# OpenWMS.org CORE Preferences
+
