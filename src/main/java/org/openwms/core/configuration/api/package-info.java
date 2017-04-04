@@ -20,6 +20,6 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 /**
- * Contains types working with a file based implementation.
+ * Contains types according to the outer public API of the component.
  */
-package org.openwms.core.configuration.file;
+package org.openwms.core.configuration.api;
