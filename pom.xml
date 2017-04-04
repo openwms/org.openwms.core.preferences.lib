@@ -33,7 +33,7 @@
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
-    <name>OpenWMS.org COMMON: OSIP TCP/IP Driver</name>
+    <name>OpenWMS.org CORE: Preferences</name>
     <url>https://www.interface21.io/docs/core/preferences/index.html</url>
 
     <distributionManagement>
