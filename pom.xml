@@ -50,7 +50,7 @@
         <site>
             <id>ftp-io</id>
             <name>OpenWMS.org WebSite</name>
-            <url>ftps://ftp.interface21.io/core/preferences</url>
+            <url>ftp://ftp.interface21.io/core/preferences</url>
         </site>
     </distributionManagement>
 
