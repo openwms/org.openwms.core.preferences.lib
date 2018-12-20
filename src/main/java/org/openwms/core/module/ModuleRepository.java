@@ -24,12 +24,9 @@ package org.openwms.core.module;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * A ModuleDao adds particular functionality regarding {@link Module} entity classes.
+ * A ModuleRepository.
  * 
  * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version 0.2
- * @since 0.1
  */
-interface ModuleDao extends JpaRepository<Module, Long> {
-
+interface ModuleRepository extends JpaRepository<Module, Long> {
 }

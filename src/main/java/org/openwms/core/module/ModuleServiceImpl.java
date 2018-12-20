@@ -21,46 +21,44 @@
  */
 package org.openwms.core.module;
 
-import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.List;
-
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.openwms.core.exception.ExceptionCodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
 /**
  * A ModuleServiceImpl is a Spring powered transactional service using a repository to execute simple CRUD operations.
  *
  * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version 0.2
- * @see ModuleDao
- * @since 0.1
  */
 @TxService
 class ModuleServiceImpl implements ModuleService {
 
+    private final ModuleRepository moduleRepository;
+
     @Autowired
-    private ModuleDao moduleDao;
+    ModuleServiceImpl(ModuleRepository moduleRepository) {
+        this.moduleRepository = moduleRepository;
+    }
 
     /**
      * {@inheritDoc}
      * <p>
-     * It is expected that the list of {@link Module}s is already ordered by their startup order. Each {@link Module}'s
-     * {@code startupOrder} is synchronized with the persistence storage.
+     * It is expected that the list of {@link Module}s is already ordered by their startup
+     * order. Each {@link Module}'s {@code startupOrder} is synchronized with the
+     * persistence storage.
      *
-     * @throws org.ameba.exception.ServiceLayerException when {@code modules} is {@literal null}
+     * @throws IllegalArgumentException when {@code modules} is {@literal null}
      */
     @Override
-    public void saveStartupOrder(List<Module> modules) {
+    public void saveStartupOrder(@NotNull List<Module> modules) {
         Assert.notEmpty(modules, ExceptionCodes.MODULE_SAVE_STARTUP_ORDER_NOT_BE_NULL);
         for (Module module : modules) {
-            Module toSave = moduleDao.findOne(module.getPk());
-            if (toSave == null) {
-                throw new NotFoundException(String.format("Module with if [%s] not found", module.getPk()));
-            }
+            Module toSave = moduleRepository.findById(module.getPk()).orElseThrow(() -> new NotFoundException(String.format("Module with id [%s] not found", module.getPk())));
             toSave.setStartupOrder(module.getStartupOrder());
             save(toSave);
         }
@@ -71,28 +69,27 @@ class ModuleServiceImpl implements ModuleService {
      */
     @Override
     public List<Module> findAll() {
-        List<Module> modules = moduleDao.findAll();
-        return modules == null || modules.isEmpty() ? Collections.emptyList() : modules;
-     }
+        return moduleRepository.findAll();
+    }
 
     /**
      * {@inheritDoc}
      * <p>
-     * Additionally the {@code startupOrder} is re-calculated for the new {@link Module}.
+     * Additionally the {@code startupOrder} is re-calculated for a new {@code module}.
      *
-     * @throws org.ameba.exception.ServiceLayerException when {@code module} is {@literal null}
+     * @throws IllegalArgumentException when {@code module} is {@literal null}
      */
     @Override
-    public Module save(Module module) {
+    public Module save(@NotNull Module module) {
         Assert.notNull(module, ExceptionCodes.MODULE_SAVE_NOT_BE_NULL);
         if (module.isNew()) {
             List<Module> all = findAll();
             if (!all.isEmpty()) {
-                Collections.sort(all, new Module.ModuleComparator());
+                all.sort(new Module.ModuleComparator());
                 module.setStartupOrder(all.get(all.size() - 1).getStartupOrder() + 1);
             }
         }
-        return moduleDao.save(module);
+        return moduleRepository.save(module);
     }
 
     /**
@@ -100,6 +97,6 @@ class ModuleServiceImpl implements ModuleService {
      */
     @Override
     public void remove(@NotNull Module module) {
-        moduleDao.delete(module);
+        moduleRepository.delete(module);
     }
 }
