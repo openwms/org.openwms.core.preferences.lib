@@ -21,6 +21,25 @@
  */
 package org.openwms.core.configuration;
 
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.openwms.core.AbstractMockitoTests;
+import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.ApplicationPreference;
+import org.openwms.core.configuration.file.MockApplicationPreference;
+import org.openwms.core.configuration.file.ModulePreference;
+import org.openwms.core.configuration.file.PreferenceDao;
+import org.openwms.core.event.MergePropertiesEvent;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -28,31 +47,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.openwms.core.configuration.file.AbstractPreference;
-import org.openwms.core.configuration.file.ApplicationPreference;
-import org.openwms.core.configuration.file.MockApplicationPreference;
-import org.openwms.core.configuration.file.ModulePreference;
-import org.openwms.core.configuration.file.PreferenceDao;
-import org.openwms.core.event.MergePropertiesEvent;
-import org.openwms.core.test.AbstractMockitoTests;
-
 /**
  * A ConfigurationServiceTest.
  *
  * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version 0.2
- * @since 0.1
  */
 public class ConfigurationServiceTest extends AbstractMockitoTests {
 

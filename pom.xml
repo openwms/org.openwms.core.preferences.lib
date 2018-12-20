@@ -14,7 +14,7 @@
     <url>https://www.interface21.io/docs/core/preferences/index.html</url>
 
     <properties>
-        <core.version>1.3.0-SNAPSHOT</core.version>
+        <core.version>1.3.0</core.version>
         <distribution.repo.serverId>sonatype-nexus-staging</distribution.repo.serverId>
         <distribution.repo.serverProtocol>https</distribution.repo.serverProtocol>
         <distribution.repo.serverUrl.rootPath>oss.sonatype.org/service/local/staging/deploy/maven2</distribution.repo.serverUrl.rootPath>
@@ -162,9 +162,28 @@
 
         <!-- Test dependencies -->
         <dependency>
-            <groupId>org.openwms</groupId>
-            <artifactId>org.openwms.core.test</artifactId>
-            <type>test-jar</type>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test-autoconfigure</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

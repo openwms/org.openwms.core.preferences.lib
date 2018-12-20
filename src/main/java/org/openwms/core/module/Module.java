@@ -21,6 +21,10 @@
  */
 package org.openwms.core.module;
 
+import org.ameba.integration.jpa.BaseEntity;
+import org.openwms.core.values.CoreTypeDefinitions;
+import org.springframework.util.Assert;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
@@ -31,22 +35,12 @@ import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.ameba.integration.jpa.BaseEntity;
-import org.openwms.core.AbstractEntity;
-import org.openwms.core.DomainObject;
-import org.openwms.core.values.CoreTypeDefinitions;
-import org.springframework.util.Assert;
-
 /**
  * A Module represents an Adobe Flex Module and is used to store some basic information about that module, i.e. a name, an URL where the
  * module from, or whether the Adobe Flex Module should be loaded on application startup.
  * 
  * @GlossaryTerm
  * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version $Revision$
- * @since 0.1
- * @see AbstractEntity
- * @see DomainObject
  */
 @Entity
 @Table(name = "COR_MODULE")
@@ -101,12 +95,8 @@ public class Module extends BaseEntity implements Serializable {
      * A ModuleComparator.
      * 
      * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
-     * @version $Revision$
-     * @since 0.2
      */
     public static class ModuleComparator implements Comparator<Module>, Serializable {
-
-        private static final long serialVersionUID = 8749015473190257293L;
 
         /**
          * {@inheritDoc}

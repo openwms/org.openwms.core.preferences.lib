@@ -21,17 +21,16 @@
  */
 package org.openwms.core.configuration;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
-
-import org.openwms.core.AbstractEntity;
 import org.openwms.core.configuration.file.AbstractPreference;
 import org.openwms.core.configuration.file.Preferences;
 import org.openwms.core.exception.WrongClassTypeException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * A PreferenceRepositoryImpl implements custom generic find methods of {@link PreferenceRepositoryCustom}.
@@ -56,7 +55,7 @@ class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends AbstractPreference> List<T> findByType(Class<T> clazz) {
-        return (List<T>) em.createNamedQuery(getQueryName(clazz) + AbstractEntity.FIND_ALL).getResultList();
+        return (List<T>) em.createNamedQuery(getQueryName(clazz) + ".findAll").getResultList();
     }
 
     /**
