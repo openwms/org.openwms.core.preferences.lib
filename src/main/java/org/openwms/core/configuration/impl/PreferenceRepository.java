@@ -13,7 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.openwms.core.configuration.impl;
+
+import org.openwms.core.configuration.file.AbstractPreference;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
- * Contains types to manage application modules.
+ * A PreferenceRepository is a Spring Data JPA repository that deals with {@link AbstractPreference}s.
+ *
+ * @author Heiko Scherrer
  */
-package org.openwms.core.module;
+interface PreferenceRepository extends JpaRepository<AbstractPreference, Long>, PreferenceRepositoryCustom {
+
+}

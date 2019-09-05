@@ -1,11 +1,11 @@
 /*
- * Copyright 2014-2015 the original author or authors.
+ * Copyright 2005-2019 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,11 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration.api;
+package org.openwms.core.configuration;
 
-import org.openwms.core.configuration.ConfigurationService;
 import org.openwms.core.configuration.file.AbstractPreference;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,14 +24,16 @@ import reactor.core.publisher.Flux;
 /**
  * A ConfigurationController.
  *
- * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @since 2.0
+ * @author Heiko Scherrer
  */
 @RestController("/v1/preferences")
 class ConfigurationController {
 
-    @Autowired
-    private ConfigurationService configurationService;
+    private final ConfigurationService configurationService;
+
+    public ConfigurationController(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
 
     @GetMapping(produces= MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public Flux<AbstractPreference> findAllReactive() {

@@ -17,33 +17,33 @@ package org.openwms.core.configuration;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.openwms.core.configuration.file.AbstractPreference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.validation.ConstraintViolationException;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * A ConfigurationServiceIT.
+ * A ConfigurationIT.
  *
  * @author Heiko Scherrer
  */
 @ExtendWith(SpringExtension.class)
-@EnableAspectJAutoProxy
 @ActiveProfiles("TEST")
-@SpringBootTest
-class ConfigurationServiceIT {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "openwms.core.config.initial-properties=")
+@AutoConfigureTestDatabase
+class ConfigurationIT {
 
     @Autowired
-    private ConfigurationService srv;
+    private ConfigurationController testee;
 
-    @Test void testRemoveNull() {
-        assertThatThrownBy(
-                () -> srv.delete(null))
-                .isInstanceOf(ConstraintViolationException.class);
+    @Test void testSave() {
+        Iterable<AbstractPreference> all = testee.findAll();
+        assertThat(all)
+                .isNotNull()
+                .hasSize(0);
     }
 }

@@ -13,7 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.openwms.core.module.impl;
+
+import org.openwms.core.module.Module;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
- * Contains types to manage application modules.
+ * A ModuleRepository.
+ * 
+ * @author Heiko Scherrer
  */
-package org.openwms.core.module;
+interface ModuleRepository extends JpaRepository<Module, Long> {
+}

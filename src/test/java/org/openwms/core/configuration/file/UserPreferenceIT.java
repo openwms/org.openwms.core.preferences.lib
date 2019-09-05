@@ -1,65 +1,51 @@
 /*
- * openwms.org, the Open Warehouse Management System.
- * Copyright (C) 2014 Heiko Scherrer
+ * Copyright 2005-2019 the original author or authors.
  *
- * This file is part of openwms.org.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * openwms.org is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as 
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * openwms.org is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this software. If not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.openwms.core.configuration.file;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openwms.core.configuration.PropertyScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * An UserPreferenceTest.
+ * An UserPreferenceIT.
  *
- * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version $Revision$
- * @since 0.1
+ * @author Heiko Scherrer
  */
-@RunWith(SpringRunner.class)
-@DataJpaTest
-public class UserPreferenceIT {
+@ExtendWith(SpringExtension.class)
+@ActiveProfiles("TEST")
+@DataJpaTest(showSql = false)
+class UserPreferenceIT {
 
     private static final String KNOWN_USER = "KNOWN_USER";
     @Autowired
     private TestEntityManager em;
 
-    /**
-     * Setup data.
-     */
-    @Before
-    public void onSetup() {
+    @BeforeEach void onSetup() {
         em.persist(new UserPreference(KNOWN_USER, "testKey"));
     }
 
-    /**
-     * Resolve the persisted UserPreference.
-     */
-    @Test
-    public final void testSimplePersistAndGet() {
+    @Test void testSimplePersistAndGet() {
         UserPreference up = em.getEntityManager().createNamedQuery(UserPreference.NQ_FIND_BY_OWNER, UserPreference.class).setParameter("owner", KNOWN_USER).getSingleResult();
         assertThat(up)
                 .isNotNull()

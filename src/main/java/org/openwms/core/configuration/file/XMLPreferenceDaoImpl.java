@@ -1,33 +1,19 @@
 /*
- * openwms.org, the Open Warehouse Management System.
- * Copyright (C) 2014 Heiko Scherrer
+ * Copyright 2005-2019 the original author or authors.
  *
- * This file is part of openwms.org.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * openwms.org is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as 
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * openwms.org is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this software. If not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.openwms.core.configuration.file;
-
-import javax.annotation.PostConstruct;
-import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.ameba.exception.IntegrationLayerException;
 import org.openwms.core.event.ReloadFilePreferencesEvent;
@@ -35,7 +21,6 @@ import org.openwms.core.exception.NoUniqueResultException;
 import org.openwms.core.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
@@ -46,30 +31,39 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them internally in a Map. An initial preferences file can be configured
  * with a property <i>openwms.core.config.initial-properties</i> in the application.properties file. <p> On a {@link
  * ReloadFilePreferencesEvent} the internal Map is cleared and reloaded. </p>
  *
- * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version 0.2
+ * @author Heiko Scherrer
  * @see org.openwms.core.event.ReloadFilePreferencesEvent
- * @since 0.1
  */
 @Transactional(propagation = Propagation.MANDATORY)
 @Repository
 class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadFilePreferencesEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XMLPreferenceDaoImpl.class);
-    @Autowired
-    private ApplicationContext ctx;
-    @Autowired
-    private Unmarshaller unmarshaller;
+    private final ApplicationContext ctx;
+    private final Unmarshaller unmarshaller;
     @Value("${openwms.core.config.initial-properties:}")
     private String fileName;
     private volatile Resource fileResource;
     private volatile Preferences preferences;
     private Map<PreferenceKey, AbstractPreference> prefs = new ConcurrentHashMap<>();
+
+    XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {
+        this.ctx = ctx;
+        this.unmarshaller = unmarshaller;
+    }
 
     /**
      * {@inheritDoc}

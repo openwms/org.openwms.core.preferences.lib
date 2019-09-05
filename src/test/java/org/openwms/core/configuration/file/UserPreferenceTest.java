@@ -1,75 +1,52 @@
 /*
- * openwms.org, the Open Warehouse Management System.
- * Copyright (C) 2014 Heiko Scherrer
+ * Copyright 2005-2019 the original author or authors.
  *
- * This file is part of openwms.org.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * openwms.org is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as 
- * published by the Free Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- * openwms.org is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this software. If not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
- * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.openwms.core.configuration.file;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * A UserPreferenceTest.
  *
- * @author <a href="mailto:scherrer@openwms.org">Heiko Scherrer</a>
- * @version 1.0
- * @since 1.0
+ * @author Heiko Scherrer
  */
-public class UserPreferenceTest {
+class UserPreferenceTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
-    /**
-     * Negative test construction of an UserPreference.
-     */
-    @Test
-    public final void testCreationNegative1() {
-        thrown.expect(IllegalArgumentException.class);
-        new UserPreference(null, null);
+    @Test void testCreationNegative1() {
+        assertThatThrownBy(
+                () -> new UserPreference(null, null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
-    /**
-     * Negative test construction of an UserPreference.
-     */
-    @Test
-    public final void testCreationNegative2() {
-        thrown.expect(IllegalArgumentException.class);
-        new UserPreference("test", null);
+    @Test void testCreationNegative2() {
+        assertThatThrownBy(
+                () -> new UserPreference("test", null))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
-    /**
-     * Negative test construction of an UserPreference.
-     */
-    @Test
-    public final void testCreationNegative3() {
-        thrown.expect(IllegalArgumentException.class);
-        new UserPreference(null, "test");
+    @Test void testCreationNegative3() {
+        assertThatThrownBy(
+                () -> new UserPreference(null, "test"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
-    /**
-     * Negative test construction of an UserPreference.
-     */
-    @Test
-    public final void testCreationNegative4() {
-        thrown.expect(IllegalArgumentException.class);
-        new UserPreference("", "test");
+    @Test void testCreationNegative4() {
+        assertThatThrownBy(
+                () -> new UserPreference("", "test"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

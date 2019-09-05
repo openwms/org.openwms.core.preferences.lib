@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="false" scan="true" scanPeriod="30 seconds">
+<configuration debug="false" scan="false" scanPeriod="30 seconds">
 
-  <property name="LOG_TEMP" value="/tmp/owms"/>
-  <property name="MODULE_NAME" value="CORE"/>
+    <property name="LOG_TEMP" value="/tmp/owms"/>
+    <property name="MODULE_NAME" value="CORE-Preferences"/>
 
-  <include resource="logback-appenders.xml" />
-  <include resource="logback-loggers.xml" />
+    <include resource="logback-appenders.xml" />
+    <include resource="logback-loggers.xml" />
 
-  <logger name="org.dozer" level="ERROR"/>
-  <logger name="org.hibernate.SQL" level="OFF"/>
-  <logger name="org.hibernate.type" level="OFF"/>
-  <logger name="org.openwms" level="WARN"/>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-  <root level="INFO">
-    <appender-ref ref="STDOUT"/>
-    <appender-ref ref="LOGFILE"/>
-  </root>
+    <logger name="com.netflix.discovery" level="OFF" />
+    <logger name="org.dozer" level="ERROR"/>
+    <logger name="org.hibernate.SQL" level="OFF"/>
+    <logger name="org.hibernate.type" level="OFF"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.openwms" level="DEBUG"/>
+
+    <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </logger>
+    <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </logger>
+    <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </logger>
+    <logger name="MEASURED" level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="TSL"/>
+    </logger>
+    <logger name="CORE_INTEGRATION_MESSAGING" level="DEBUG"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOGFILE"/>
+    </root>
 
 </configuration>

@@ -2,11 +2,12 @@ openwms:
   core:
     config:
       initial-properties: classpath:initial-preferences.xml
-
+---
 spring:
-  jackson:
-    serialization:
-      fail_on_empty_beans: false
-
+  profiles: TEST
+  cloud:
+    config:
+      fail-fast: false
   main:
     banner-mode: "off"
+
