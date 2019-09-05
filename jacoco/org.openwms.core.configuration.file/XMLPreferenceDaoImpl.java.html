@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>XMLPreferenceDaoImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.configuration.file</a> &gt; <span class="el_source">XMLPreferenceDaoImpl.java</span></div><h1>XMLPreferenceDaoImpl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.configuration.file;
+
+import org.ameba.exception.IntegrationLayerException;
+import org.openwms.core.event.ReloadFilePreferencesEvent;
+import org.openwms.core.exception.NoUniqueResultException;
+import org.openwms.core.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.core.io.Resource;
+import org.springframework.oxm.Unmarshaller;
+import org.springframework.oxm.XmlMappingException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them internally in a Map. An initial preferences file can be configured
+ * with a property &lt;i&gt;openwms.core.config.initial-properties&lt;/i&gt; in the application.properties file. &lt;p&gt; On a {@link
+ * ReloadFilePreferencesEvent} the internal Map is cleared and reloaded. &lt;/p&gt;
+ *
+ * @author Heiko Scherrer
+ * @see org.openwms.core.event.ReloadFilePreferencesEvent
+ */
+@Transactional(propagation = Propagation.MANDATORY)
+@Repository
+class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;ReloadFilePreferencesEvent&gt; {
+
+<span class="fc" id="L54">    private static final Logger LOGGER = LoggerFactory.getLogger(XMLPreferenceDaoImpl.class);</span>
+    private final ApplicationContext ctx;
+    private final Unmarshaller unmarshaller;
+    @Value(&quot;${openwms.core.config.initial-properties:}&quot;)
+    private String fileName;
+    private volatile Resource fileResource;
+    private volatile Preferences preferences;
+<span class="fc" id="L61">    private Map&lt;PreferenceKey, AbstractPreference&gt; prefs = new ConcurrentHashMap&lt;&gt;();</span>
+
+<span class="fc" id="L63">    XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {</span>
+<span class="fc" id="L64">        this.ctx = ctx;</span>
+<span class="fc" id="L65">        this.unmarshaller = unmarshaller;</span>
+<span class="fc" id="L66">    }</span>
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see PreferenceDao#findAll()
+     */
+    @Override
+    public List&lt;AbstractPreference&gt; findAll() {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        return preferences == null ? Collections.emptyList() : preferences.getAll();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
+     */
+    @Override
+    public void onApplicationEvent(ReloadFilePreferencesEvent event) {
+<span class="nc" id="L85">        reloadResources();</span>
+<span class="nc" id="L86">    }</span>
+
+    /**
+     * On bean initialization load all preferences into a Map.
+     */
+    @PostConstruct
+    private void loadResources() {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (initialPropertiesExist()) {</span>
+            try {
+<span class="fc" id="L95">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                for (AbstractPreference pref : preferences.getAll()) {</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                    if (prefs.containsKey(pref.getPrefKey())) {</span>
+<span class="nc" id="L98">                        throw new NoUniqueResultException(&quot;Preference with key &quot; + pref.getPrefKey() + &quot; already loaded.&quot;);</span>
+                    }
+<span class="fc" id="L100">                    prefs.put(pref.getPrefKey(), pref);</span>
+<span class="fc" id="L101">                }</span>
+<span class="fc" id="L102">                LOGGER.debug(&quot;Loaded {} properties into cache&quot;, preferences.getAll().size());</span>
+<span class="nc" id="L103">            } catch (XmlMappingException xme) {</span>
+<span class="nc" id="L104">                throw new IntegrationLayerException(&quot;Exception while unmarshalling from &quot; + fileName, xme);</span>
+<span class="nc" id="L105">            } catch (IOException ioe) {</span>
+<span class="nc" id="L106">                throw new ResourceNotFoundException(&quot;Exception while accessing the resource with name &quot; + fileName, ioe);</span>
+<span class="fc" id="L107">            }</span>
+        }
+<span class="fc" id="L109">    }</span>
+
+    private boolean initialPropertiesExist() {
+<span class="pc bpc" id="L112" title="1 of 4 branches missed.">        if (fileName != null &amp;&amp; !fileName.isEmpty()) {</span>
+<span class="fc" id="L113">            fileResource = ctx.getResource(fileName);</span>
+        }
+<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
+<span class="fc" id="L116">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
+<span class="fc" id="L117">            return false;</span>
+        }
+<span class="fc" id="L119">        return true;</span>
+    }
+
+    private void reloadResources() {
+<span class="nc" id="L123">        preferences = null;</span>
+<span class="nc" id="L124">        prefs.clear();</span>
+<span class="nc" id="L125">        loadResources();</span>
+<span class="nc" id="L126">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
