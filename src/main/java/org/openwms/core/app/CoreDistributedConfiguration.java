@@ -13,19 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.app;
 
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.annotation.Profile;
 
 /**
- * A ConfigurationApplicationContextConfiguration is the Spring Java Configuration that initializes the application properties as
- * {@link PropertySourcesPlaceholderConfigurer}. Import this configuration to take advantage of the JavaConfig mechanism instead of XML
- * configuration.
- * 
+ * A CoreDistributedConfiguration is activated when the service is deployed as a microservice, not packaged within an application. Then
+ * Service Discovery is activated.
+ *
  * @author Heiko Scherrer
  */
+@Profile("!INMEM")
 @Configuration
-class ConfigurationApplicationContextConfiguration /* implements WebMvcConfigurer*/ {
-
+@EnableDiscoveryClient
+public class CoreDistributedConfiguration {
 }

@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.configuration.impl;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.openwms.core.CoreApplicationTest;
+import org.openwms.core.configuration.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.validation.ConstraintViolationException;
 
@@ -32,16 +30,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  *
  * @author Heiko Scherrer
  */
-@ExtendWith(SpringExtension.class)
 @EnableAspectJAutoProxy
-@ActiveProfiles("TEST")
-@SpringBootTest
+@CoreApplicationTest
 class ConfigurationServiceIT {
 
-    @Autowired
-    private ConfigurationService srv;
-
-    @Test void testRemoveNull() {
+    @Test void testRemoveNull(@Autowired ConfigurationService srv) {
         assertThatThrownBy(
                 () -> srv.delete(null))
                 .isInstanceOf(ConstraintViolationException.class);

@@ -31,7 +31,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  */
 @Configuration
 @Import(BaseConfiguration.class)
-class ModuleConfiguration {
+public class ModuleConfiguration {
 
     private final ModuleProperties props;
 

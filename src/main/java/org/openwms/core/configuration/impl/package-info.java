@@ -13,19 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-
 /**
- * A ConfigurationApplicationContextConfiguration is the Spring Java Configuration that initializes the application properties as
- * {@link PropertySourcesPlaceholderConfigurer}. Import this configuration to take advantage of the JavaConfig mechanism instead of XML
- * configuration.
- * 
- * @author Heiko Scherrer
+ * Contains the internal implementation of the configuration service.
  */
-@Configuration
-class ConfigurationApplicationContextConfiguration /* implements WebMvcConfigurer*/ {
-
-}
+package org.openwms.core.configuration.impl;

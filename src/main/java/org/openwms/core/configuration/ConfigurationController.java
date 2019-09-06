@@ -16,18 +16,19 @@
 package org.openwms.core.configuration;
 
 import org.openwms.core.configuration.file.AbstractPreference;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+
+import static org.openwms.core.CoreConstants.API_CONFIGURATIONS;
 
 /**
  * A ConfigurationController.
  *
  * @author Heiko Scherrer
  */
-@RestController("/v1/preferences")
-class ConfigurationController {
+@RestController
+public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
@@ -35,13 +36,8 @@ class ConfigurationController {
         this.configurationService = configurationService;
     }
 
-    @GetMapping(produces= MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(value= API_CONFIGURATIONS/*, produces= MediaType.APPLICATION_OCTET_STREAM_VALUE*/)
     public Flux<AbstractPreference> findAllReactive() {
         return Flux.fromIterable(configurationService.findAll()).log();
-    }
-
-    @GetMapping
-    public Iterable<AbstractPreference> findAll() {
-        return configurationService.findAll();
     }
 }
