@@ -72,7 +72,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
      */
     @Override
     public List&lt;AbstractPreference&gt; findAll() {
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        return preferences == null ? Collections.emptyList() : preferences.getAll();</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        return preferences == null ? Collections.emptyList() : preferences.getAll();</span>
     }
 
     /**
@@ -90,7 +90,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
      */
     @PostConstruct
     private void loadResources() {
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (initialPropertiesExist()) {</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (initialPropertiesExist()) {</span>
             try {
 <span class="fc" id="L95">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
 <span class="fc bfc" id="L96" title="All 2 branches covered.">                for (AbstractPreference pref : preferences.getAll()) {</span>
@@ -109,12 +109,12 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
 <span class="fc" id="L109">    }</span>
 
     private boolean initialPropertiesExist() {
-<span class="pc bpc" id="L112" title="1 of 4 branches missed.">        if (fileName != null &amp;&amp; !fileName.isEmpty()) {</span>
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">        if (fileName != null &amp;&amp; !fileName.isEmpty()) {</span>
 <span class="fc" id="L113">            fileResource = ctx.getResource(fileName);</span>
         }
-<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
-<span class="fc" id="L116">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
-<span class="fc" id="L117">            return false;</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
+<span class="nc" id="L116">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
+<span class="nc" id="L117">            return false;</span>
         }
 <span class="fc" id="L119">        return true;</span>
     }
