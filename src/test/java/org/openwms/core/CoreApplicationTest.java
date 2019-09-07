@@ -17,8 +17,8 @@ package org.openwms.core;
 
 import org.ameba.test.categories.SpringTestSupport;
 import org.openwms.core.app.ModuleConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -36,12 +36,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
-@ActiveProfiles("TEST")
+@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @SpringTestSupport
 @SpringBootTest(classes = {Starter.class, ModuleConfiguration.class}, properties = {
         "spring.main.web-application-type=reactive",
-        "spring.jpa.show-sql=false",
+        "spring.jpa.show-sql=true",
         "spring.main.banner-mode=OFF",
+        "spring.jpa.hibernate.ddl-auto=update",
         "spring.jackson.serialization.INDENT_OUTPUT=true"
 })
 public @interface CoreApplicationTest {

@@ -233,6 +233,15 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+        <id>schemagen</id>
+            <properties>
+                <surefireArgs>-Dspring.profiles.active=ASYNCHRONOUS,TEST,TESTPG</surefireArgs>
+            </properties>
+        </profile>
+    </profiles>
+
     <repositories>
         <repository>
             <id>sonatype-nexus-snapshots</id>

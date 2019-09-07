@@ -21,7 +21,6 @@ import org.openwms.core.CoreApplicationTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.openwms.core.CoreConstants.API_CONFIGURATIONS;
@@ -35,7 +34,6 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
  *
  * @author Heiko Scherrer
  */
-@ActiveProfiles("TEST")
 @CoreApplicationTest
 class ConfigurationControllerDocumentation {
 
