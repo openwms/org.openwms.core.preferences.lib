@@ -15,7 +15,6 @@
  */
 package org.openwms.core.app;
 
-import org.ameba.annotation.EnableAspects;
 import org.ameba.app.BaseConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +31,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author Heiko Scherrer
  */
 @Configuration
-@EnableAspects(propagateRootCause = true)
 @EnableTransactionManagement
 @Import(BaseConfiguration.class)
 public class ModuleConfiguration {

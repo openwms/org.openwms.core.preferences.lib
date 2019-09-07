@@ -18,7 +18,7 @@ before_install:
 
 before_script:
   - psql -c "CREATE DATABASE testdb;" -U postgres
-  - psql -c "CREATE USER KARL WITH PASSWORD 'KARL';" -U postgres
+  - psql -c "CREATE USER karl WITH PASSWORD 'karl';" -U postgres
 
 addons:
   sonarcloud:
