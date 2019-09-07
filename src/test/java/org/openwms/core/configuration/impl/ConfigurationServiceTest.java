@@ -35,7 +35,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
@@ -94,7 +93,7 @@ class ConfigurationServiceTest {
 
     @Test void testFindAll() {
         when(writer.findAll()).thenReturn(persistedPrefs);
-        assertEquals(persistedPrefs, srv.findAll());
+        assertThat(srv.findAll()).isEqualTo(persistedPrefs);
         verify(writer, times(1)).findAll();
     }
 
@@ -138,7 +137,7 @@ class ConfigurationServiceTest {
                 Collections.singletonList(mock));
         when(writer.save(mock)).thenReturn(mock);
 
-        assertEquals(mock, srv.save(mock));
+        assertThat(srv.save(mock)).isEqualTo(mock);
         verify(writer).save(mock);
     }
 
