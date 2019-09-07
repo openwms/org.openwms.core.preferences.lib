@@ -19,6 +19,8 @@ import org.openwms.core.app.ModuleProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  * A Starter.
@@ -26,6 +28,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @author Heiko Scherrer
  */
 @SpringBootApplication
+@EnableJpaRepositories
+@EnableJpaAuditing
 @EnableConfigurationProperties(ModuleProperties.class)
 public class Starter {
 

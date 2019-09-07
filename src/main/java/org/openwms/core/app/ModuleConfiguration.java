@@ -15,12 +15,14 @@
  */
 package org.openwms.core.app;
 
+import org.ameba.annotation.EnableAspects;
 import org.ameba.app.BaseConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
@@ -30,6 +32,8 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author Heiko Scherrer
  */
 @Configuration
+@EnableAspects(propagateRootCause = true)
+@EnableTransactionManagement
 @Import(BaseConfiguration.class)
 public class ModuleConfiguration {
 
