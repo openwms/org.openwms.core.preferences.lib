@@ -109,9 +109,15 @@ management:
     rabbit:
       enabled: true
 
+---
+spring:
+  profiles: TEST
+  cloud:
+    config:
+      fail-fast: false
 eureka:
   client:
-    enabled: true
+    enabled: false
 
 ---
 spring:
