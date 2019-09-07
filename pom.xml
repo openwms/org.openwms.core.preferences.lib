@@ -237,7 +237,7 @@
         <profile>
         <id>schemagen</id>
             <properties>
-                <surefireArgs>-Dspring.profiles.active=ASYNCHRONOUS,TEST,TESTPG</surefireArgs>
+                <surefireArgs>-Dspring.profiles.active=TEST,TESTPG</surefireArgs>
             </properties>
         </profile>
     </profiles>
