@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "$DOCKER_PASSWORD" | docker login -u openwms --password-stdin
-docker push $LATEST && docker image rm $LATEST
-docker push $CURRENT && docker image rm $CURRENT
+docker push openwms/org.openwms.core.preferences:latest
+docker push openwms/org.openwms.core.preferences:$TRAVIS_BUILD_NUMBER

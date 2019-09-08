@@ -8,10 +8,6 @@ cache:
     - .autoconf
     - $TRAVIS_HOME/.m2
 
-env:
-  - LATEST=openwms/org.openwms.core.preferences:latest
-  - CURRENT=openwms/org.openwms.core.preferences:$TRAVIS_BUILD_NUMBER
-
 services:
   - docker
   - rabbitmq
@@ -36,7 +32,7 @@ script:
   - if [[ ( "$TRAVIS_BRANCH" == "master" ) ]]; then mvn clean package -Denforcer.skip=true -DskipTests=true -Dci.buildNumber=$TRAVIS_BUILD_NUMBER -Prelease,gpg; fi
 
 after_success:
-  - docker build -t $LATEST -t $CURRENT .
+  - docker build -t openwms/org.openwms.core.preferences:latest -t openwms/org.openwms.core.preferences:$TRAVIS_BUILD_NUMBER .
 
 deploy:
   provider: script

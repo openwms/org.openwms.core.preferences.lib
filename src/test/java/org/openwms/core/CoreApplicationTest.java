@@ -40,7 +40,7 @@ import java.lang.annotation.Target;
 @SpringTestSupport
 @SpringBootTest(classes = {Starter.class, ModuleConfiguration.class}, properties = {
         "spring.main.web-application-type=reactive",
-        "spring.jpa.show-sql=true",
+        "spring.jpa.show-sql=false",
         "spring.main.banner-mode=OFF",
         "spring.jackson.serialization.INDENT_OUTPUT=true"
 })
