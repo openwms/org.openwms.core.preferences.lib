@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractPreference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.configuration.file</a> &gt; <span class="el_source">AbstractPreference.java</span></div><h1>AbstractPreference.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.configuration.file;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openwms.core.configuration.PropertyScope;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * An AbstractPreference is a superclass for all other preference classes within the application. &lt;p&gt; It encapsulates some common behavior
+ * of preference types. &lt;/p&gt;
+ *
+ * @author Heiko Scherrer
+ */
+@XmlType(name = &quot;abstractPreference&quot;, propOrder = {&quot;description&quot;}, namespace = &quot;http://www.openwms.org/schema/preferences&quot;)
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = &quot;COR_PREFERENCE&quot;)
+<span class="fc" id="L46">public abstract class AbstractPreference implements Serializable {</span>
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    /** Suffix for the FIND_BY_OWNER named query. Default {@value} */
+    public static final String FIND_BY_OWNER = &quot;.findByOwner&quot;;
+
+    /** The String value of the {@code AbstractPreference}. */
+    @Column(name = &quot;C_VALUE&quot;)
+    protected String value;
+
+    /** A binary value for this {@link AbstractPreference}. */
+    @XmlTransient
+    @Lob
+    @Column(name = &quot;C_BINVALUE&quot;)
+    protected Serializable binValue;
+
+    /** A float value of the {@link AbstractPreference}. */
+    @XmlAttribute(name = &quot;floatValue&quot;)
+    @Column(name = &quot;C_FLOAT_VALUE&quot;)
+    protected Float floatValue;
+
+    /** Description text of the {@link AbstractPreference}. */
+    @Column(name = &quot;C_DESCRIPTION&quot;)
+    protected String description;
+
+    /** Minimum value. */
+<span class="fc" id="L74">    @XmlAttribute(name = &quot;minimum&quot;)</span>
+    @Column(name = &quot;C_MINIMUM&quot;)
+    protected int minimum = 0;
+
+    /** Maximum value. */
+<span class="fc" id="L79">    @XmlAttribute(name = &quot;maximum&quot;)</span>
+    @Column(name = &quot;C_MAXIMUM&quot;)
+    protected int maximum = 0;
+
+    /** Flag to remember if the preference was originally imported from a file. */
+<span class="fc" id="L84">    @XmlTransient</span>
+    @Column(name = &quot;C_FROM_FILE&quot;)
+    private boolean fromFile = true;
+
+    /* ----------------------------- methods ------------------- */
+
+    /**
+     * Return the &lt;code&gt;value&lt;/code&gt; of the {@link AbstractPreference}.
+     *
+     * @return The value of the {@link AbstractPreference}
+     */
+    @XmlAttribute(name = &quot;val&quot;)
+    public String getValue() {
+<span class="fc" id="L97">        return value;</span>
+    }
+
+    /**
+     * Set the &lt;code&gt;value&lt;/code&gt; of the {@link AbstractPreference}.
+     *
+     * @param value The value to set
+     */
+    public void setValue(String value) {
+<span class="fc" id="L106">        this.value = value;</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Get the binValue.
+     *
+     * @return the binValue.
+     */
+    @XmlTransient
+    @JsonIgnore
+    public Serializable getBinValue() {
+<span class="nc" id="L117">        return binValue;</span>
+    }
+
+    /**
+     * Get the &lt;code&gt;floatValue&lt;/code&gt; of the {@link AbstractPreference}.
+     *
+     * @return The floatValue of the preference
+     */
+    public Float getFloatValue() {
+<span class="fc" id="L126">        return floatValue;</span>
+    }
+
+    /**
+     * Return the &lt;code&gt;description&lt;/code&gt; of the {@link AbstractPreference}.
+     *
+     * @return The description as String
+     */
+    @XmlValue
+    public String getDescription() {
+<span class="fc" id="L136">        return description;</span>
+    }
+
+    /**
+     * Set a &lt;code&gt;description&lt;/code&gt; for the {@link AbstractPreference}.
+     *
+     * @param description The description to set
+     */
+    public void setDescription(String description) {
+<span class="fc" id="L145">        this.description = description;</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * Return the possible minimum value of the {@link AbstractPreference}.
+     *
+     * @return The possible minimum value
+     */
+    public int getMinimum() {
+<span class="fc" id="L154">        return minimum;</span>
+    }
+
+    /**
+     * Return the possible maximum value of the {@link AbstractPreference}.
+     *
+     * @return The possible maximum value
+     */
+    public int getMaximum() {
+<span class="fc" id="L163">        return maximum;</span>
+    }
+
+    /**
+     * Return all fields as concatenated String.
+     *
+     * @return fields as String
+     */
+    @JsonIgnore
+    public String getPropertiesAsString() {
+        // TODO [openwms]: 17/05/16
+<span class="nc" id="L174">        return null;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L179">        return &quot;AbstractPreference{&quot; +</span>
+                &quot;value='&quot; + value + '\'' +
+                &quot;, binValue=&quot; + binValue +
+                &quot;, floatValue=&quot; + floatValue +
+                &quot;, description='&quot; + description + '\'' +
+                &quot;, minimum=&quot; + minimum +
+                &quot;, maximum=&quot; + maximum +
+                '}';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L195" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L196">        AbstractPreference that = (AbstractPreference) o;</span>
+<span class="nc bnc" id="L197" title="All 4 branches missed.">        return minimum == that.minimum &amp;&amp;</span>
+                maximum == that.maximum &amp;&amp;
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                Objects.equals(value, that.value) &amp;&amp;</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                Objects.equals(binValue, that.binValue) &amp;&amp;</span>
+<span class="nc bnc" id="L201" title="All 2 branches missed.">                Objects.equals(floatValue, that.floatValue) &amp;&amp;</span>
+<span class="nc bnc" id="L202" title="All 2 branches missed.">                Objects.equals(description, that.description);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L210">        return Objects.hash(value, binValue, floatValue, description, minimum, maximum);</span>
+    }
+
+    /**
+     * Return all fields as an array of objects.
+     *
+     * @return fields as array
+     */
+    protected abstract Object[] getFields();
+
+    /**
+     * Return the particular type of the preference.
+     *
+     * @return The type of the preference
+     */
+    public abstract PropertyScope getType();
+
+    /**
+     * Return a {@link PreferenceKey} of this preference.
+     *
+     * @return A {@link PreferenceKey}
+     */
+    public abstract PreferenceKey getPrefKey();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

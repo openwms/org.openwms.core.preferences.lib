@@ -136,7 +136,7 @@
  <td class='comment detail'></td>
 </tr>
 </table>
-<p title='4 columns'>Table contained 0 rows at Sun Sep 08 11:11 CEST 2019<p/>
+<p title='4 columns'>Table contained 0 rows at Sun Sep 08 09:17 UTC 2019<p/>
 </td></tr></table>
 <div class='indent'>
 <b>Indexes:</b>
@@ -165,9 +165,23 @@
 </table>
 </div>
 <table width='100%' border='0'><tr><td class='container'>
-</td></tr></table><p>
-<br>SchemaSpy was unable to generate a diagram of table relationships.
-<br>SchemaSpy requires Graphviz version 2.2.1 or versions greater than 2.4 from <a href='http://www.graphviz.org' target='_blank'>www.graphviz.org</a>.
+<br><form action='get'><b>Close relationships</b><span class='degrees' id='degrees' title='Detail diminishes with increased separation from cor_module_preference'>
+&nbsp;within <label for='oneDegree'><input type='radio' name='degrees' id='oneDegree' checked>one</label>  <label for='twoDegrees'><input type='radio' name='degrees' id='twoDegrees'>two degrees</label> of separation</span><b>:</b></form>
+<map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
+<area shape="rect" id="node1" href="cor_module_preference.html" title="cor_module_preference" alt="" coords="178,5,377,166">
+<area shape="rect" id="node2" href="cor_preference.html" title="cor_preference" alt="" coords="5,79,133,331">
+</map>
+  <a name='diagram'><img id='oneDegreeImg' src='../diagrams/cor_module_preference.1degree.png' usemap='#oneDegreeRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
+<map id="twoDegreesRelationshipsDiagram" name="twoDegreesRelationshipsDiagram">
+<area shape="rect" id="node1" href="cor_app_preference.html" title="cor_app_preference" alt="" coords="197,5,357,89">
+<area shape="rect" id="node2" href="cor_preference.html" title="cor_preference" alt="" coords="5,233,133,485">
+<area shape="rect" id="node3" href="cor_module_preference.html" title="cor_module_preference" alt="" coords="178,106,377,267">
+<area shape="rect" id="node4" href="cor_role_preference.html" title="cor_role_preference" alt="" coords="197,285,357,369">
+<area shape="rect" id="node5" href="cor_user_preference.html" title="cor_user_preference" alt="" coords="195,386,359,470">
+</map>
+
+  <a name='diagram'><img id='twoDegreesImg' src='../diagrams/cor_module_preference.2degrees.png' usemap='#twoDegreesRelationshipsDiagram' class='diagram' border='0' alt='' align='left'></a>
+</td></tr></table>
 </div>
 </body>
 </html>

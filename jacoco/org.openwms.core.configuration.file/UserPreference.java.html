@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserPreference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.configuration.file</a> &gt; <span class="el_source">UserPreference.java</span></div><h1>UserPreference.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.configuration.file;
+
+import org.openwms.core.configuration.PropertyScope;
+import org.springframework.util.Assert;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+
+/**
+ * An UserPreference is used to store settings specific to an {@code User}. It is always assigned to a particular {@code User} and
+ * not accessible from, nor valid for, other {@code User}s. UserPreferences cannot be overruled by any other type of
+ * {@link Preferences}.
+ *
+ * @author Heiko Scherrer
+ * @GlossaryTerm
+ */
+@XmlType(name = &quot;userPreference&quot;, namespace = &quot;http://www.openwms.org/schema/usermanagement&quot;)
+@Entity
+@Table(name = &quot;COR_USER_PREFERENCE&quot;, uniqueConstraints = @UniqueConstraint(columnNames = {&quot;C_TYPE&quot;, &quot;C_OWNER&quot;, &quot;C_KEY&quot;}))
+@NamedQueries({
+        @NamedQuery(name = UserPreference.NQ_FIND_BY_OWNER, query = &quot;select up from UserPreference up where up.owner = :owner&quot;) })
+public class UserPreference extends AbstractPreference implements Serializable {
+
+    /** Type of this preference. */
+<span class="fc" id="L50">    @XmlTransient</span>
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;C_TYPE&quot;)
+    private PropertyScope type = PropertyScope.USER;
+
+    /** Owner of the {@link AbstractPreference}. */
+    @XmlAttribute(name = &quot;owner&quot;, required = true)
+    @Column(name = &quot;C_OWNER&quot;)
+    private String owner;
+
+    /** Key value of the {@link AbstractPreference}. */
+    @XmlAttribute(name = &quot;key&quot;, required = true)
+    @Column(name = &quot;C_KEY&quot;)
+    private String key;
+
+    /**
+     * Query to find &lt;strong&gt;all&lt;/strong&gt; {@link UserPreference}s of an {@code User}. &lt;li&gt;Query parameter name
+     * &lt;strong&gt;owner&lt;/strong&gt; : The userName of the {@code User} to search for.&lt;/li&gt;&lt;br /&gt;
+     * Name is {@value} .
+     */
+    public static final String NQ_FIND_BY_OWNER = &quot;UserPreference&quot; + FIND_BY_OWNER;
+
+    /** Create a new UserPreference. Defined for the JAXB implementation. */
+    public UserPreference() {
+<span class="fc" id="L74">        super();</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Create a new UserPreference.
+     *
+     * @param owner The User's username is set as owner of this preference
+     * @param key The key of this preference
+     * @throws IllegalArgumentException when owner or key is {@literal null} or empty
+     */
+    public UserPreference(String owner, String key) {
+        // Called from the client-side only.
+<span class="fc" id="L86">        super();</span>
+<span class="fc" id="L87">        Assert.hasText(owner, &quot;Not allowed to create an UserPreference with an empty owner&quot;);</span>
+<span class="fc" id="L88">        Assert.hasText(key, &quot;Not allowed to create an UserPreference with an empty key&quot;);</span>
+<span class="fc" id="L89">        this.owner = owner;</span>
+<span class="fc" id="L90">        this.key = key;</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Get the owner.
+     *
+     * @return the owner.
+     */
+    public String getOwner() {
+<span class="fc" id="L99">        return owner;</span>
+    }
+
+    /**
+     * Get the key.
+     *
+     * @return the key.
+     */
+    public String getKey() {
+<span class="fc" id="L108">        return key;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see AbstractPreference#getType()
+     */
+    @Override
+    public PropertyScope getType() {
+<span class="fc" id="L118">        return PropertyScope.USER;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see AbstractPreference#getFields()
+     */
+    @Override
+    protected Object[] getFields() {
+<span class="nc" id="L128">        return new Object[]{getType(), getOwner(), getKey()};</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see AbstractPreference#getPrefKey()
+     */
+    @Override
+    public PreferenceKey getPrefKey() {
+<span class="nc" id="L138">        return new PreferenceKey(getType(), getOwner(), getKey());</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Uses key, owner and type for hashCode calculation.
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+<span class="nc" id="L151">        int result = super.hashCode();</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        result = prime * result + ((key == null) ? 0 : key.hashCode());</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        result = prime * result + ((owner == null) ? 0 : owner.hashCode());</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        result = prime * result + ((type == null) ? 0 : type.hashCode());</span>
+<span class="nc" id="L155">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Comparison done with key, owner and type fields. Not delegated to super class.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        if (null == obj) {</span>
+<span class="nc" id="L168">            return false;</span>
+        }
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L171">            return true;</span>
+        }
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L174">            return false;</span>
+        }
+<span class="nc" id="L176">        UserPreference other = (UserPreference) obj;</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">        if (key == null) {</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            if (other.key != null) {</span>
+<span class="nc" id="L179">                return false;</span>
+            }
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        } else if (!key.equals(other.key)) {</span>
+<span class="nc" id="L182">            return false;</span>
+        }
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        if (owner == null) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">            if (other.owner != null) {</span>
+<span class="nc" id="L186">                return false;</span>
+            }
+<span class="nc bnc" id="L188" title="All 2 branches missed.">        } else if (!owner.equals(other.owner)) {</span>
+<span class="nc" id="L189">            return false;</span>
+        }
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        return type == other.type;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Use all fields.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L201">        return &quot;UserPreference{&quot; +</span>
+                &quot;type=&quot; + type +
+                &quot;, owner='&quot; + owner + '\'' +
+                &quot;, key='&quot; + key + '\'' +
+<span class="nc" id="L205">                &quot;} &quot; + super.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
