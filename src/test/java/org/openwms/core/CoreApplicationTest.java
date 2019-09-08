@@ -42,7 +42,6 @@ import java.lang.annotation.Target;
         "spring.main.web-application-type=reactive",
         "spring.jpa.show-sql=true",
         "spring.main.banner-mode=OFF",
-        "spring.jpa.hibernate.ddl-auto=update",
         "spring.jackson.serialization.INDENT_OUTPUT=true"
 })
 public @interface CoreApplicationTest {

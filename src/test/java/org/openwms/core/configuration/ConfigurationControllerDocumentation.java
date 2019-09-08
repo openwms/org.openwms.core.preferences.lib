@@ -18,6 +18,7 @@ package org.openwms.core.configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.CoreApplicationTest;
+import org.openwms.core.DefaultTestProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -35,7 +36,7 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
  * @author Heiko Scherrer
  */
 @CoreApplicationTest
-class ConfigurationControllerDocumentation {
+class ConfigurationControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
     private ApplicationContext context;

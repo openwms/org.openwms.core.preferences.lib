@@ -17,6 +17,7 @@ package org.openwms.core.configuration.impl;
 
 import org.junit.jupiter.api.Test;
 import org.openwms.core.CoreApplicationTest;
+import org.openwms.core.DefaultTestProfile;
 import org.openwms.core.configuration.ConfigurationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -32,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  */
 @EnableAspectJAutoProxy
 @CoreApplicationTest
-class ConfigurationServiceIT {
+class ConfigurationServiceIT extends DefaultTestProfile {
 
     @Test void testRemoveNull(@Autowired ConfigurationService srv) {
         assertThatThrownBy(

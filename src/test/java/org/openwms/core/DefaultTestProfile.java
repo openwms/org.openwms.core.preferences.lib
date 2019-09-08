@@ -15,29 +15,20 @@
  */
 package org.openwms.core;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
- * A Starter.
+ * A DefaultTestProfile.
  *
  * @author Heiko Scherrer
  */
-@SpringBootApplication
-@EnableJpaRepositories
-@EnableJpaAuditing
-@EnableTransactionManagement
-public class Starter {
+public class DefaultTestProfile {
 
-    /**
-     * Boot up!
-     *
-     * @param args Some args
-     */
-    public static void main(String[] args) {
-        SpringApplication.run(Starter.class, args);
+    @BeforeAll
+    static void onBeforeAll() {
+        String property = System.getProperty("spring.profiles.active", "");
+        if ("".equals(property)) {
+            System.setProperty("spring.profiles.active", "TEST");
+        }
     }
 }

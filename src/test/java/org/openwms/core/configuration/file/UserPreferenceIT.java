@@ -18,6 +18,7 @@ package org.openwms.core.configuration.file;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.CoreDataTest;
+import org.openwms.core.DefaultTestProfile;
 import org.openwms.core.configuration.PropertyScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Heiko Scherrer
  */
 @CoreDataTest
-class UserPreferenceIT {
+class UserPreferenceIT extends DefaultTestProfile {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserPreferenceIT.class);
     private static final String KNOWN_USER = "KNOWN_USER";
