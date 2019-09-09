@@ -35,6 +35,10 @@ public class ObjectFactory {
         super();
     }
 
+    public static Class[] allTypes() {
+        return new Class[]{ApplicationPreference.class, ModulePreference.class, RolePreference.class, UserPreference.class};
+    }
+
     /**
      * Create an instance of {@link ModulePreference}.
      * 

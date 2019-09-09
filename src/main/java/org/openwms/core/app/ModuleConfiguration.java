@@ -24,6 +24,7 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
 /**
  * A ModuleConfiguration.
@@ -31,6 +32,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author Heiko Scherrer
  */
 @Configuration
+@EnableWebFlux
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
 public class ModuleConfiguration {

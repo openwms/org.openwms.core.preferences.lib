@@ -18,7 +18,11 @@ package org.openwms.core.configuration.api;
 import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.file.AbstractPreference;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -66,16 +70,29 @@ public interface ConfigurationApi {
     );
 
     /**
-     * Find and return all existing preferences that
-     * @param owner
-     * @param type
-     * @param key
-     * @return
+     * Find and return one preference that belongs to one {@code owner} and is of one particular {@code type} and has the given {@code key}.
+     *
+     * @param owner The owner of the preference
+     * @param type The type of the preference
+     * @param key The key of the preference
+     * @return One single instance
      */
     @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type", "key"})
     Mono<AbstractPreference> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type,
             @RequestParam("key") String key
+    );
+
+    /**
+     * Update the content of an existing preference identified by its persistent key.
+     *
+     * @param pKey The persistent key of the preference to update
+     * @param preference The content to update the preference with
+     */
+    @PutMapping(value= API_CONFIGURATIONS + "/{pKey}")
+    ResponseEntity<Void> update(
+            @PathVariable("pKey") String pKey,
+            @RequestBody AbstractPreference preference
     );
 }
