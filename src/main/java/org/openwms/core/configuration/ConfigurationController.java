@@ -17,8 +17,10 @@ package org.openwms.core.configuration;
 
 import org.openwms.core.configuration.file.AbstractPreference;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import static org.openwms.core.CoreConstants.API_CONFIGURATIONS;
 
@@ -37,7 +39,28 @@ public class ConfigurationController {
     }
 
     @GetMapping(value= API_CONFIGURATIONS/*, produces= MediaType.APPLICATION_OCTET_STREAM_VALUE*/)
-    public Flux<AbstractPreference> findAllReactive() {
+    public Flux<AbstractPreference> findAll() {
         return Flux.fromIterable(configurationService.findAll()).log();
+    }
+
+    @GetMapping(value= API_CONFIGURATIONS, params = {"owner"})
+    public Flux<AbstractPreference> findBy(
+            @RequestParam("owner") String owner) {
+        return Flux.fromIterable(configurationService.findByType(AbstractPreference.class, owner)).log();
+    }
+
+    @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type"})
+    public Flux<AbstractPreference> findBy(
+            @RequestParam("owner") String owner,
+            @RequestParam("type") PropertyScope type) {
+        return Flux.fromIterable(configurationService.findByType()).log();
+    }
+
+    @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type", "key"})
+    public Mono<AbstractPreference> findBy(
+            @RequestParam("owner") String owner,
+            @RequestParam("type") PropertyScope type,
+            @RequestParam("key") String key) {
+        return Flux.fromIterable(configurationService.findByType()).log();
     }
 }
