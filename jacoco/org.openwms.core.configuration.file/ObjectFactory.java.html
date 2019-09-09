@@ -35,13 +35,17 @@ public class ObjectFactory {
 <span class="nc" id="L35">        super();</span>
 <span class="nc" id="L36">    }</span>
 
+    public static Class[] allTypes() {
+<span class="nc" id="L39">        return new Class[]{ApplicationPreference.class, ModulePreference.class, RolePreference.class, UserPreference.class};</span>
+    }
+
     /**
      * Create an instance of {@link ModulePreference}.
      * 
      * @return an instance of {@link ModulePreference}
      */
     public ModulePreference createModulePreference() {
-<span class="nc" id="L44">        return new ModulePreference();</span>
+<span class="nc" id="L48">        return new ModulePreference();</span>
     }
 
     /**
@@ -50,7 +54,7 @@ public class ObjectFactory {
      * @return an instance of {@link Preferences}
      */
     public Preferences createPreferences() {
-<span class="nc" id="L53">        return new Preferences();</span>
+<span class="nc" id="L57">        return new Preferences();</span>
     }
 
     /**
@@ -59,7 +63,7 @@ public class ObjectFactory {
      * @return an instance of {@link ApplicationPreference}
      */
     public ApplicationPreference createApplicationPreference() {
-<span class="nc" id="L62">        return new ApplicationPreference();</span>
+<span class="nc" id="L66">        return new ApplicationPreference();</span>
     }
 
     /**
@@ -68,7 +72,7 @@ public class ObjectFactory {
      * @return an instance of {@link UserPreference}
      */
     public UserPreference createUserPreference() {
-<span class="nc" id="L71">        return new UserPreference();</span>
+<span class="nc" id="L75">        return new UserPreference();</span>
     }
 
     /**
@@ -83,9 +87,9 @@ public class ObjectFactory {
      * @return an instance of {@link UserPreference}
      */
     public static UserPreference createUserPreference(String username, String key, String description) {
-<span class="nc" id="L86">        UserPreference result = new UserPreference(username, key);</span>
-<span class="nc" id="L87">        result.setDescription(description);</span>
-<span class="nc" id="L88">        return result;</span>
+<span class="nc" id="L90">        UserPreference result = new UserPreference(username, key);</span>
+<span class="nc" id="L91">        result.setDescription(description);</span>
+<span class="nc" id="L92">        return result;</span>
     }
 
     /**
@@ -94,7 +98,7 @@ public class ObjectFactory {
      * @return an instance of {@link RolePreference}
      */
     public RolePreference createRolePreference() {
-<span class="nc" id="L97">        return new RolePreference();</span>
+<span class="nc" id="L101">        return new RolePreference();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

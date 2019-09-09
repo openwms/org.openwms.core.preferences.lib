@@ -17,6 +17,7 @@ package org.openwms.core.configuration;
 
 import org.openwms.core.configuration.file.AbstractPreference;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
@@ -32,13 +33,19 @@ public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
-<span class="fc" id="L35">    public ConfigurationController(ConfigurationService configurationService) {</span>
-<span class="fc" id="L36">        this.configurationService = configurationService;</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L36">    public ConfigurationController(ConfigurationService configurationService) {</span>
+<span class="fc" id="L37">        this.configurationService = configurationService;</span>
+<span class="fc" id="L38">    }</span>
 
-    @GetMapping(value= API_CONFIGURATIONS/*, produces= MediaType.APPLICATION_OCTET_STREAM_VALUE*/)
-    public Flux&lt;AbstractPreference&gt; findAllReactive() {
-<span class="fc" id="L41">        return Flux.fromIterable(configurationService.findAll()).log();</span>
+    @GetMapping(value= API_CONFIGURATIONS)
+    public Flux&lt;AbstractPreference&gt; findAll() {
+<span class="fc" id="L42">        return Flux.fromIterable(configurationService.findAll()).log();</span>
+    }
+
+    @GetMapping(value= API_CONFIGURATIONS, params = {&quot;owner&quot;})
+    public Flux&lt;AbstractPreference&gt; findBy(
+            @RequestParam(&quot;owner&quot;) String owner) {
+<span class="nc" id="L48">        return Flux.fromIterable(configurationService.findByType(AbstractPreference.class, owner)).log();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

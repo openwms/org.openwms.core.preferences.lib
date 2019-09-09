@@ -24,6 +24,7 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
 /**
  * A ModuleConfiguration.
@@ -31,28 +32,29 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author Heiko Scherrer
  */
 @Configuration
+@EnableWebFlux
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
 public class ModuleConfiguration {
 
     private final ModuleProperties props;
 
-<span class="fc" id="L40">    public ModuleConfiguration(ModuleProperties props) {</span>
-<span class="fc" id="L41">        this.props = props;</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L42">    public ModuleConfiguration(ModuleProperties props) {</span>
+<span class="fc" id="L43">        this.props = props;</span>
+<span class="fc" id="L44">    }</span>
 
     @Bean
     MethodValidationPostProcessor methodValidationPostProcessor(LocalValidatorFactoryBean validatorFactoryBean) {
-<span class="fc" id="L46">        MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();</span>
-<span class="fc" id="L47">        mvpp.setValidator(validatorFactoryBean);</span>
-<span class="fc" id="L48">        return mvpp;</span>
+<span class="fc" id="L48">        MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();</span>
+<span class="fc" id="L49">        mvpp.setValidator(validatorFactoryBean);</span>
+<span class="fc" id="L50">        return mvpp;</span>
     }
 
     @Bean
     Unmarshaller unmarshaller() {
-<span class="fc" id="L53">        Jaxb2Marshaller um = new Jaxb2Marshaller();</span>
-<span class="fc" id="L54">        um.setContextPath(&quot;org.openwms.core.configuration.file&quot;);</span>
-<span class="fc" id="L55">        return um;</span>
+<span class="fc" id="L55">        Jaxb2Marshaller um = new Jaxb2Marshaller();</span>
+<span class="fc" id="L56">        um.setContextPath(&quot;org.openwms.core.configuration.file&quot;);</span>
+<span class="fc" id="L57">        return um;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
