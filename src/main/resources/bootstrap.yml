@@ -4,12 +4,14 @@ spring:
   cloud:
     config:
       discovery:
-        enabled: true
+        enabled: false
         service-id: openwms-config
-      enabled: true
+      enabled: false
       fail-fast: true # true means retry
       retry:
         max-attempts: 120
+    discovery:
+      enabled: false
   security:
     user:
       password: sa
@@ -46,7 +48,6 @@ eureka:
     instance-info-replication-interval-seconds: 10 # default is 30
     service-url:
       defaultZone: ${owms.eureka.zone}  # Must be camelCase
-    enabled: true
   instance:
     hostname: ${owms.srv.hostname}
     secure-port-enabled: false
@@ -67,13 +68,20 @@ management:
       enabled: false
 
 logging:
-  file: "/tmp/owms/BOOT-CORE-Preferences.log"
+  file:
+    name: BOOT-CORE-Preferences.log
+    path: "/tmp/owms"
 
 ---
 spring:
-  profiles: CLOUD
+  profiles: HEROKU
   main:
     banner-mode: "OFF"
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
 
 owms:
   srv:
@@ -90,7 +98,26 @@ eureka:
 
 ---
 spring:
+  profiles: K8S
+  rabbitmq:
+    host: owms-broker
+owms:
+  eureka:
+    url: http://user:sa@owms-services:8761
+  srv:
+    hostname: preferences-service
+
+---
+spring:
   profiles: ASYNCHRONOUS
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
 
 management:
   health:
@@ -102,13 +129,12 @@ spring:
   profiles: TEST
   cloud:
     config:
-      discovery:
-        enabled: false
-      enabled: false
       fail-fast: false
     service-registry:
       auto-registration:
         enabled: false
+  main:
+    banner-mode: "off"
 eureka:
   client:
     enabled: false
@@ -132,5 +158,5 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql:testdb
-    username: karl
-    password: karl
+    username: KARL
+    password: KARL
