@@ -44,7 +44,7 @@ import java.io.Serializable;
         "C_KEY"}))
 @NamedQueries({
         @NamedQuery(name = ModulePreference.NQ_FIND_BY_OWNER, query = "select mp from ModulePreference mp where mp.owner = :owner")})
-public class ModulePreference extends AbstractPreference implements Serializable {
+public class ModulePreference extends GenericPreference implements Serializable {
 
     /**
      * Query to find <strong>all</strong> {@code ModulePreference}s of a {@code Module}. <li>Query parameter name <strong>owner</strong> :

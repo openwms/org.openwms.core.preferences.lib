@@ -43,6 +43,7 @@ class UserPreferenceIT extends DefaultTestProfile {
     @BeforeEach void onSetup() {
         LOGGER.info("Active Profiles: " + System.getenv("spring.profiles.active"));
         em.persist(new UserPreference(KNOWN_USER, "testKey"));
+        em.flush();
     }
 
     @Test void testSimplePersistAndGet() {

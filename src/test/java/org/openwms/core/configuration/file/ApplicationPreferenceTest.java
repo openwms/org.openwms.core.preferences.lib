@@ -108,13 +108,13 @@ class ApplicationPreferenceTest {
 
         Preferences prefs = Preferences.class.cast(unmarshaller.unmarshal(ResourceUtils.getFile(
                 "classpath:org/openwms/core/configuration/file/preferences.xml")));
-        for (AbstractPreference pref : prefs.getApplications()) {
+        for (GenericPreference pref : prefs.getApplications()) {
             LOGGER.info(pref.toString());
         }
-        for (AbstractPreference pref : prefs.getModules()) {
+        for (GenericPreference pref : prefs.getModules()) {
             LOGGER.info(pref.toString());
         }
-        for (AbstractPreference pref : prefs.getUsers()) {
+        for (GenericPreference pref : prefs.getUsers()) {
             LOGGER.info(pref.toString());
         }
     }

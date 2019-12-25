@@ -129,10 +129,15 @@ spring:
   profiles: TEST
   cloud:
     config:
+      discovery:
+        enabled: false
+      enabled: false
       fail-fast: false
     service-registry:
       auto-registration:
         enabled: false
+    discovery:
+      enabled: false
   main:
     banner-mode: "off"
 eureka:

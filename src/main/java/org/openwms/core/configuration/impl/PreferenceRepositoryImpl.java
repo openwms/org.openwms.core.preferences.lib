@@ -15,7 +15,7 @@
  */
 package org.openwms.core.configuration.impl;
 
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.openwms.core.configuration.file.Preferences;
 import org.openwms.core.exception.WrongClassTypeException;
 import org.springframework.stereotype.Repository;
@@ -46,7 +46,7 @@ class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends AbstractPreference> List<T> findByType(Class<T> clazz) {
+    public <T extends GenericPreference> List<T> findByType(Class<T> clazz) {
         return (List<T>) em.createNamedQuery(getQueryName(clazz) + ".findAll").getResultList();
     }
 
@@ -55,12 +55,12 @@ class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends AbstractPreference> List<T> findByType(Class<T> clazz, String owner) {
-        return (List<T>) em.createNamedQuery(getQueryName(clazz) + AbstractPreference.FIND_BY_OWNER)
+    public <T extends GenericPreference> List<T> findByType(Class<T> clazz, String owner) {
+        return (List<T>) em.createNamedQuery(getQueryName(clazz) + GenericPreference.FIND_BY_OWNER)
                 .setParameter("owner", owner).getResultList();
     }
 
-    private <T extends AbstractPreference> String getQueryName(Class<T> clazz) {
+    private <T extends GenericPreference> String getQueryName(Class<T> clazz) {
         for (int i = 0; i < Preferences.TYPES.length; i++) {
             if (Preferences.TYPES[i].equals(clazz)) {
                 return clazz.getSimpleName();

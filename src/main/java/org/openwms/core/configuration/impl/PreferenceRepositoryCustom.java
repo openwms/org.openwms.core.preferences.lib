@@ -15,7 +15,7 @@
  */
 package org.openwms.core.configuration.impl;
 
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 
 import java.util.List;
 
@@ -29,19 +29,19 @@ interface PreferenceRepositoryCustom {
     /**
      * Find and return all preferences that are of the given {@code clazz} type and owned by the {@code owner}.
      *
-     * @param clazz A subclass of {@link AbstractPreference} to search for
+     * @param clazz A subclass of {@link GenericPreference} to search for
      * @param owner The owner
-     * @param <T> Any type of {@link AbstractPreference}
+     * @param <T> Any type of {@link GenericPreference}
      * @return A list of all preferences or an empty list, never {@literal null}
      */
-    <T extends AbstractPreference> List<T> findByType(Class<T> clazz, String owner);
+    <T extends GenericPreference> List<T> findByType(Class<T> clazz, String owner);
 
     /**
      * Find and return all preferences that are of the given {@code clazz} type.
      *
-     * @param clazz A subclass of {@link AbstractPreference} to search for
-     * @param <T> Any type of {@link AbstractPreference}
+     * @param clazz A subclass of {@link GenericPreference} to search for
+     * @param <T> Any type of {@link GenericPreference}
      * @return A list of all preferences or an empty list, never {@literal null}
      */
-    <T extends AbstractPreference> List<T> findByType(Class<T> clazz);
+    <T extends GenericPreference> List<T> findByType(Class<T> clazz);
 }

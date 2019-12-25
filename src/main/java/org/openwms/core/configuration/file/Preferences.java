@@ -41,7 +41,7 @@ public class Preferences implements Serializable {
             @XmlElement(name = "application", type = ApplicationPreference.class),
             @XmlElement(name = "role", type = RolePreference.class),
             @XmlElement(name = "user", type = UserPreference.class)})
-    private List<AbstractPreference> applicationOrRoleOrUserOrModule;
+    private List<GenericPreference> applicationOrRoleOrUserOrModule;
     @XmlTransient
     private List<ApplicationPreference> applications;
     @XmlTransient
@@ -59,7 +59,7 @@ public class Preferences implements Serializable {
      *
      * @return a list of all preferences
      */
-    public List<AbstractPreference> getApplicationOrRoleOrUserOrModule() {
+    public List<GenericPreference> getApplicationOrRoleOrUserOrModule() {
         if (applicationOrRoleOrUserOrModule == null) {
             applicationOrRoleOrUserOrModule = new ArrayList<>();
         }
@@ -71,7 +71,7 @@ public class Preferences implements Serializable {
      *
      * @return a list of all preferences
      */
-    public List<AbstractPreference> getAll() {
+    public List<GenericPreference> getAll() {
         return getApplicationOrRoleOrUserOrModule();
     }
 
@@ -83,7 +83,7 @@ public class Preferences implements Serializable {
     public List<ApplicationPreference> getApplications() {
         if (applications == null) {
             applications = new ArrayList<>();
-            for (AbstractPreference pref : applicationOrRoleOrUserOrModule) {
+            for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
                 if (pref instanceof ApplicationPreference) {
                     applications.add((ApplicationPreference) pref);
                 }
@@ -100,7 +100,7 @@ public class Preferences implements Serializable {
     public List<ModulePreference> getModules() {
         if (modules == null) {
             modules = new ArrayList<>();
-            for (AbstractPreference pref : applicationOrRoleOrUserOrModule) {
+            for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
                 if (pref instanceof ModulePreference) {
                     modules.add((ModulePreference) pref);
                 }
@@ -117,7 +117,7 @@ public class Preferences implements Serializable {
     public List<UserPreference> getUsers() {
         if (users == null) {
             users = new ArrayList<>();
-            for (AbstractPreference pref : applicationOrRoleOrUserOrModule) {
+            for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
                 if (pref instanceof UserPreference) {
                     users.add((UserPreference) pref);
                 }
@@ -134,7 +134,7 @@ public class Preferences implements Serializable {
     public List<RolePreference> getRoles() {
         if (roles == null) {
             roles = new ArrayList<>();
-            for (AbstractPreference pref : applicationOrRoleOrUserOrModule) {
+            for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
                 if (pref instanceof RolePreference) {
                     roles.add((RolePreference) pref);
                 }

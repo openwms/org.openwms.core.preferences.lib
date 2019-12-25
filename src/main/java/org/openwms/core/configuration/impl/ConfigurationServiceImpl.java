@@ -18,7 +18,7 @@ package org.openwms.core.configuration.impl;
 import org.ameba.annotation.TxService;
 import org.openwms.core.annotation.FireAfterTransaction;
 import org.openwms.core.configuration.ConfigurationService;
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.openwms.core.configuration.file.PreferenceDao;
 import org.openwms.core.event.ConfigurationChangedEvent;
 import org.openwms.core.event.MergePropertiesEvent;
@@ -64,7 +64,7 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * No match returns an empty List ({@link Collections#emptyList()}).
      */
     @Override
-    public Collection<AbstractPreference> findAll() {
+    public Collection<GenericPreference> findAll() {
         return preferenceRepository.findAll();
     }
 
@@ -75,7 +75,7 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * Collections#emptyList()}).
      */
     @Override
-    public <T extends AbstractPreference> Collection<T> findByType(Class<T> clazz, String owner) {
+    public <T extends GenericPreference> Collection<T> findByType(Class<T> clazz, String owner) {
         Collection<T> result;
         result = (owner == null || owner.isEmpty()) ? preferenceRepository.findByType(clazz) : preferenceRepository.findByType(clazz, owner);
         return result == null ? Collections.<T>emptyList() : result;
@@ -90,7 +90,7 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      */
     @Override
     @FireAfterTransaction(events = {ConfigurationChangedEvent.class})
-    public <T extends AbstractPreference> T save(T preference) {
+    public <T extends GenericPreference> T save(T preference) {
         Assert.notNull(preference, "Not allowed to call save with a NULL argument");
         return preferenceRepository.save(preference);
     }
@@ -101,15 +101,15 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * @throws IllegalArgumentException when {@code preference} is {@literal null}
      */
     @Override
-    public void delete(AbstractPreference preference) {
+    public void delete(GenericPreference preference) {
         Assert.notNull(preference, "Not allowed to call remove with a NULL argument");
         preferenceRepository.delete(preference);
     }
 
     private void mergeApplicationProperties() {
-        List<AbstractPreference> fromFile = fileDao.findAll();
-        List<AbstractPreference> persistedPrefs = preferenceRepository.findAll();
-        for (AbstractPreference pref : fromFile) {
+        List<GenericPreference> fromFile = fileDao.findAll();
+        List<GenericPreference> persistedPrefs = preferenceRepository.findAll();
+        for (GenericPreference pref : fromFile) {
             if (!persistedPrefs.contains(pref)) {
                 preferenceRepository.save(pref);
             }

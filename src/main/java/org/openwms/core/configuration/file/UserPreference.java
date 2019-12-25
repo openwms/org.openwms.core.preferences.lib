@@ -44,7 +44,7 @@ import java.io.Serializable;
 @Table(name = "COR_USER_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_OWNER", "C_KEY"}))
 @NamedQueries({
         @NamedQuery(name = UserPreference.NQ_FIND_BY_OWNER, query = "select up from UserPreference up where up.owner = :owner") })
-public class UserPreference extends AbstractPreference implements Serializable {
+public class UserPreference extends GenericPreference implements Serializable {
 
     /** Type of this preference. */
     @XmlTransient
@@ -52,12 +52,12 @@ public class UserPreference extends AbstractPreference implements Serializable {
     @Column(name = "C_TYPE")
     private PropertyScope type = PropertyScope.USER;
 
-    /** Owner of the {@link AbstractPreference}. */
+    /** Owner of the {@link GenericPreference}. */
     @XmlAttribute(name = "owner", required = true)
     @Column(name = "C_OWNER")
     private String owner;
 
-    /** Key value of the {@link AbstractPreference}. */
+    /** Key value of the {@link GenericPreference}. */
     @XmlAttribute(name = "key", required = true)
     @Column(name = "C_KEY")
     private String key;
@@ -111,7 +111,7 @@ public class UserPreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getType()
+     * @see GenericPreference#getType()
      */
     @Override
     public PropertyScope getType() {
@@ -121,7 +121,7 @@ public class UserPreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getFields()
+     * @see GenericPreference#getFields()
      */
     @Override
     protected Object[] getFields() {
@@ -131,7 +131,7 @@ public class UserPreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getPrefKey()
+     * @see GenericPreference#getPrefKey()
      */
     @Override
     public PreferenceKey getPrefKey() {

@@ -58,7 +58,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
     private String fileName;
     private volatile Resource fileResource;
     private volatile Preferences preferences;
-    private Map<PreferenceKey, AbstractPreference> prefs = new ConcurrentHashMap<>();
+    private Map<PreferenceKey, GenericPreference> prefs = new ConcurrentHashMap<>();
 
     XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {
         this.ctx = ctx;
@@ -71,7 +71,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
      * @see PreferenceDao#findAll()
      */
     @Override
-    public List<AbstractPreference> findAll() {
+    public List<GenericPreference> findAll() {
         return preferences == null ? Collections.emptyList() : preferences.getAll();
     }
 
@@ -93,7 +93,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
         if (initialPropertiesExist()) {
             try {
                 preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));
-                for (AbstractPreference pref : preferences.getAll()) {
+                for (GenericPreference pref : preferences.getAll()) {
                     if (prefs.containsKey(pref.getPrefKey())) {
                         throw new NoUniqueResultException("Preference with key " + pref.getPrefKey() + " already loaded.");
                     }

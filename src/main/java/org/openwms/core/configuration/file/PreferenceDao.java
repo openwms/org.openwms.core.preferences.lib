@@ -18,7 +18,7 @@ package org.openwms.core.configuration.file;
 import java.util.List;
 
 /**
- * A PreferenceDao offers basic functionality to find and retrieve {@link AbstractPreference}s.
+ * A PreferenceDao offers basic functionality to find and retrieve {@link GenericPreference}s.
  * 
  * @author Heiko Scherrer
  */
@@ -29,5 +29,5 @@ public interface PreferenceDao {
      * 
      * @return List of all entities
      */
-    List<AbstractPreference> findAll();
+    List<GenericPreference> findAll();
 }

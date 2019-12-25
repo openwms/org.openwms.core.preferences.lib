@@ -15,14 +15,14 @@
  */
 package org.openwms.core.configuration.impl;
 
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * A PreferenceRepository is a Spring Data JPA repository that deals with {@link AbstractPreference}s.
+ * A PreferenceRepository is a Spring Data JPA repository that deals with {@link GenericPreference}s.
  *
  * @author Heiko Scherrer
  */
-interface PreferenceRepository extends JpaRepository<AbstractPreference, Long>, PreferenceRepositoryCustom {
+interface PreferenceRepository extends JpaRepository<GenericPreference, Long>, PreferenceRepositoryCustom {
 
 }

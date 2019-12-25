@@ -21,8 +21,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.openwms.core.configuration.file.AbstractPreference;
 import org.openwms.core.configuration.file.ApplicationPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.openwms.core.configuration.file.MockApplicationPreference;
 import org.openwms.core.configuration.file.ModulePreference;
 import org.openwms.core.configuration.file.PreferenceDao;
@@ -51,8 +51,8 @@ class ConfigurationServiceTest {
 
     private static final String PERSISTED_APP_PREF1 = "persPref1";
     private static final String PERSISTED_APP_PREF2 = "persPref2";
-    private List<AbstractPreference> filePrefs = new ArrayList<>();
-    private List<AbstractPreference> persistedPrefs = new ArrayList<>();
+    private List<GenericPreference> filePrefs = new ArrayList<>();
+    private List<GenericPreference> persistedPrefs = new ArrayList<>();
 
     @Mock
     private PreferenceRepository writer;

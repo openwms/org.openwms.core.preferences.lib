@@ -44,7 +44,7 @@ import java.io.Serializable;
 @Table(name = "COR_ROLE_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_OWNER", "C_KEY"}))
 @NamedQueries({
         @NamedQuery(name = RolePreference.NQ_FIND_BY_OWNER, query = "select rp from RolePreference rp where rp.owner = :owner")})
-public class RolePreference extends AbstractPreference implements Serializable {
+public class RolePreference extends GenericPreference implements Serializable {
 
     /**
      * Type of this preference.
@@ -116,7 +116,7 @@ public class RolePreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getType()
+     * @see GenericPreference#getType()
      */
     @Override
     public PropertyScope getType() {
@@ -126,7 +126,7 @@ public class RolePreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getFields()
+     * @see GenericPreference#getFields()
      */
     @Override
     protected Object[] getFields() {
@@ -138,7 +138,7 @@ public class RolePreference extends AbstractPreference implements Serializable {
      * <p>
      * Uses the type, owner and the key to create a {@link PreferenceKey} instance.
      *
-     * @see AbstractPreference#getPrefKey()
+     * @see GenericPreference#getPrefKey()
      */
     @Override
     public PreferenceKey getPrefKey() {

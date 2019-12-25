@@ -16,7 +16,7 @@
 package org.openwms.core.configuration.api;
 
 import org.openwms.core.configuration.PropertyScope;
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +43,7 @@ public interface ConfigurationApi {
      * @return An infinite stream of all AbstractPreferences
      */
     @GetMapping(value= API_CONFIGURATIONS)
-    Flux<AbstractPreference> findAll();
+    Flux<GenericPreference> findAll();
 
     /**
      * Find and return all existing preferences that belong to one {@code owner}.
@@ -52,7 +52,7 @@ public interface ConfigurationApi {
      * @return An infinite filtered stream of AbstractPreferences
      */
     @GetMapping(value= API_CONFIGURATIONS, params = {"owner"})
-    Flux<AbstractPreference> findBy(
+    Flux<GenericPreference> findBy(
             @RequestParam("owner") String owner
     );
 
@@ -64,7 +64,7 @@ public interface ConfigurationApi {
      * @return An infinite filtered stream of AbstractPreferences
      */
     @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type"})
-    Flux<AbstractPreference> findBy(
+    Flux<GenericPreference> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type
     );
@@ -78,7 +78,7 @@ public interface ConfigurationApi {
      * @return One single instance
      */
     @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type", "key"})
-    Mono<AbstractPreference> findBy(
+    Mono<GenericPreference> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type,
             @RequestParam("key") String key
@@ -93,6 +93,6 @@ public interface ConfigurationApi {
     @PutMapping(value= API_CONFIGURATIONS + "/{pKey}")
     ResponseEntity<Void> update(
             @PathVariable("pKey") String pKey,
-            @RequestBody AbstractPreference preference
+            @RequestBody GenericPreference preference
     );
 }

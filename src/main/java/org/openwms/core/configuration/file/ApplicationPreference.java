@@ -44,7 +44,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "COR_APP_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_KEY"}))
 @NamedQueries({@NamedQuery(name = ApplicationPreference.NQ_FIND_BY_OWNER, query = "select ap from ApplicationPreference ap")})
-public class ApplicationPreference extends AbstractPreference implements Serializable {
+public class ApplicationPreference extends GenericPreference implements Serializable {
 
     /** Query to find all {@code ApplicationPreference}s. Name is {@value}. */
     public static final String NQ_FIND_BY_OWNER = "ApplicationPreference" + FIND_BY_OWNER;
@@ -120,7 +120,7 @@ public class ApplicationPreference extends AbstractPreference implements Seriali
      * <p>
      * Uses the type and key to create a {@link PreferenceKey} instance.
      *
-     * @see AbstractPreference#getPrefKey()
+     * @see GenericPreference#getPrefKey()
      */
     @Override
     @JsonIgnore
