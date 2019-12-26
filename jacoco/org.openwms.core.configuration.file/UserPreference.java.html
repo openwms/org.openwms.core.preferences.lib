@@ -44,7 +44,7 @@ import java.io.Serializable;
 @Table(name = &quot;COR_USER_PREFERENCE&quot;, uniqueConstraints = @UniqueConstraint(columnNames = {&quot;C_TYPE&quot;, &quot;C_OWNER&quot;, &quot;C_KEY&quot;}))
 @NamedQueries({
         @NamedQuery(name = UserPreference.NQ_FIND_BY_OWNER, query = &quot;select up from UserPreference up where up.owner = :owner&quot;) })
-public class UserPreference extends AbstractPreference implements Serializable {
+public class UserPreference extends GenericPreference implements Serializable {
 
     /** Type of this preference. */
 <span class="fc" id="L50">    @XmlTransient</span>
@@ -52,12 +52,12 @@ public class UserPreference extends AbstractPreference implements Serializable {
     @Column(name = &quot;C_TYPE&quot;)
     private PropertyScope type = PropertyScope.USER;
 
-    /** Owner of the {@link AbstractPreference}. */
+    /** Owner of the {@link GenericPreference}. */
     @XmlAttribute(name = &quot;owner&quot;, required = true)
     @Column(name = &quot;C_OWNER&quot;)
     private String owner;
 
-    /** Key value of the {@link AbstractPreference}. */
+    /** Key value of the {@link GenericPreference}. */
     @XmlAttribute(name = &quot;key&quot;, required = true)
     @Column(name = &quot;C_KEY&quot;)
     private String key;
@@ -111,7 +111,7 @@ public class UserPreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getType()
+     * @see GenericPreference#getType()
      */
     @Override
     public PropertyScope getType() {
@@ -121,7 +121,7 @@ public class UserPreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getFields()
+     * @see GenericPreference#getFields()
      */
     @Override
     protected Object[] getFields() {
@@ -131,7 +131,7 @@ public class UserPreference extends AbstractPreference implements Serializable {
     /**
      * {@inheritDoc}
      *
-     * @see AbstractPreference#getPrefKey()
+     * @see GenericPreference#getPrefKey()
      */
     @Override
     public PreferenceKey getPrefKey() {
@@ -205,4 +205,4 @@ public class UserPreference extends AbstractPreference implements Serializable {
 <span class="nc" id="L205">                &quot;} &quot; + super.toString();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"org.openwms.core"},{"l":"org.openwms.core.app"},{"l":"org.openwms.core.configuration"},{"l":"org.openwms.core.configuration.api"},{"l":"org.openwms.core.configuration.file"},{"l":"org.openwms.core.configuration.impl"},{"l":"org.openwms.core.module"},{"l":"org.openwms.core.module.impl"}]

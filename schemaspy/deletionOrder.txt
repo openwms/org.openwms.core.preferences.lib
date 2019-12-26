@@ -3,4 +3,4 @@ cor_user_preference
 cor_role_preference
 cor_module_preference
 cor_app_preference
-cor_preference
+generic_preference

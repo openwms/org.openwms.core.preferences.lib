@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<database name="testdb" schema="public" type="PostgreSQL - 9.6.15">
+<database name="testdb" schema="public" type="PostgreSQL - 9.6.6">
    <tables>
       <table name="cor_app_preference" numRows="1" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_key" nullable="false" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="1" name="c_type" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="id" nullable="false" remarks="" size="19" type="int8">
-            <parent column="id" foreignKey="fkkuwmto2andgl1bhxdq0qaweo7" implied="false" onDeleteCascade="false" table="cor_preference"/>
+            <parent column="id" foreignKey="fk5fwthce2el7225cuijpk1cc00" implied="false" onDeleteCascade="false" table="generic_preference"/>
          </column>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="cor_app_preference_pkey" unique="true">
@@ -42,7 +42,7 @@
          <column autoUpdated="false" digits="0" id="1" name="c_owner" nullable="false" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="c_type" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="3" name="id" nullable="false" remarks="" size="19" type="int8">
-            <parent column="id" foreignKey="fkf2vgo3aw2ygnplsom3ox7n3og" implied="false" onDeleteCascade="false" table="cor_preference"/>
+            <parent column="id" foreignKey="fkpw0e3mawbpcrjqj3j7varrsym" implied="false" onDeleteCascade="false" table="generic_preference"/>
          </column>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="cor_module_preference_pkey" unique="true">
@@ -54,31 +54,12 @@
             <column ascending="true" name="c_key"/>
          </index>
       </table>
-      <table name="cor_preference" numRows="1" remarks="" schema="public" type="TABLE">
-         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8">
-            <child column="id" foreignKey="fkkuwmto2andgl1bhxdq0qaweo7" implied="false" onDeleteCascade="false" table="cor_app_preference"/>
-            <child column="id" foreignKey="fkf2vgo3aw2ygnplsom3ox7n3og" implied="false" onDeleteCascade="false" table="cor_module_preference"/>
-            <child column="id" foreignKey="fk8wy5svkp4gj8561bp4q49tr32" implied="false" onDeleteCascade="false" table="cor_role_preference"/>
-            <child column="id" foreignKey="fkhgw25geo2qdfkcmypktcx3u6j" implied="false" onDeleteCascade="false" table="cor_user_preference"/>
-         </column>
-         <column autoUpdated="false" digits="0" id="1" name="c_binvalue" nullable="true" remarks="" size="10" type="oid"/>
-         <column autoUpdated="false" digits="0" id="2" name="c_description" nullable="true" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="8" id="3" name="c_float_value" nullable="true" remarks="" size="8" type="float4"/>
-         <column autoUpdated="false" digits="0" id="4" name="c_from_file" nullable="true" remarks="" size="1" type="bool"/>
-         <column autoUpdated="false" digits="0" id="5" name="c_maximum" nullable="true" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="6" name="c_minimum" nullable="true" remarks="" size="10" type="int4"/>
-         <column autoUpdated="false" digits="0" id="7" name="c_value" nullable="true" remarks="" size="255" type="varchar"/>
-         <primaryKey column="id" sequenceNumberInPK="1"/>
-         <index name="cor_preference_pkey" unique="true">
-            <column ascending="true" name="id"/>
-         </index>
-      </table>
       <table name="cor_role_preference" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" digits="0" id="0" name="c_key" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="1" name="c_owner" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="c_type" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="3" name="id" nullable="false" remarks="" size="19" type="int8">
-            <parent column="id" foreignKey="fk8wy5svkp4gj8561bp4q49tr32" implied="false" onDeleteCascade="false" table="cor_preference"/>
+            <parent column="id" foreignKey="fkt5y89ldviy8qcb7ajq28eux9p" implied="false" onDeleteCascade="false" table="generic_preference"/>
          </column>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="cor_role_preference_pkey" unique="true">
@@ -95,7 +76,7 @@
          <column autoUpdated="false" digits="0" id="1" name="c_owner" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="2" name="c_type" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="3" name="id" nullable="false" remarks="" size="19" type="int8">
-            <parent column="id" foreignKey="fkhgw25geo2qdfkcmypktcx3u6j" implied="false" onDeleteCascade="false" table="cor_preference"/>
+            <parent column="id" foreignKey="fkc2wvl6mlb4rgxutksvv44512m" implied="false" onDeleteCascade="false" table="generic_preference"/>
          </column>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="cor_user_preference_pkey" unique="true">
@@ -105,6 +86,25 @@
             <column ascending="true" name="c_type"/>
             <column ascending="true" name="c_owner"/>
             <column ascending="true" name="c_key"/>
+         </index>
+      </table>
+      <table name="generic_preference" numRows="1" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="id" nullable="false" remarks="" size="19" type="int8">
+            <child column="id" foreignKey="fk5fwthce2el7225cuijpk1cc00" implied="false" onDeleteCascade="false" table="cor_app_preference"/>
+            <child column="id" foreignKey="fkpw0e3mawbpcrjqj3j7varrsym" implied="false" onDeleteCascade="false" table="cor_module_preference"/>
+            <child column="id" foreignKey="fkt5y89ldviy8qcb7ajq28eux9p" implied="false" onDeleteCascade="false" table="cor_role_preference"/>
+            <child column="id" foreignKey="fkc2wvl6mlb4rgxutksvv44512m" implied="false" onDeleteCascade="false" table="cor_user_preference"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="c_binvalue" nullable="true" remarks="" size="10" type="oid"/>
+         <column autoUpdated="false" digits="0" id="2" name="c_description" nullable="true" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="8" id="3" name="c_float_value" nullable="true" remarks="" size="8" type="float4"/>
+         <column autoUpdated="false" digits="0" id="4" name="c_from_file" nullable="true" remarks="" size="1" type="bool"/>
+         <column autoUpdated="false" digits="0" id="5" name="c_maximum" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="6" name="c_minimum" nullable="true" remarks="" size="10" type="int4"/>
+         <column autoUpdated="false" digits="0" id="7" name="c_value" nullable="true" remarks="" size="255" type="varchar"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="generic_preference_pkey" unique="true">
+            <column ascending="true" name="id"/>
          </index>
       </table>
    </tables>

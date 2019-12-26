@@ -15,7 +15,7 @@
  */
 package org.openwms.core.configuration;
 
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,14 +38,14 @@ public class ConfigurationController {
 <span class="fc" id="L38">    }</span>
 
     @GetMapping(value= API_CONFIGURATIONS)
-    public Flux&lt;AbstractPreference&gt; findAll() {
+    public Flux&lt;GenericPreference&gt; findAll() {
 <span class="fc" id="L42">        return Flux.fromIterable(configurationService.findAll()).log();</span>
     }
 
     @GetMapping(value= API_CONFIGURATIONS, params = {&quot;owner&quot;})
-    public Flux&lt;AbstractPreference&gt; findBy(
+    public Flux&lt;GenericPreference&gt; findBy(
             @RequestParam(&quot;owner&quot;) String owner) {
-<span class="nc" id="L48">        return Flux.fromIterable(configurationService.findByType(AbstractPreference.class, owner)).log();</span>
+<span class="nc" id="L48">        return Flux.fromIterable(configurationService.findByType(GenericPreference.class, owner)).log();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

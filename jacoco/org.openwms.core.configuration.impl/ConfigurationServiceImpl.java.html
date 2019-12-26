@@ -18,7 +18,7 @@ package org.openwms.core.configuration.impl;
 import org.ameba.annotation.TxService;
 import org.openwms.core.annotation.FireAfterTransaction;
 import org.openwms.core.configuration.ConfigurationService;
-import org.openwms.core.configuration.file.AbstractPreference;
+import org.openwms.core.configuration.file.GenericPreference;
 import org.openwms.core.configuration.file.PreferenceDao;
 import org.openwms.core.event.ConfigurationChangedEvent;
 import org.openwms.core.event.MergePropertiesEvent;
@@ -64,7 +64,7 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * No match returns an empty List ({@link Collections#emptyList()}).
      */
     @Override
-    public Collection&lt;AbstractPreference&gt; findAll() {
+    public Collection&lt;GenericPreference&gt; findAll() {
 <span class="fc" id="L68">        return preferenceRepository.findAll();</span>
     }
 
@@ -75,7 +75,7 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * Collections#emptyList()}).
      */
     @Override
-    public &lt;T extends AbstractPreference&gt; Collection&lt;T&gt; findByType(Class&lt;T&gt; clazz, String owner) {
+    public &lt;T extends GenericPreference&gt; Collection&lt;T&gt; findByType(Class&lt;T&gt; clazz, String owner) {
         Collection&lt;T&gt; result;
 <span class="pc bpc" id="L80" title="2 of 4 branches missed.">        result = (owner == null || owner.isEmpty()) ? preferenceRepository.findByType(clazz) : preferenceRepository.findByType(clazz, owner);</span>
 <span class="pc bpc" id="L81" title="1 of 2 branches missed.">        return result == null ? Collections.&lt;T&gt;emptyList() : result;</span>
@@ -90,7 +90,7 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      */
     @Override
     @FireAfterTransaction(events = {ConfigurationChangedEvent.class})
-    public &lt;T extends AbstractPreference&gt; T save(T preference) {
+    public &lt;T extends GenericPreference&gt; T save(T preference) {
 <span class="fc" id="L94">        Assert.notNull(preference, &quot;Not allowed to call save with a NULL argument&quot;);</span>
 <span class="fc" id="L95">        return preferenceRepository.save(preference);</span>
     }
@@ -101,19 +101,19 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * @throws IllegalArgumentException when {@code preference} is {@literal null}
      */
     @Override
-    public void delete(AbstractPreference preference) {
+    public void delete(GenericPreference preference) {
 <span class="fc" id="L105">        Assert.notNull(preference, &quot;Not allowed to call remove with a NULL argument&quot;);</span>
 <span class="fc" id="L106">        preferenceRepository.delete(preference);</span>
 <span class="fc" id="L107">    }</span>
 
     private void mergeApplicationProperties() {
-<span class="fc" id="L110">        List&lt;AbstractPreference&gt; fromFile = fileDao.findAll();</span>
-<span class="fc" id="L111">        List&lt;AbstractPreference&gt; persistedPrefs = preferenceRepository.findAll();</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (AbstractPreference pref : fromFile) {</span>
+<span class="fc" id="L110">        List&lt;GenericPreference&gt; fromFile = fileDao.findAll();</span>
+<span class="fc" id="L111">        List&lt;GenericPreference&gt; persistedPrefs = preferenceRepository.findAll();</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (GenericPreference pref : fromFile) {</span>
 <span class="fc bfc" id="L113" title="All 2 branches covered.">            if (!persistedPrefs.contains(pref)) {</span>
 <span class="fc" id="L114">                preferenceRepository.save(pref);</span>
             }
 <span class="fc" id="L116">        }</span>
 <span class="fc" id="L117">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

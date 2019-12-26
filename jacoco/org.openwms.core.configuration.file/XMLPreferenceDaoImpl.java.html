@@ -58,7 +58,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
     private String fileName;
     private volatile Resource fileResource;
     private volatile Preferences preferences;
-<span class="fc" id="L61">    private Map&lt;PreferenceKey, AbstractPreference&gt; prefs = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="fc" id="L61">    private Map&lt;PreferenceKey, GenericPreference&gt; prefs = new ConcurrentHashMap&lt;&gt;();</span>
 
 <span class="fc" id="L63">    XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {</span>
 <span class="fc" id="L64">        this.ctx = ctx;</span>
@@ -71,7 +71,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
      * @see PreferenceDao#findAll()
      */
     @Override
-    public List&lt;AbstractPreference&gt; findAll() {
+    public List&lt;GenericPreference&gt; findAll() {
 <span class="pc bpc" id="L75" title="1 of 2 branches missed.">        return preferences == null ? Collections.emptyList() : preferences.getAll();</span>
     }
 
@@ -93,7 +93,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
 <span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (initialPropertiesExist()) {</span>
             try {
 <span class="fc" id="L95">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">                for (AbstractPreference pref : preferences.getAll()) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                for (GenericPreference pref : preferences.getAll()) {</span>
 <span class="pc bpc" id="L97" title="1 of 2 branches missed.">                    if (prefs.containsKey(pref.getPrefKey())) {</span>
 <span class="nc" id="L98">                        throw new NoUniqueResultException(&quot;Preference with key &quot; + pref.getPrefKey() + &quot; already loaded.&quot;);</span>
                     }
@@ -125,4 +125,4 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
 <span class="nc" id="L125">        loadResources();</span>
 <span class="nc" id="L126">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
