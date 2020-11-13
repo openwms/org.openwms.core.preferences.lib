@@ -38,10 +38,10 @@ script:
   - if [[ ( "$TRAVIS_BRANCH" == "master" ) ]]; then mvn clean package -Denforcer.skip=true -DskipTests=true -Dci.buildNumber=$TRAVIS_BUILD_NUMBER -Prelease,gpg -B $MAVEN_OPTS; fi
 
 after_success:
-  - docker build -t openwms/org.openwms.core.preferences:latest -t openwms/org.openwms.core.preferences:$TRAVIS_BUILD_NUMBER .
+  - ./scripts/docker_build
 
 deploy:
   provider: script
-  script: bash docker_push
+  script: bash scripts/docker_push
   on:
     branch: master

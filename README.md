@@ -1,8 +1,8 @@
 # Purpose
 
-This service belongs to the OpenWMS CORE services and offers basic functionality to deal with application configuration and preferences.
-Configuration & Preferences is stored in an Users scope only, or for a given Role, specific to a Module (aka Microservice) or the whole
-Application.  
+The OpenWMS.org Preferences microservice deals with configuration and preferences on application level. It can be used to store preferences
+in different scopes. Scopes can inherit preferences from each other. Preferences may stored in an Users scope only, or for a given Role,
+specific to a module (aka microservice) or the whole application.  
 
 # Resources
 

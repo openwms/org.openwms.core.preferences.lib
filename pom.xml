@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>14</version>
+        <version>18</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
@@ -66,8 +66,8 @@
     </ciManagement>
 
     <properties>
-        <core.version>1.7.0-SNAPSHOT</core.version>
-        <spring-cloud-dependencies.version>Hoxton.RELEASE</spring-cloud-dependencies.version>
+        <core.version>1.9.0-SNAPSHOT</core.version>
+        <spring-cloud-dependencies.version>2020.0.0-SNAPSHOT</spring-cloud-dependencies.version>
         <skipTests>false</skipTests>
     </properties>
 
