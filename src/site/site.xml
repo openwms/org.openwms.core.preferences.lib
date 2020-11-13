@@ -5,11 +5,21 @@
     <skin>
         <groupId>org.apache.maven.skins</groupId>
         <artifactId>maven-fluido-skin</artifactId>
-        <version>1.7</version>
+        <version>1.8</version>
     </skin>
 
     <custom>
         <fluidoSkin>
+            <topBarEnabled>true</topBarEnabled>
+            <sideBarEnabled>false</sideBarEnabled>
+            <profile>production</profile>
+            <topBarIcon>
+                <name>${project.name}</name>
+                <alt>OpenWMS.org</alt>
+                <src>/images/logo.png</src>
+                <href>/index.html</href>
+            </topBarIcon>
+            <sourceLineNumbersEnabled>true</sourceLineNumbersEnabled>
             <gitHub>
                 <projectId>openwms/${project.artifactId}</projectId>
                 <ribbonOrientation>right</ribbonOrientation>

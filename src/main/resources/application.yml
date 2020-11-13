@@ -79,6 +79,39 @@ logging:
 spring:
   config:
     activate:
+      on-profile: ASYNCHRONOUS
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
+
+management:
+  health:
+    rabbit:
+      enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: DISTRIBUTED
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
+
+---
+spring:
+  config:
+    activate:
       on-profile: HEROKU
   main:
     banner-mode: "OFF"
@@ -113,25 +146,6 @@ owms:
     url: http://user:sa@owms-services:8761
   srv:
     hostname: preferences-service
-
----
-spring:
-  config:
-    activate:
-      on-profile: ASYNCHRONOUS
-  cloud:
-    config:
-      discovery:
-        enabled: true
-      enabled: true
-      fail-fast: true # true means retry
-    discovery:
-      enabled: true
-
-management:
-  health:
-    rabbit:
-      enabled: true
 
 ---
 spring:

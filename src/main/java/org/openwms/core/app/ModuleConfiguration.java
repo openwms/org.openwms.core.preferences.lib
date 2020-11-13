@@ -15,16 +15,20 @@
  */
 package org.openwms.core.app;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.app.BaseConfiguration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.reactive.config.EnableWebFlux;
+
+import javax.validation.Validator;
 
 /**
  * A ModuleConfiguration.
@@ -37,14 +41,14 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @Import(BaseConfiguration.class)
 public class ModuleConfiguration {
 
-    private final ModuleProperties props;
 
-    public ModuleConfiguration(ModuleProperties props) {
-        this.props = props;
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
+        return registry -> registry.config().commonTags("application", applicationName);
     }
 
     @Bean
-    MethodValidationPostProcessor methodValidationPostProcessor(LocalValidatorFactoryBean validatorFactoryBean) {
+    MethodValidationPostProcessor methodValidationPostProcessor(Validator validatorFactoryBean) {
         MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();
         mvpp.setValidator(validatorFactoryBean);
         return mvpp;
