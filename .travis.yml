@@ -1,6 +1,6 @@
 language: java
 
-dist: trusty
+dist: xenial
 
 jdk:
   - openjdk11
@@ -13,6 +13,9 @@ cache:
     - .autoconf
     - $TRAVIS_HOME/.m2
 
+jobs:
+  fast_finish: true
+
 services:
   - docker
   - rabbitmq
@@ -20,6 +23,8 @@ services:
 
 before_install:
   - "sudo apt-get install graphviz"
+
+install: true
 
 before_script:
   - psql -c "CREATE DATABASE testdb;" -U postgres
