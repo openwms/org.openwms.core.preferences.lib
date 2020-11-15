@@ -60,10 +60,10 @@ import java.util.List;
      * @return a list of all preferences
      */
     public List&lt;GenericPreference&gt; getApplicationOrRoleOrUserOrModule() {
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (applicationOrRoleOrUserOrModule == null) {</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (applicationOrRoleOrUserOrModule == null) {</span>
 <span class="nc" id="L64">            applicationOrRoleOrUserOrModule = new ArrayList&lt;&gt;();</span>
         }
-<span class="fc" id="L66">        return applicationOrRoleOrUserOrModule;</span>
+<span class="nc" id="L66">        return applicationOrRoleOrUserOrModule;</span>
     }
 
     /**
@@ -72,7 +72,7 @@ import java.util.List;
      * @return a list of all preferences
      */
     public List&lt;GenericPreference&gt; getAll() {
-<span class="fc" id="L75">        return getApplicationOrRoleOrUserOrModule();</span>
+<span class="nc" id="L75">        return getApplicationOrRoleOrUserOrModule();</span>
     }
 
     /**

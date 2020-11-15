@@ -92,31 +92,31 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;Relo
     private void loadResources() {
 <span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (initialPropertiesExist()) {</span>
             try {
-<span class="fc" id="L95">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">                for (GenericPreference pref : preferences.getAll()) {</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                    if (prefs.containsKey(pref.getPrefKey())) {</span>
+<span class="nc" id="L95">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                for (GenericPreference pref : preferences.getAll()) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                    if (prefs.containsKey(pref.getPrefKey())) {</span>
 <span class="nc" id="L98">                        throw new NoUniqueResultException(&quot;Preference with key &quot; + pref.getPrefKey() + &quot; already loaded.&quot;);</span>
                     }
-<span class="fc" id="L100">                    prefs.put(pref.getPrefKey(), pref);</span>
-<span class="fc" id="L101">                }</span>
-<span class="fc" id="L102">                LOGGER.debug(&quot;Loaded {} properties into cache&quot;, preferences.getAll().size());</span>
+<span class="nc" id="L100">                    prefs.put(pref.getPrefKey(), pref);</span>
+<span class="nc" id="L101">                }</span>
+<span class="nc" id="L102">                LOGGER.debug(&quot;Loaded {} properties into cache&quot;, preferences.getAll().size());</span>
 <span class="nc" id="L103">            } catch (XmlMappingException xme) {</span>
 <span class="nc" id="L104">                throw new IntegrationLayerException(&quot;Exception while unmarshalling from &quot; + fileName, xme);</span>
 <span class="nc" id="L105">            } catch (IOException ioe) {</span>
 <span class="nc" id="L106">                throw new ResourceNotFoundException(&quot;Exception while accessing the resource with name &quot; + fileName, ioe);</span>
-<span class="fc" id="L107">            }</span>
+<span class="nc" id="L107">            }</span>
         }
 <span class="fc" id="L109">    }</span>
 
     private boolean initialPropertiesExist() {
 <span class="pc bpc" id="L112" title="2 of 4 branches missed.">        if (fileName != null &amp;&amp; !fileName.isEmpty()) {</span>
-<span class="fc" id="L113">            fileResource = ctx.getResource(fileName);</span>
+<span class="nc" id="L113">            fileResource = ctx.getResource(fileName);</span>
         }
-<span class="pc bpc" id="L115" title="2 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
-<span class="nc" id="L116">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
-<span class="nc" id="L117">            return false;</span>
+<span class="pc bpc" id="L115" title="3 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
+<span class="fc" id="L116">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
+<span class="fc" id="L117">            return false;</span>
         }
-<span class="fc" id="L119">        return true;</span>
+<span class="nc" id="L119">        return true;</span>
     }
 
     private void reloadResources() {

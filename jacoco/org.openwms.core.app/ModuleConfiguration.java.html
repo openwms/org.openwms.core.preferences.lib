@@ -15,16 +15,20 @@
  */
 package org.openwms.core.app;
 
+import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.app.BaseConfiguration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.reactive.config.EnableWebFlux;
+
+import javax.validation.Validator;
 
 /**
  * A ModuleConfiguration.
@@ -35,26 +39,26 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableWebFlux
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
-public class ModuleConfiguration {
+<span class="fc" id="L42">public class ModuleConfiguration {</span>
 
-    private final ModuleProperties props;
-
-<span class="fc" id="L42">    public ModuleConfiguration(ModuleProperties props) {</span>
-<span class="fc" id="L43">        this.props = props;</span>
-<span class="fc" id="L44">    }</span>
 
     @Bean
-    MethodValidationPostProcessor methodValidationPostProcessor(LocalValidatorFactoryBean validatorFactoryBean) {
-<span class="fc" id="L48">        MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();</span>
-<span class="fc" id="L49">        mvpp.setValidator(validatorFactoryBean);</span>
-<span class="fc" id="L50">        return mvpp;</span>
+    MeterRegistryCustomizer&lt;MeterRegistry&gt; metricsCommonTags(@Value(&quot;${spring.application.name}&quot;) String applicationName) {
+<span class="fc" id="L47">        return registry -&gt; registry.config().commonTags(&quot;application&quot;, applicationName);</span>
+    }
+
+    @Bean
+    MethodValidationPostProcessor methodValidationPostProcessor(Validator validatorFactoryBean) {
+<span class="fc" id="L52">        MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();</span>
+<span class="fc" id="L53">        mvpp.setValidator(validatorFactoryBean);</span>
+<span class="fc" id="L54">        return mvpp;</span>
     }
 
     @Bean
     Unmarshaller unmarshaller() {
-<span class="fc" id="L55">        Jaxb2Marshaller um = new Jaxb2Marshaller();</span>
-<span class="fc" id="L56">        um.setContextPath(&quot;org.openwms.core.configuration.file&quot;);</span>
-<span class="fc" id="L57">        return um;</span>
+<span class="fc" id="L59">        Jaxb2Marshaller um = new Jaxb2Marshaller();</span>
+<span class="fc" id="L60">        um.setContextPath(&quot;org.openwms.core.configuration.file&quot;);</span>
+<span class="fc" id="L61">        return um;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
