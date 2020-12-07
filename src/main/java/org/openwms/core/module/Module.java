@@ -103,7 +103,7 @@ public class Module extends BaseEntity implements Serializable {
         public int compare(Module o1, Module o2) {
             return o1.getStartupOrder() >= o2.getStartupOrder() ? 1 : -1;
         }
-    };
+    }
 
     /**
      * Dear JPA ...

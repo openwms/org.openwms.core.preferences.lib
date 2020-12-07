@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2019 the original author or authors.
+ * Copyright 2005-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+import static org.openwms.core.configuration.file.AbstractPreference.FIND_BY_OWNER;
+
 /**
  * A PreferenceRepositoryImpl implements custom generic find methods of {@link PreferenceRepositoryCustom}.
  * <p>
@@ -45,19 +47,19 @@ class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends GenericPreference> List<T> findByType(Class<T> clazz) {
-        return (List<T>) em.createNamedQuery(getQueryName(clazz) + ".findAll").getResultList();
+        return em.createNamedQuery(getQueryName(clazz) + ".findAll", clazz)
+                .getResultList();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("unchecked")
     public <T extends GenericPreference> List<T> findByType(Class<T> clazz, String owner) {
-        return (List<T>) em.createNamedQuery(getQueryName(clazz) + GenericPreference.FIND_BY_OWNER)
-                .setParameter("owner", owner).getResultList();
+        return em.createNamedQuery(getQueryName(clazz) + FIND_BY_OWNER, clazz)
+                .setParameter("owner", owner)
+                .getResultList();
     }
 
     private <T extends GenericPreference> String getQueryName(Class<T> clazz) {
