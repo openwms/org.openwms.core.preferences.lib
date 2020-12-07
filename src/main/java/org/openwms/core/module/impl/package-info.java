@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains types to manage application modules.
+ * Contains the implementation types of the module management.
  */
-package org.openwms.core.module;
+package org.openwms.core.module.impl;
