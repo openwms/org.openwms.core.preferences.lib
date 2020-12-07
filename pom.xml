@@ -72,6 +72,7 @@
         <servo-core.version>0.12.21</servo-core.version>
         <spring-cloud-dependencies.version>2020.0.0-SNAPSHOT</spring-cloud-dependencies.version>
         <skipTests>false</skipTests>
+        <xstream.version>1.4.14</xstream.version>
     </properties>
 
     <reporting>
@@ -178,6 +179,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>com.thoughtworks.xstream</groupId>
+                <artifactId>xstream</artifactId>
+                <version>${xstream.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -235,6 +241,11 @@
                     <groupId>com.netflix.servo</groupId>
                     <artifactId>servo-core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <!-- Internal clash -->
+                    <groupId>com.thoughtworks.xstream</groupId>
+                    <artifactId>xstream</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -272,6 +283,11 @@
             <!-- com.netflix.eureka:eureka-client has an internal clash -->
             <groupId>com.netflix.servo</groupId>
             <artifactId>servo-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.xstream</groupId>
+            <artifactId>xstream</artifactId>
             <optional>true</optional>
         </dependency>
 
