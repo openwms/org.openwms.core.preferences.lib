@@ -12,7 +12,7 @@ OpenWMS.org CORE: Preferences,org.openwms.core.configuration.file,GenericPrefere
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.file,AbstractPreference,0,3,0,0,0,1,0,1,0,1
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.file,ObjectFactory,53,0,0,0,11,0,8,0,8,0
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.file,PreferenceKey,6,37,3,3,3,11,3,3,0,3
-OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl,PreferenceRepositoryImpl,44,3,4,0,7,1,5,1,3,1
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl,PreferenceRepositoryImpl,46,3,4,0,9,1,5,1,3,1
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl,ConfigurationServiceImpl,7,77,3,7,0,21,3,9,0,7
 OpenWMS.org CORE: Preferences,org.openwms.core.module.impl,ModuleServiceImpl,90,6,6,0,17,3,8,1,5,1
 OpenWMS.org CORE: Preferences,org.openwms.core.app,ModuleProperties,7,6,0,0,3,2,2,1,2,1
