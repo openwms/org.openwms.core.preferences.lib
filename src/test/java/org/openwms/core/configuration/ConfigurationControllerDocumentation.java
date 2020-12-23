@@ -71,4 +71,19 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
                 .jsonPath("$[0].key").isEqualTo("defaultLanguage")
         ;
     }
+
+    @Test
+    void shall_return_all_for_owner() {
+        this.client
+                .get()
+                .uri(API_CONFIGURATIONS)
+                .attribute("owner", "SA")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-findforowner", preprocessResponse(prettyPrint()))
+                )
+        ;
+    }
 }
