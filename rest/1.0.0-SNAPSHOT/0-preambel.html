@@ -5,8 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-33)">
-<title>OpenWMS.org CORE: RESTful API (Preferences Service)</title>
+<meta name="author" content="Basically JSON is used as representation format by default if not otherwise requested or mentioned below. XML format is supported for the">
+<title>Representation Formats</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,76 +436,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="book">
+<body id="section-representation" class="book">
 <div id="header">
-<h1>OpenWMS.org CORE: RESTful API (Preferences Service)</h1>
+<h1>Representation Formats</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-33)</span><br>
-<span id="revdate">Heiko Scherrer;</span>
-</div>
-<div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel0">
-<li><a href="#overview">Overview</a></li>
-<li><a href="#section-representation">Representation Formats</a>
-<ul class="sectlevel1">
-<li><a href="#_dates_in_json">Dates in JSON</a></li>
-<li><a href="#_embedded_entities">Embedded Entities</a></li>
-<li><a href="#_error_responses">Error Responses</a>
-<ul class="sectlevel2">
-<li><a href="#_server_declined_errors">Server Declined Errors</a></li>
-<li><a href="#_api_declined_errors">API Declined Errors</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#resources-prg">Resources</a>
-<ul class="sectlevel1">
-<li><a href="#resources-index">Index</a></li>
-<li><a href="#_preference">Preference</a>
-<ul class="sectlevel2">
-<li><a href="#_find_all_preferences">Find all Preferences</a></li>
-<li><a href="#_find_all_preferences_for_owner">Find all Preferences for Owner</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<span id="author" class="author">Basically JSON is used as representation format by default if not otherwise requested or mentioned below. XML format is supported for the</span><br>
+<span id="revnumber">version ,</span>
+<span id="revdate">but must be requested explicitly. Furthermore a vendor specific JSON format is used to represent resource</span>
 </div>
 </div>
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Copyright © 2005-2020</p>
+<p>representations. Therefore it is absolutely required that the <code>Accept</code> header denotes the demanded type. Find the type in the examples
+below.</p>
 </div>
-<div class="paragraph">
-<p>Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies
-and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.</p>
-</div>
-</div>
-</div>
-<h1 id="overview" class="sect0"><a class="anchor" href="#overview"></a><a class="link" href="#overview">Overview</a></h1>
-<div class="openblock partintro">
-<div class="content">
-This guide describes the RESTful API of the OpenWMS.org CORE Preferences Service and its usage. Some general terms and definitions are
-explained and declared in the first part of the document whereas in the second part the usage of the API is shown in a more use-case-driven
-approach.
-</div>
-</div>
-<h1 id="section-representation" class="sect0"><a class="anchor" href="#section-representation"></a><a class="link" href="#section-representation">Representation Formats</a></h1>
-<div class="openblock partintro">
-<div class="content">
-Basically JSON is used as representation format by default if not otherwise requested or mentioned below. XML format is supported for the
-index pages as well, but must be requested explicitly. Furthermore a vendor specific JSON format is used to represent resource
-representations. Therefore it is absolutely required that the <code>Accept</code> header denotes the demanded type. Find the type in the examples
-below.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_dates_in_json"><a class="anchor" href="#_dates_in_json"></a><a class="link" href="#_dates_in_json">Dates in JSON</a></h2>
+<h2 id="_dates_in_json">Dates in JSON</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Date or datetime fields are not treated specially in JSON. Within the scope of this API a date or datetime field is always expected and
@@ -514,7 +465,7 @@ rendered as JSON String in ISO8601 format with timezone information and millisec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_embedded_entities"><a class="anchor" href="#_embedded_entities"></a><a class="link" href="#_embedded_entities">Embedded Entities</a></h2>
+<h2 id="_embedded_entities">Embedded Entities</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>For the sake of convenience some response entities may included embedded entities or even parts of it. A reference to the actual entity is
@@ -523,7 +474,7 @@ provided as HAL link as well.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_error_responses"><a class="anchor" href="#_error_responses"></a><a class="link" href="#_error_responses">Error Responses</a></h2>
+<h2 id="_error_responses">Error Responses</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Beside the actual representation of resources, the server may result an error response in JSON format that contains basic information about
@@ -534,7 +485,7 @@ order to re-phrase and send the request again.</p>
 <p>Currently there are two types of errors with their own response formats.</p>
 </div>
 <div class="sect2">
-<h3 id="_server_declined_errors"><a class="anchor" href="#_server_declined_errors"></a><a class="link" href="#_server_declined_errors">Server Declined Errors</a></h3>
+<h3 id="_server_declined_errors">Server Declined Errors</h3>
 <div class="paragraph">
 <p>This kind of errors are sent by the server runtime environment even before the request had a chance to be processed.</p>
 </div>
@@ -543,7 +494,7 @@ order to re-phrase and send the request again.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">{
+<pre class="highlight"><code>{
     "timestamp": 1512400854941,
     "status": 500,
     "error": "Internal Server Error",
@@ -596,7 +547,7 @@ order to re-phrase and send the request again.</p>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_api_declined_errors"><a class="anchor" href="#_api_declined_errors"></a><a class="link" href="#_api_declined_errors">API Declined Errors</a></h3>
+<h3 id="_api_declined_errors">API Declined Errors</h3>
 <div class="paragraph">
 <p>Those errors are thrown within the REST API validation and processing logic. For example, if a client request does not match the expected
 format or has produced an error on server side, the API will decline the request and return a response with status client-side error (4xx).</p>
@@ -606,7 +557,7 @@ format or has produced an error on server side, the API will decline the request
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">{
+<pre class="highlight"><code>{
     "message": "LocationGroup with name [NOT_EXISTS] not found",
     "messageKey": "COMMON.LOCATION_GROUP_NOT_FOUND",
     "obj" : [ "NOT_EXISTS" ],
@@ -699,117 +650,12 @@ format or has produced an error on server side, the API will decline the request
 </div>
 </div>
 </div>
-<h1 id="resources-prg" class="sect0"><a class="anchor" href="#resources-prg"></a><a class="link" href="#resources-prg">Resources</a></h1>
-<div class="openblock partintro">
-<div class="content">
-<div class="paragraph">
-<p>A description of all used API resources.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/ClassDiagram.svg" alt="ClassDiagram">
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="resources-index"><a class="anchor" href="#resources-index"></a><a class="link" href="#resources-index">Index</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The initial HTTP request to retrieve information about all available resources looks like the following. The Index page is a public
-available resource and does not need any authentication.</p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in 1-index.adoc - include::/home/travis/build/openwms/org.openwms.core.preferences/target/generated-snippets/get-index/http-request.adoc[]</p>
-</div>
-<div class="paragraph">
-<p>The Index resource is returned in the response body with the response status of 200-OK. This main Index lists all primary resource entities
-to follow next.</p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in 1-index.adoc - include::/home/travis/build/openwms/org.openwms.core.preferences/target/generated-snippets/get-index/http-response.adoc[]</p>
-</div>
-<div class="paragraph">
-<p>A client application must only know about the agreed link names and follow the corresponding <code>href</code> link to navigate further.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_preference"><a class="anchor" href="#_preference"></a><a class="link" href="#_preference">Preference</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>A <code>Preference</code> represents a configuration value in a particular scope. So a <code>Preference</code> could only be visible and editable by one
-particular user in the system, then this is an <code>UserPreference</code>. If a <code>Preference</code> should be valid for many users then it can be assigned to
-a user role and is of type <code>RolePreference</code>.</p>
-</div>
-<div class="paragraph">
-<p>Apart from users and roles a <code>Preference</code> can also be assigned to an abstract thing called Module. This could be a single Microservice for
-example. This is of type <code>ModulePreference</code>. The whole application consists of several Microservices that may require common preferences
-that are valid for all modules, those are stores of type <code>ApplicationPreference</code>.</p>
-</div>
-<div class="paragraph">
-<p>All kind of preferences share same data stored in a supertype called <code>AbstractPreference</code>. Each subtype defines the scope as a property and
-an owner of the <code>Preference</code>. This might be the name of the user, the role name or the Microservice name. A <code>Preference</code> is identified by
-<code>type</code>, <code>owner</code> and the <code>key</code> field.</p>
-</div>
-<div class="sect2">
-<h3 id="_find_all_preferences"><a class="anchor" href="#_find_all_preferences"></a><a class="link" href="#_find_all_preferences">Find all Preferences</a></h3>
-<div class="paragraph">
-<p>Send a HTTP GET request without any further query parameters to find and return all existing <code>Preferences</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /v1/preferences HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The server responds with an array of all <code>Preferences</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 3
-
-[ ]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_find_all_preferences_for_owner"><a class="anchor" href="#_find_all_preferences_for_owner"></a><a class="link" href="#_find_all_preferences_for_owner">Find all Preferences for Owner</a></h3>
-<div class="paragraph">
-<p>Send a HTTP GET request without any further query parameters to find and return all existing <code>Preferences</code> of an owner.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /v1/preferences HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The server responds with an array of all <code>Preferences</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 3
-
-[ ]</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
+Version <br>
 Last updated 2020-12-24 22:53:51 UTC
 </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-<script>hljs.initHighlighting()</script>
 </body>
 </html>
