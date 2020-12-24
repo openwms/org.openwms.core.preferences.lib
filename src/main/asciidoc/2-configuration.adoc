@@ -20,3 +20,12 @@ include::{generated}/prefs-findall/http-request.adoc[]
 The server responds with an array of all `Preferences`.
 
 include::{generated}/prefs-findall/http-response.adoc[]
+
+=== Find all Preferences for Owner
+Send a HTTP GET request without any further query parameters to find and return all existing `Preferences` of an owner.
+
+include::{generated}/prefs-findforowner/http-request.adoc[]
+
+The server responds with an array of all `Preferences`.
+
+include::{generated}/prefs-findforowner/http-response.adoc[]
