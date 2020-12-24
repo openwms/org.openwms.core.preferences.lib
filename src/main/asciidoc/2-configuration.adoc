@@ -1,0 +1,22 @@
+== Preference
+
+A `Preference` represents a configuration value in a particular scope. So a `Preference` could only be visible and editable by one
+particular user in the system, then this is an `UserPreference`. If a `Preference` should be valid for many users then it can be assigned to
+a user role and is of type `RolePreference`.
+
+Apart from users and roles a `Preference` can also be assigned to an abstract thing called Module. This could be a single Microservice for
+example. This is of type `ModulePreference`. The whole application consists of several Microservices that may require common preferences
+that are valid for all modules, those are stores of type `ApplicationPreference`.
+
+All kind of preferences share same data stored in a supertype called `AbstractPreference`. Each subtype defines the scope as a property and
+an owner of the `Preference`. This might be the name of the user, the role name or the Microservice name. A `Preference` is identified by
+`type`, `owner` and the `key` field.
+
+=== Find all Preferences
+Send a HTTP GET request without any further query parameters to find and return all existing `Preferences`.
+
+include::{generated}/prefs-findall/http-request.adoc[]
+
+The server responds with an array of all `Preferences`.
+
+include::{generated}/prefs-findall/http-response.adoc[]

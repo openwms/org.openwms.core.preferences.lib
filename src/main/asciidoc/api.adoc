@@ -11,7 +11,7 @@ Heiko Scherrer;
 :operation-curl-request-title: Example request
 :operation-http-response-title: Example response
 
-Copyright © 2005-2019
+Copyright © 2005-2020
 
 Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies
 and further provided that each copy contains this Copyright Notice, whether distributed in print or electronically.
@@ -19,119 +19,18 @@ and further provided that each copy contains this Copyright Notice, whether dist
 [[overview]]
 = Overview
 This guide describes the RESTful API of the OpenWMS.org CORE Preferences Service and its usage. Some general terms and definitions are
-explained and declared in the first part of the document whereas the usage of the API is described in a more use-case-driven approach later
-on.
+explained and declared in the first part of the document whereas in the second part the usage of the API is shown in a more use-case-driven
+approach.
 
-= Representation Formats
-Basically JSON is used as representation format by default if not otherwise requested or mentioned below. Furthermore a vendor specific JSON
-format is used to represent resource representations. The `Accept` header denotes the demanded type. Find the type in the examples below.
-
-== Dates in JSON
-Date or datetime fields are not treated specially in JSON. Within the scope of this API a date or datetime field is always expected and
-rendered as JSON String in ISO8601 format with timezone information (GMT) and milliseconds: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
-
-== Embedded Entities
-For the sake of convenience some response entities may included embedded entities or even parts of it. A reference to the actual entity is
-provided as HAL link as well.
-
-== Error Responses
-Beside the actual representation of resources, the server may result an error response in JSON format that contains basic information about
-the error occurred. This information is additional to the standard HTTP status code and may help clients to identify the error cause in
-order to re-phrase and send the request again.
-
-Currently there are two types of errors with their own response formats.
-
-=== Server Declined Errors
-This kind of errors are sent by the server runtime environment even before the request had a chance to be processed.
-
-An example response looks like this:
-
-```
-{
-    "timestamp": 1512400854941,
-    "status": 500,
-    "error": "Internal Server Error",
-    "exception": "org.ameba.oauth2.InvalidTokenException",
-    "message": "JWT expired at 2017-12-04T15:04:43Z. Current time: 2017-12-04T15:20:54Z, ...",
-    "path": "/v1/transport-units?bk=00000000000000004711"
-}
-```
-
-The JSON structure contains the following fields.
-
-|===
-| Property Name | Description
-
-| timestamp     | When the error occurred on server side
-| status        | The http status of the error
-| error         | A short error text
-| exception     | Internal class name of the Java exception type
-| message       | A more descriptive error text describing the error in detail
-| path          | The part of the URI for the REST resource that was queried
-|===
-
-=== API Declined Errors
-Those errors are thrown within the REST API validation and processing logic. For example, if a client request does not match the expected
-format or has produced an error on server side, the API will decline the request and return a response with status client-side error (4xx).
-
-The structure of the response is aligned to the RFC7808. An example response looks like this:
-
-```
-{
-    "title": "Invalid location [NOT EXISTS]",
-    "httpStatus": 400,
-    "detail": "[The Location with ID NOT EXISTS is not in expected format]",
-    "messageKey": "location.invalid"
-}
-```
-
-The JSON structure contains the following fields.
-
-|===
-| Property Name | Description
-
-| title         | A short error text
-| httpStatus    | The http status of the error
-| detail        | More descriptive information passed to the API or back to the caller
-| messageKey    | An unique identifier across the API that can be used to identify and translate the error message on the client side
-|===
-
-Following message keys are currently used:
-
-|===
-| Message Key | Description | Action
-
-| not.found   | The requested resource has not been found | The resource does not exist anymore or has never existed. The resource identifier must be verified
-| COMMON.BARCODE_NOT_FOUND | The TransportUnit does not exist | Verify the identifying attribute passed to the API
-|===
-
+include::0-preambel.adoc[]
 
 [[resources-prg]]
 = Resources
 
 A description of all used API resources.
 
-image::ClassDiagram.svg[]
+image::images/ClassDiagram.svg[]
 
-== Preference
+include::1-index.adoc[]
 
-A `Preference` represents a configuration value in a particular scope. So a `Preference` could only be visible and editable by one
-particular user in the system, then this is an `UserPreference`. If a `Preference` should be valid for many users then it can be assigned to
-a user role and is of type `RolePreference`.
-
-Apart from users and roles a `Preference` can also be assigned to an abstract thing called Module. This could be a single Microservice for
-example. This is of type `ModulePreference`. The whole application consists of several Microservices that may require common preferences
-that are valid for all modules, those are stores of type `ApplicationPreference`.
-
-All kind of preferences share same data stored in a supertype called `AbstractPreference`. Each subtype defines the scope as a property and
-an owner of the `Preference`. This might be the name of the user, the role name or the Microservice name. A `Preference` is identified by
-`type`, `owner` and the `key` field.
-
-=== Find all Preferences
-Send a HTTP GET request without any further query parameters to find and return all existing `Preferences`.
-
-include::{generated}/prefs-findall/http-request.adoc[]
-
-The server responds with an array of all `Preferences`.
-
-include::{generated}/prefs-findall/http-response.adoc[]
+include::2-configuration.adoc[]
