@@ -16,8 +16,7 @@
 package org.openwms.core.configuration;
 
 import org.ameba.test.categories.SpringTestSupport;
-import org.openwms.core.configuration.Starter;
-import org.openwms.core.configuration.app.ModuleConfiguration;
+import org.openwms.core.configuration.app.PreferencesModuleConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -39,7 +38,7 @@ import java.lang.annotation.Target;
 @Inherited
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @SpringTestSupport
-@SpringBootTest(classes = {Starter.class, ModuleConfiguration.class}, properties = {
+@SpringBootTest(classes = {Starter.class, PreferencesModuleConfiguration.class}, properties = {
         "spring.main.web-application-type=reactive",
         "spring.jpa.show-sql=false",
         "spring.main.banner-mode=OFF",

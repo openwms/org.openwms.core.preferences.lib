@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration.app;
+package org.openwms.core.configuration.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -25,9 +25,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "openwms.core.config")
 public class ModuleProperties {
 
-    /**
-     * Spring resource location to load the initial preferences from.
-     */
+    /** Spring resource location to load the initial preferences from. */
     private String initialProperties = "classpath:initial-preferences.xml";
 
     public String getInitialProperties() {

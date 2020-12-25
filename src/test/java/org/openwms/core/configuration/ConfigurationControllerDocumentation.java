@@ -23,7 +23,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.openwms.core.configuration.CoreConstants.API_CONFIGURATIONS;
+import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
@@ -55,7 +55,7 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
     void shall_return_all_preferences() {
         this.client
                 .get()
-                .uri(API_CONFIGURATIONS)
+                .uri(API_PREFERENCES)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -76,7 +76,7 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
     void shall_return_all_for_owner() {
         this.client
                 .get()
-                .uri(API_CONFIGURATIONS)
+                .uri(API_PREFERENCES)
                 .attribute("owner", "SA")
                 .exchange()
                 .expectStatus().isOk()

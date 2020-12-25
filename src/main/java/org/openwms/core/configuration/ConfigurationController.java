@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
-import static org.openwms.core.configuration.CoreConstants.API_CONFIGURATIONS;
+import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 
 /**
  * A ConfigurationController.
@@ -37,12 +37,12 @@ public class ConfigurationController {
         this.configurationService = configurationService;
     }
 
-    @GetMapping(value = API_CONFIGURATIONS)
+    @GetMapping(value = API_PREFERENCES)
     public Flux<GenericPreference> findAll() {
         return Flux.fromIterable(configurationService.findAll()).log();
     }
 
-    @GetMapping(value = API_CONFIGURATIONS, params = {"owner"})
+    @GetMapping(value = API_PREFERENCES, params = {"owner"})
     public Flux<GenericPreference> findBy(
             @RequestParam("owner") String owner) {
         return Flux.fromIterable(configurationService.findByType(GenericPreference.class, owner)).log();

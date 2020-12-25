@@ -13,19 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
-
 /**
- * A CoreConstants contains service-wide constants.
- *
- * @author Heiko Scherrer
+ * Contains Spring configuration mapping classes.
  */
-public final class CoreConstants {
-
-    /** API version. */
-    public static final String API_VERSION = "v1";
-    /** API root to hit Preferences (plural). */
-    public static final String API_PREFERENCES = "/" + API_VERSION + "/preferences";
-
-    private CoreConstants() { }
-}
+package org.openwms.core.configuration.config;

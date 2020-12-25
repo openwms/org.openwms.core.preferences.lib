@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains types according to the outer public API of the component.
+ * Contains types that belong to the public API of the component.
  */
 package org.openwms.core.configuration.api;
