@@ -13,20 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration.impl.jpa;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
-
 /**
- * A PreferenceRepository is a Spring Data JPA repository that deals with {@link AbstractPreferenceEO}s.
- *
- * @author Heiko Scherrer
+ * Contains the persistence model and access objects.
  */
-interface PreferenceRepository extends JpaRepository<AbstractPreferenceEO, Long>, PreferenceRepositoryCustom {
-
-    List<AbstractPreferenceEO> findAllByOwner(String owner);
-
-    List<AbstractPreferenceEO> findAllByOwnerAndKey();
-}
+package org.openwms.core.configuration.impl.jpa;

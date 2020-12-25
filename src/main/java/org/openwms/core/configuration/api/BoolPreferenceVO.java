@@ -13,23 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration.impl.jpa;
-
-import java.util.List;
+package org.openwms.core.configuration.api;
 
 /**
- * A PreferenceRepositoryCustom defines additional custom methods to search preferences by class type.
+ * A BoolPreferenceVO.
  *
  * @author Heiko Scherrer
  */
-interface PreferenceRepositoryCustom {
-
-    /**
-     * Find and return all preferences that are of the given {@code clazz} type.
-     *
-     * @param clazz A subclass of {@link AbstractPreferenceEO} to search for
-     * @param <T> Any type of {@link AbstractPreferenceEO}
-     * @return A list of all preferences or an empty list, never {@literal null}
-     */
-    <T extends AbstractPreferenceEO> List<T> findByType(Class<T> clazz);
+public class BoolPreferenceVO extends AbstractPreferenceVO<BoolPreferenceVO> {
 }

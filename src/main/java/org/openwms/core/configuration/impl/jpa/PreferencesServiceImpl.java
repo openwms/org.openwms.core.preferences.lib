@@ -16,70 +16,51 @@
 package org.openwms.core.configuration.impl.jpa;
 
 import org.ameba.annotation.TxService;
-import org.openwms.core.annotation.FireAfterTransaction;
-import org.openwms.core.configuration.ConfigurationService;
-import org.openwms.core.configuration.impl.file.GenericPreference;
+import org.openwms.core.configuration.PreferencesService;
 import org.openwms.core.configuration.impl.file.PreferenceDao;
-import org.openwms.core.event.ConfigurationChangedEvent;
-import org.openwms.core.event.MergePropertiesEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * A ConfigurationServiceImpl is a transactional Spring powered service implementation to manage preferences.
+ * A PreferencesServiceImpl is a transactional Spring powered service implementation to manage {@code Preferences}.
  *
  * @author Heiko Scherrer
  */
 @Validated
 @TxService
-class ConfigurationServiceImpl implements ConfigurationService, ApplicationListener<MergePropertiesEvent> {
+class PreferencesServiceImpl implements PreferencesService {
 
     private final PreferenceDao fileDao;
     private final PreferenceRepository preferenceRepository;
 
-    public ConfigurationServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository) {
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository) {
         this.fileDao = fileDao;
         this.preferenceRepository = preferenceRepository;
     }
 
     /**
      * {@inheritDoc}
-     * <p>
-     * When an event arrives all <i>new</i> preferences received from the file provider are persisted. Already persisted preferences are
-     * ignored.
      */
     @Override
-    public void onApplicationEvent(MergePropertiesEvent event) {
-        mergeApplicationProperties();
+    public Collection<AbstractPreferenceEO> findAll(@NotEmpty String owner) {
+        List<AbstractPreferenceEO> result = preferenceRepository.findAllByOwner(owner);
+        return result == null ? Collections.emptyList() : result;
     }
 
     /**
      * {@inheritDoc}
-     * <p>
-     * No match returns an empty List ({@link Collections#emptyList()}).
-     */
     @Override
-    public Collection<GenericPreference> findAll() {
-        return preferenceRepository.findAll();
+    public Collection<AbstractPreferenceEO> findBy(@NotEmpty String owner, @NotEmpty String key) {
+        Collection<T> result = (owner == null || owner.isEmpty())
+                ? preferenceRepository.find(clazz)
+                : preferenceRepository.findByType(clazz, owner);
+        return result == null ? Collections.emptyList() : result;
     }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * If owner is set to {@literal null} or is empty, all preferences of this type are returned. No match returns an empty List ( {@link
-     * Collections#emptyList()}).
      */
-    @Override
-    public <T extends GenericPreference> Collection<T> findByType(Class<T> clazz, String owner) {
-        Collection<T> result;
-        result = (owner == null || owner.isEmpty()) ? preferenceRepository.findByType(clazz) : preferenceRepository.findByType(clazz, owner);
-        return result == null ? Collections.<T>emptyList() : result;
-    }
 
     /**
      * {@inheritDoc}
@@ -87,32 +68,43 @@ class ConfigurationServiceImpl implements ConfigurationService, ApplicationListe
      * Not allowed to call this implementation with a {@literal null} argument.
      *
      * @throws IllegalArgumentException when {@code preference} is {@literal null}
-     */
     @Override
     @FireAfterTransaction(events = {ConfigurationChangedEvent.class})
-    public <T extends GenericPreference> T save(T preference) {
+    public <T extends AbstractPreferenceEO> T save(T preference) {
         Assert.notNull(preference, "Not allowed to call save with a NULL argument");
         return preferenceRepository.save(preference);
     }
+     */
 
     /**
      * {@inheritDoc}
      *
      * @throws IllegalArgumentException when {@code preference} is {@literal null}
-     */
     @Override
-    public void delete(GenericPreference preference) {
+    public void delete(AbstractPreferenceEO preference) {
         Assert.notNull(preference, "Not allowed to call remove with a NULL argument");
         preferenceRepository.delete(preference);
     }
+     */
 
+    /**
+     *
+    @Override
+    public void reloadInitialPreferences() {
+        mergeApplicationProperties();
+    }
+     */
+
+    /**
+     *
     private void mergeApplicationProperties() {
         List<GenericPreference> fromFile = fileDao.findAll();
-        List<GenericPreference> persistedPrefs = preferenceRepository.findAll();
+        List<AbstractPreferenceEO> persistedPrefs = preferenceRepository.findAll();
         for (GenericPreference pref : fromFile) {
             if (!persistedPrefs.contains(pref)) {
                 preferenceRepository.save(pref);
             }
         }
     }
+     */
 }

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<configuration>
+		<stop-on-errors>true</stop-on-errors>
+		<date-format>MM/dd/yyyy HH:mm</date-format>
+		<wildcard>true</wildcard>
+		<custom-converters>
+			<converter type="org.ameba.mapping.LocalDateTimeConverter">
+				<class-a>java.time.LocalDateTime</class-a>
+				<class-b>java.time.LocalDateTime</class-b>
+			</converter>
+			<converter type="org.ameba.mapping.ZonedDateTimeConverter">
+				<class-a>java.time.ZonedDateTime</class-a>
+				<class-b>java.time.ZonedDateTime</class-b>
+			</converter>
+			<converter type="org.openwms.common.location.impl.LocationConverter">
+				<class-a>java.lang.String</class-a>
+				<class-b>org.openwms.common.location.Location</class-b>
+			</converter>
+			<converter type="org.openwms.common.location.impl.LocationGroupStateConverter">
+				<class-a>java.lang.Boolean</class-a>
+				<class-b>org.openwms.common.location.api.LocationGroupState</class-b>
+			</converter>
+			<converter type="org.openwms.common.location.impl.LocationPKConverter">
+				<class-a>java.lang.String</class-a>
+				<class-b>org.openwms.common.location.LocationPK</class-b>
+			</converter>
+			<converter type="org.openwms.common.transport.impl.TransportUnitTypeConverter">
+				<class-a>java.lang.String</class-a>
+				<class-b>org.openwms.common.transport.TransportUnitType</class-b>
+			</converter>
+			<converter type="org.openwms.common.account.impl.AccountConverter">
+				<class-a>java.lang.String</class-a>
+				<class-b>org.openwms.common.account.Account</class-b>
+			</converter>
+        </custom-converters>
+	</configuration>
+
+    <mapping>
+		<class-a>org.openwms.common.transport.TransportUnit</class-a>
+		<class-b>org.openwms.common.transport.api.TransportUnitVO</class-b>
+        <field>
+            <a is-accessible="true">barcode.value</a>
+            <b is-accessible="true">barcode</b>
+        </field>
+		<field>
+			<a is-accessible="true">actualLocation</a>
+			<b is-accessible="true">actualLocation</b>
+		</field>
+		<field>
+			<a is-accessible="true">targetLocation</a>
+			<b is-accessible="true">target</b>
+		</field>
+		<field>
+			<a is-accessible="true">transportUnitType</a>
+			<b is-accessible="true">transportUnitType</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">transportUnitType.length</a>
+			<b is-accessible="true">length</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">transportUnitType.width</a>
+			<b is-accessible="true">width</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">transportUnitType.height</a>
+			<b is-accessible="true">height</b>
+		</field>
+		<field>
+			<a is-accessible="true">actualLocation.plcCode</a>
+			<b is-accessible="true">actualPlcCode</b>
+		</field>
+		<field>
+			<a is-accessible="true">actualLocationDate</a>
+			<b is-accessible="true">actualLocationDate</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">createDt</a>
+			<b is-accessible="true">createDate</b>
+		</field>
+    </mapping>
+
+    <mapping>
+        <class-a>org.openwms.common.transport.api.TransportUnitTypeVO</class-a>
+        <class-b>org.openwms.common.transport.TransportUnitType</class-b>
+        <field>
+            <a is-accessible="true">type</a>
+            <b is-accessible="true">type</b>
+        </field>
+        <field>
+            <a is-accessible="true">description</a>
+            <b is-accessible="true">description</b>
+        </field>
+        <field>
+            <a is-accessible="true">height</a>
+            <b is-accessible="true">height</b>
+        </field>
+		<field>
+			<a is-accessible="true">width</a>
+			<b is-accessible="true">width</b>
+		</field>
+		<field>
+			<a is-accessible="true">length</a>
+			<b is-accessible="true">length</b>
+		</field>
+    </mapping>
+
+	<mapping>
+		<class-a>org.openwms.common.transport.TransportUnit</class-a>
+		<class-b>org.openwms.common.transport.api.messages.TransportUnitMO</class-b>
+		<field>
+			<a is-accessible="true">pKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
+			<a is-accessible="true">barcode.value</a>
+			<b is-accessible="true">barcode</b>
+		</field>
+		<field>
+			<a is-accessible="true">actualLocationDate</a>
+			<b is-accessible="true">actualLocationDate</b>
+		</field>
+		<field>
+			<a is-accessible="true">state</a>
+			<b is-accessible="true">state</b>
+		</field>
+		<field>
+			<a is-accessible="true">actualLocation.locationId</a>
+			<b is-accessible="true">actualLocation</b>
+		</field>
+		<field>
+			<a is-accessible="true">actualLocation.plcCode</a>
+			<b is-accessible="true">plcCode</b>
+		</field>
+		<field>
+			<a is-accessible="true">targetLocation.locationId</a>
+			<b is-accessible="true">targetLocation</b>
+		</field>
+		<field>
+			<a is-accessible="true">transportUnitType</a>
+			<b is-accessible="true">transportUnitType</b>
+		</field>
+		<field>
+			<a is-accessible="true">parent.barcode.value</a>
+			<b is-accessible="true">parent</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.common.location.Location</class-a>
+		<class-b>org.openwms.common.location.api.LocationVO</class-b>
+		<field>
+			<a is-accessible="true">pKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
+			<a is-accessible="true">locationId</a>
+			<b is-accessible="true">locationId</b>
+		</field>
+		<field>
+			<a is-accessible="true">account</a>
+			<b is-accessible="true">accountId</b>
+		</field>
+		<field type="one-way">
+			<a is-accessible="true">locationGroup.name</a>
+			<b is-accessible="true">locationGroupName</b>
+		</field>
+		<field>
+			<a is-accessible="true">incomingActive</a>
+			<b is-accessible="true">incomingActive</b>
+		</field>
+		<field>
+			<a is-accessible="true">outgoingActive</a>
+			<b is-accessible="true">outgoingActive</b>
+		</field>
+		<field>
+			<a is-accessible="true">plcState</a>
+			<b is-accessible="true">plcState</b>
+		</field>
+		<field>
+			<a is-accessible="true">stockZone</a>
+			<b is-accessible="true">stockZone</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.common.location.LocationGroup</class-a>
+		<class-b>org.openwms.common.location.api.LocationGroupVO</class-b>
+		<field>
+			<a is-accessible="true">pKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
+			<a is-accessible="true">name</a>
+			<b is-accessible="true">name</b>
+		</field>
+		<field>
+			<a is-accessible="true">account</a>
+			<b is-accessible="true">accountId</b>
+		</field>
+		<field>
+			<a is-accessible="true">parent.name</a>
+			<b is-accessible="true">parent</b>
+		</field>
+		<field>
+			<a is-accessible="true">groupStateIn</a>
+			<b is-accessible="true">groupStateIn</b>
+		</field>
+		<field>
+			<a is-accessible="true">groupStateOut</a>
+			<b is-accessible="true">groupStateOut</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.common.location.Location</class-a>
+		<class-b>org.openwms.common.location.api.messages.LocationMO</class-b>
+		<field>
+			<a is-accessible="true">locationId</a>
+			<b is-accessible="true">id</b>
+		</field>
+		<field>
+			<a is-accessible="true">account</a>
+			<b is-accessible="true">accountId</b>
+		</field>
+		<field>
+			<a is-accessible="true">locationGroup.name</a>
+			<b is-accessible="true">parent</b>
+		</field>
+		<field>
+			<a is-accessible="true">incomingActive</a>
+			<b is-accessible="true">incomingActive</b>
+		</field>
+		<field>
+			<a is-accessible="true">outgoingActive</a>
+			<b is-accessible="true">outgoingActive</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.common.location.LocationGroup</class-a>
+		<class-b>org.openwms.common.location.api.messages.LocationGroupMO</class-b>
+		<field>
+			<a is-accessible="true">name</a>
+			<b is-accessible="true">name</b>
+		</field>
+		<field>
+			<a is-accessible="true">account</a>
+			<b is-accessible="true">accountId</b>
+		</field>
+		<field>
+			<a is-accessible="true">parent.name</a>
+			<b is-accessible="true">parent</b>
+		</field>
+		<field>
+			<a is-accessible="true">groupStateIn</a>
+			<b is-accessible="true">incomingActive</b>
+		</field>
+		<field>
+			<a is-accessible="true">groupStateOut</a>
+			<b is-accessible="true">outgoingActive</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>org.openwms.common.transport.UnitError</class-a>
+		<class-b>org.openwms.common.transport.api.UnitErrorVO</class-b>
+		<field>
+			<a is-accessible="true">errorNo</a>
+			<b is-accessible="true">errorNo</b>
+		</field>
+		<field>
+			<a is-accessible="true">errorText</a>
+			<b is-accessible="true">errorText</b>
+		</field>
+	</mapping>
+</mappings>

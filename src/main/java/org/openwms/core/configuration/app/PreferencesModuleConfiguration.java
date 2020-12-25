@@ -17,6 +17,8 @@ package org.openwms.core.configuration.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.app.BaseConfiguration;
+import org.ameba.mapping.BeanMapper;
+import org.ameba.mapping.DozerMapperImpl;
 import org.openwms.core.configuration.config.ModuleProperties;
 import org.openwms.core.configuration.impl.file.FilePackage;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +61,11 @@ public class PreferencesModuleConfiguration {
         MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();
         mvpp.setValidator(validatorFactoryBean);
         return mvpp;
+    }
+
+    public @Bean
+    BeanMapper beanMapper() {
+        return new DozerMapperImpl("META-INF/dozer/core-prefs-bean-mappings.xml");
     }
 
     @Bean

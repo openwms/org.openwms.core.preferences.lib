@@ -18,12 +18,8 @@ package org.openwms.core.configuration.impl.file;
 import org.openwms.core.configuration.PropertyScope;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 
@@ -34,9 +30,6 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @XmlTransient
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "COR_PREFERENCE")
 public abstract class AbstractPreference implements Serializable {
 
     @Id

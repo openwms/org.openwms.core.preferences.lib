@@ -15,18 +15,14 @@
  */
 package org.openwms.core.configuration.impl.jpa;
 
-import org.openwms.core.configuration.impl.file.GenericPreference;
-import org.openwms.core.configuration.impl.file.Preferences;
-import org.openwms.core.exception.WrongClassTypeException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Collections;
 import java.util.List;
-
-import static org.openwms.core.configuration.impl.file.AbstractPreference.FIND_BY_OWNER;
 
 /**
  * A PreferenceRepositoryImpl implements custom generic find methods of {@link PreferenceRepositoryCustom}.
@@ -40,34 +36,20 @@ import static org.openwms.core.configuration.impl.file.AbstractPreference.FIND_B
 @Repository
 class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
 
+    private final PreferenceRepository repository;
     @PersistenceContext
     private EntityManager em;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public <T extends GenericPreference> List<T> findByType(Class<T> clazz) {
-        return em.createNamedQuery(getQueryName(clazz) + ".findAll", clazz)
-                .getResultList();
+    PreferenceRepositoryImpl(PreferenceRepository repository) {
+        this.repository = repository;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T extends GenericPreference> List<T> findByType(Class<T> clazz, String owner) {
-        return em.createNamedQuery(getQueryName(clazz) + FIND_BY_OWNER, clazz)
-                .setParameter("owner", owner)
-                .getResultList();
-    }
-
-    private <T extends GenericPreference> String getQueryName(Class<T> clazz) {
-        for (int i = 0; i < Preferences.TYPES.length; i++) {
-            if (Preferences.TYPES[i].equals(clazz)) {
-                return clazz.getSimpleName();
-            }
-        }
-        throw new WrongClassTypeException("Type " + clazz + " not a valid Preferences type");
+    public <T extends AbstractPreferenceEO> List<T> findByType(Class<T> clazz) {
+        List<T> result = em.createNamedQuery(clazz.getSimpleName() + AbstractPreferenceEO.FIND_ALL, clazz).getResultList();
+        return result == null ? Collections.emptyList() : result;
     }
 }
