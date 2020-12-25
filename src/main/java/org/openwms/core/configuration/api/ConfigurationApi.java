@@ -16,7 +16,7 @@
 package org.openwms.core.configuration.api;
 
 import org.openwms.core.configuration.PropertyScope;
-import org.openwms.core.configuration.file.GenericPreference;
+import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.openwms.core.CoreConstants.API_CONFIGURATIONS;
+import static org.openwms.core.configuration.CoreConstants.API_CONFIGURATIONS;
 
 /**
  * A ConfigurationApi.
@@ -42,7 +42,7 @@ public interface ConfigurationApi {
      *
      * @return An infinite stream of all AbstractPreferences
      */
-    @GetMapping(value= API_CONFIGURATIONS)
+    @GetMapping(value = API_CONFIGURATIONS)
     Flux<GenericPreference> findAll();
 
     /**
@@ -51,7 +51,7 @@ public interface ConfigurationApi {
      * @param owner The owner of the preferences
      * @return An infinite filtered stream of AbstractPreferences
      */
-    @GetMapping(value= API_CONFIGURATIONS, params = {"owner"})
+    @GetMapping(value = API_CONFIGURATIONS, params = {"owner"})
     Flux<GenericPreference> findBy(
             @RequestParam("owner") String owner
     );
@@ -63,7 +63,7 @@ public interface ConfigurationApi {
      * @param type The type of the preferences
      * @return An infinite filtered stream of AbstractPreferences
      */
-    @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type"})
+    @GetMapping(value = API_CONFIGURATIONS, params = {"owner", "type"})
     Flux<GenericPreference> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type
@@ -77,7 +77,7 @@ public interface ConfigurationApi {
      * @param key The key of the preference
      * @return One single instance
      */
-    @GetMapping(value= API_CONFIGURATIONS, params = {"owner", "type", "key"})
+    @GetMapping(value = API_CONFIGURATIONS, params = {"owner", "type", "key"})
     Mono<GenericPreference> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type,
@@ -90,7 +90,7 @@ public interface ConfigurationApi {
      * @param pKey The persistent key of the preference to update
      * @param preference The content to update the preference with
      */
-    @PutMapping(value= API_CONFIGURATIONS + "/{pKey}")
+    @PutMapping(value = API_CONFIGURATIONS + "/{pKey}")
     ResponseEntity<Void> update(
             @PathVariable("pKey") String pKey,
             @RequestBody GenericPreference preference

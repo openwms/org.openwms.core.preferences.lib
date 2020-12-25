@@ -15,13 +15,13 @@
  */
 package org.openwms.core.configuration;
 
-import org.openwms.core.configuration.file.GenericPreference;
+import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
-import static org.openwms.core.CoreConstants.API_CONFIGURATIONS;
+import static org.openwms.core.configuration.CoreConstants.API_CONFIGURATIONS;
 
 /**
  * A ConfigurationController.
@@ -37,12 +37,12 @@ public class ConfigurationController {
         this.configurationService = configurationService;
     }
 
-    @GetMapping(value= API_CONFIGURATIONS)
+    @GetMapping(value = API_CONFIGURATIONS)
     public Flux<GenericPreference> findAll() {
         return Flux.fromIterable(configurationService.findAll()).log();
     }
 
-    @GetMapping(value= API_CONFIGURATIONS, params = {"owner"})
+    @GetMapping(value = API_CONFIGURATIONS, params = {"owner"})
     public Flux<GenericPreference> findBy(
             @RequestParam("owner") String owner) {
         return Flux.fromIterable(configurationService.findByType(GenericPreference.class, owner)).log();

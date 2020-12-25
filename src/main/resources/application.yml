@@ -35,7 +35,7 @@ ribbon:
 owms:
   core:
     config:
-      initial-properties: classpath:initial-preferences.xml
+      initial-properties: classpath*:initial-preferences.xml
   eureka:
     url: http://user:sa@localhost:8761
     zone: ${owms.eureka.url}/eureka/

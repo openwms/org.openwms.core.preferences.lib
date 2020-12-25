@@ -15,7 +15,7 @@
  */
 package org.openwms.core.configuration;
 
-import org.openwms.core.configuration.file.GenericPreference;
+import org.openwms.core.configuration.impl.file.GenericPreference;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
