@@ -22,23 +22,18 @@ package org.openwms.core.configuration;
  */
 public enum PreferenceType {
 
-    /**
-     * Float presentation.
-     */
+    /** Float presentation. */
     FLOAT,
 
-    /**
-     * String representation.
-     */
+    /** String representation. */
     STRING,
 
-    /**
-     * Integer representation.
-     */
+    /** Integer representation. */
     INT,
 
-    /**
-     * Any Object.
-     */
-    OBJECT
+    /** Any Object. */
+    OBJECT,
+
+    /** Boolean type. */
+    BOOL
 }

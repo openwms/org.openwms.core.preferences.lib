@@ -15,18 +15,19 @@
  */
 package org.openwms.core.configuration.app;
 
+import org.openwms.core.SpringProfiles;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * A CoreDistributedConfiguration is activated when the service is deployed as a microservice, not packaged within an application. Then
- * service discovery is activated.
+ * A PreferencesDistributedConfiguration shall be activated when the service is deployed as a microservice, not packaged within an
+ * application, to enable service discovery.
  *
  * @author Heiko Scherrer
  */
-@Profile("!TEST")
+@Profile(SpringProfiles.DISTRIBUTED)
 @EnableDiscoveryClient
 @Configuration
-public class CoreDistributedConfiguration {
+public class PreferencesDistributedConfiguration {
 }

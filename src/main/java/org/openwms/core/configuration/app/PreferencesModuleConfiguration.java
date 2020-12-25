@@ -17,6 +17,7 @@ package org.openwms.core.configuration.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.app.BaseConfiguration;
+import org.openwms.core.configuration.config.ModuleProperties;
 import org.openwms.core.configuration.impl.file.FilePackage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
@@ -35,7 +36,7 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 import javax.validation.Validator;
 
 /**
- * A ModuleConfiguration.
+ * A PreferencesModuleConfiguration.
  *
  * @author Heiko Scherrer
  */
@@ -46,7 +47,7 @@ import javax.validation.Validator;
 @EnableTransactionManagement
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
-public class ModuleConfiguration {
+public class PreferencesModuleConfiguration {
 
     @Bean
     MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
