@@ -26,11 +26,21 @@ import java.util.Objects;
  */
 public abstract class AbstractPreferenceVO<T extends AbstractPreferenceVO<T>> extends AbstractBase {
 
+    private String pKey;
+
     private String key;
 
     private String owner;
 
     private String description;
+
+    public String getpKey() {
+        return pKey;
+    }
+
+    public void setpKey(String pKey) {
+        this.pKey = pKey;
+    }
 
     public String getKey() {
         return key;
@@ -62,13 +72,14 @@ public abstract class AbstractPreferenceVO<T extends AbstractPreferenceVO<T>> ex
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         AbstractPreferenceVO<?> that = (AbstractPreferenceVO<?>) o;
-        return Objects.equals(key, that.key) &&
+        return Objects.equals(pKey, that.pKey) &&
+                Objects.equals(key, that.key) &&
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(description, that.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), key, owner, description);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description);
     }
 }
