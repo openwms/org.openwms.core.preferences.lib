@@ -37,7 +37,7 @@ import static org.openwms.core.configuration.impl.jpa.AbstractPreferenceEO.NQ_PA
 public class BooleanPreferenceEO extends AbstractPreferenceEO implements Serializable {
 
     /** Query to find all {@code BooleanPreferenceEO}s. Name is {@value}. */
-    public static final String NQ_FIND_ALL = "BooleanPreferenceEO" + FIND_BY_OWNER;
+    public static final String NQ_FIND_ALL = "BooleanPreferenceEO" + FIND_ALL;
 
     /** Query to find all {@code BooleanPreferenceEO}s. Name is {@value}. */
     public static final String NQ_FIND_BY_OWNER = "BooleanPreferenceEO" + FIND_BY_OWNER;

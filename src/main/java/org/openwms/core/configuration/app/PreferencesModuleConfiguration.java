@@ -27,11 +27,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
@@ -44,9 +41,6 @@ import javax.validation.Validator;
  */
 @Configuration
 @EnableWebFlux
-@EnableJpaRepositories
-@EnableJpaAuditing
-@EnableTransactionManagement
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
 public class PreferencesModuleConfiguration {

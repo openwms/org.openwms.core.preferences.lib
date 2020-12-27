@@ -19,14 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -41,23 +33,16 @@ import java.io.Serializable;
  * @GlossaryTerm
  */
 @XmlType(name = "applicationPreference", namespace = "http://www.openwms.org/schema/preferences")
-@Entity
-@Table(name = "COR_APP_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_KEY"}))
-@NamedQueries({@NamedQuery(name = ApplicationPreference.NQ_FIND_BY_OWNER, query = "select ap from ApplicationPreference ap")})
 public class ApplicationPreference extends GenericPreference implements Serializable {
 
     /** Query to find all {@code ApplicationPreference}s. Name is {@value}. */
     public static final String NQ_FIND_BY_OWNER = "ApplicationPreference" + FIND_BY_OWNER;
 
-    /** Type of this preference. */
     @XmlTransient
-    @Enumerated(EnumType.STRING)
-    @Column(name = "C_TYPE")
     private PropertyScope type = PropertyScope.APPLICATION;
 
     /** Key of the preference (not nullable). */
     @XmlAttribute(name = "key", required = true)
-    @Column(name = "C_KEY", nullable = false)
     private String key;
 
     /** Create a new {@code ApplicationPreference}. Only defined by the JAXB implementation. */
@@ -85,7 +70,6 @@ public class ApplicationPreference extends GenericPreference implements Serializ
         setDescription(builder.description);
         minimum = builder.minimum;
         maximum = builder.maximum;
-        type = builder.type;
         key = builder.key;
         type = PropertyScope.APPLICATION;
     }

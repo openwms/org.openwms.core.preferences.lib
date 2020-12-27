@@ -17,8 +17,6 @@ package org.openwms.core.configuration.impl.file;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -36,37 +34,29 @@ import java.util.Objects;
 public abstract class GenericPreference extends AbstractPreference implements Serializable {
 
     /** The String value of the {@code AbstractPreference}. */
-    @Column(name = "C_VALUE")
     protected String value;
 
     /** A binary value for this {@link GenericPreference}. */
     @XmlTransient
-    @Lob
-    @Column(name = "C_BINVALUE")
     protected Serializable binValue;
 
     /** A float value of the {@link GenericPreference}. */
     @XmlAttribute(name = "floatValue")
-    @Column(name = "C_FLOAT_VALUE")
     protected Float floatValue;
 
     /** Description text of the {@link GenericPreference}. */
-    @Column(name = "C_DESCRIPTION")
     protected String description;
 
     /** Minimum value. */
     @XmlAttribute(name = "minimum")
-    @Column(name = "C_MINIMUM")
     protected int minimum = 0;
 
     /** Maximum value. */
     @XmlAttribute(name = "maximum")
-    @Column(name = "C_MAXIMUM")
     protected int maximum = 0;
 
     /** Flag to remember if the preference was originally imported from a file. */
     @XmlTransient
-    @Column(name = "C_FROM_FILE")
     private boolean fromFile = true;
 
     /* ----------------------------- methods ------------------- */

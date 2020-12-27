@@ -18,14 +18,6 @@ package org.openwms.core.configuration.impl.file;
 import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -39,39 +31,24 @@ import java.io.Serializable;
  * @GlossaryTerm
  */
 @XmlType(name = "modulePreference", namespace = "http://www.openwms.org/schema/preferences")
-@Entity
-@Table(name = "COR_MODULE_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_OWNER",
-        "C_KEY"}))
-@NamedQueries({
-        @NamedQuery(name = ModulePreference.NQ_FIND_BY_OWNER, query = "select mp from ModulePreference mp where mp.owner = :owner")})
 public class ModulePreference extends GenericPreference implements Serializable {
-
-    /**
-     * Query to find <strong>all</strong> {@code ModulePreference}s of a {@code Module}. <li>Query parameter name <strong>owner</strong> :
-     * The modulename of the {@code Module} to search for.</li><br /> Name is {@value} .
-     */
-    public static final String NQ_FIND_BY_OWNER = "ModulePreference" + FIND_BY_OWNER;
 
     /**
      * Type of this preference.
      */
     @XmlTransient
-    @Enumerated(EnumType.STRING)
-    @Column(name = "C_TYPE")
     private PropertyScope type = PropertyScope.MODULE;
 
     /**
      * Owner of the {@code ModulePreference} (not nullable).
      */
     @XmlAttribute(name = "owner", required = true)
-    @Column(name = "C_OWNER", nullable = false)
     private String owner;
 
     /**
      * Key of the {@code ModulePreference} (not nullable).
      */
     @XmlAttribute(name = "key", required = true)
-    @Column(name = "C_KEY", nullable = false)
     private String key;
 
     /**

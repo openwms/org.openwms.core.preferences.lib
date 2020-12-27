@@ -18,14 +18,6 @@ package org.openwms.core.configuration.impl.file;
 import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -40,37 +32,23 @@ import java.io.Serializable;
  * @GlossaryTerm
  */
 @XmlType(name = "rolePreference", namespace = "http://www.openwms.org/schema/usermanagement")
-@Entity
-@Table(name = "COR_ROLE_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_OWNER", "C_KEY"}))
-@NamedQueries({
-        @NamedQuery(name = RolePreference.NQ_FIND_BY_OWNER, query = "select rp from RolePreference rp where rp.owner = :owner")})
 public class RolePreference extends GenericPreference implements Serializable {
 
     /**
      * Type of this preference.
      */
     @XmlTransient
-    @Enumerated(EnumType.STRING)
-    @Column(name = "C_TYPE")
     private PropertyScope type = PropertyScope.ROLE;
     /**
      * Owner of the {@code RolePreference}.
      */
     @XmlAttribute(name = "owner", required = true)
-    @Column(name = "C_OWNER")
     private String owner;
     /**
      * Key value of the {@link RolePreference}.
      */
     @XmlAttribute(name = "key", required = true)
-    @Column(name = "C_KEY")
     private String key;
-
-    /**
-     * Query to find <strong>all</strong> {@code RolePreference}s of a {@code Role}. <li>Query parameter name <strong>owner</strong> : The
-     * rolename of the {@code Role} to search for.</li><br /> Name is {@value} .
-     */
-    public static final String NQ_FIND_BY_OWNER = "RolePreference" + FIND_BY_OWNER;
 
     /**
      * Create a new RolePreference. Defined for the JAXB implementation.

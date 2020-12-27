@@ -19,13 +19,6 @@ import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -40,34 +33,19 @@ import java.io.Serializable;
  * @GlossaryTerm
  */
 @XmlType(name = "userPreference", namespace = "http://www.openwms.org/schema/usermanagement")
-@Entity
-@Table(name = "COR_USER_PREFERENCE", uniqueConstraints = @UniqueConstraint(columnNames = {"C_TYPE", "C_OWNER", "C_KEY"}))
-@NamedQueries({
-        @NamedQuery(name = UserPreference.NQ_FIND_BY_OWNER, query = "select up from UserPreference up where up.owner = :owner") })
 public class UserPreference extends GenericPreference implements Serializable {
 
     /** Type of this preference. */
     @XmlTransient
-    @Enumerated(EnumType.STRING)
-    @Column(name = "C_TYPE")
     private PropertyScope type = PropertyScope.USER;
 
     /** Owner of the {@link GenericPreference}. */
     @XmlAttribute(name = "owner", required = true)
-    @Column(name = "C_OWNER")
     private String owner;
 
     /** Key value of the {@link GenericPreference}. */
     @XmlAttribute(name = "key", required = true)
-    @Column(name = "C_KEY")
     private String key;
-
-    /**
-     * Query to find <strong>all</strong> {@link UserPreference}s of an {@code User}. <li>Query parameter name
-     * <strong>owner</strong> : The userName of the {@code User} to search for.</li><br />
-     * Name is {@value} .
-     */
-    public static final String NQ_FIND_BY_OWNER = "UserPreference" + FIND_BY_OWNER;
 
     /** Create a new UserPreference. Defined for the JAXB implementation. */
     public UserPreference() {

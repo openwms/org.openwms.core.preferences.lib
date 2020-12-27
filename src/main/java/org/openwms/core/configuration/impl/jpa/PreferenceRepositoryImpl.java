@@ -15,7 +15,6 @@
  */
 package org.openwms.core.configuration.impl.jpa;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,16 +32,10 @@ import java.util.List;
  * @author Heiko Scherrer
  */
 @Transactional(propagation = Propagation.MANDATORY)
-@Repository
 class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
 
-    private final PreferenceRepository repository;
     @PersistenceContext
     private EntityManager em;
-
-    PreferenceRepositoryImpl(PreferenceRepository repository) {
-        this.repository = repository;
-    }
 
     /**
      * {@inheritDoc}

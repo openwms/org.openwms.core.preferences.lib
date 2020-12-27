@@ -27,6 +27,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Heiko Scherrer
  */
 @SpringBootApplication
+@EnableJpaRepositories
+@EnableJpaAuditing
+@EnableTransactionManagement
 public class Starter {
 
     /**

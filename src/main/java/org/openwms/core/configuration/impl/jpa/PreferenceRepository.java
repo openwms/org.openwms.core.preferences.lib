@@ -27,6 +27,4 @@ import java.util.List;
 interface PreferenceRepository extends JpaRepository<AbstractPreferenceEO, Long>, PreferenceRepositoryCustom {
 
     List<AbstractPreferenceEO> findAllByOwner(String owner);
-
-    List<AbstractPreferenceEO> findAllByOwnerAndKey();
 }
