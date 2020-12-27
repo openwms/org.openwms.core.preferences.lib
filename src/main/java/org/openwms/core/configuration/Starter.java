@@ -16,6 +16,7 @@
 package org.openwms.core.configuration;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -38,6 +39,8 @@ public class Starter {
      * @param args Some args
      */
     public static void main(String[] args) {
-        SpringApplication.run(Starter.class, args);
+        final SpringApplication application = new SpringApplication(Starter.class);
+        application.setWebApplicationType(WebApplicationType.REACTIVE);
+        application.run(args);
     }
 }
