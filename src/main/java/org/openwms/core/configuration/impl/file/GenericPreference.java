@@ -44,6 +44,10 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     @XmlAttribute(name = "floatValue")
     protected Float floatValue;
 
+    /** A float value of the {@link GenericPreference}. */
+    @XmlAttribute(name = "type")
+    protected String type;
+
     /** Description text of the {@link GenericPreference}. */
     protected String description;
 
@@ -101,6 +105,14 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     }
 
     /**
+     *
+     * @return
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
      * Return the <code>description</code> of the {@link GenericPreference}.
      *
      * @return The description as String
@@ -150,19 +162,18 @@ public abstract class GenericPreference extends AbstractPreference implements Se
 
     @Override
     public String toString() {
-        return "AbstractPreference{" +
+        return "GenericPreference{" +
                 "value='" + value + '\'' +
                 ", binValue=" + binValue +
                 ", floatValue=" + floatValue +
+                ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", minimum=" + minimum +
                 ", maximum=" + maximum +
+                ", fromFile=" + fromFile +
                 '}';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -170,17 +181,16 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         GenericPreference that = (GenericPreference) o;
         return minimum == that.minimum &&
                 maximum == that.maximum &&
+                fromFile == that.fromFile &&
                 Objects.equals(value, that.value) &&
                 Objects.equals(binValue, that.binValue) &&
                 Objects.equals(floatValue, that.floatValue) &&
+                Objects.equals(type, that.type) &&
                 Objects.equals(description, that.description);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(value, binValue, floatValue, description, minimum, maximum);
+        return Objects.hash(value, binValue, floatValue, type, description, minimum, maximum, fromFile);
     }
 }

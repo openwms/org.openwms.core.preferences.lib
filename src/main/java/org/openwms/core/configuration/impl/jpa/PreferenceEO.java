@@ -89,19 +89,22 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     @Column(name = "C_TYPE", nullable = false)
     protected PreferenceType type;
 
-    /**
-     * Return all fields as an array of objects.
-     *
-     * @return fields as array
-    protected abstract Object[] getFields();
-     */
+    private PreferenceEO(Builder builder) {
+        key = builder.key;
+        owner = builder.owner;
+        description = builder.description;
+        fromFile = builder.fromFile;
+        scope = builder.scope;
+        currentValue = builder.currentValue;
+        defValue = builder.defValue;
+        minValue = builder.minValue;
+        maxValue = builder.maxValue;
+        type = builder.type;
+    }
 
-    /**
-     * Return the particular type of the preference.
-     *
-     * @return The type of the preference
-    public abstract PropertyScope getType();
-     */
+    public static Builder newBuilder() {
+        return new Builder();
+    }
 
     /**
      * Return a {@link PreferenceKey} of this preference.
@@ -110,5 +113,115 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
      */
     public PreferenceKey getPrefKey() {
         return new PreferenceKey(this.owner, this.key, this.scope);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isFromFile() {
+        return fromFile;
+    }
+
+    public PropertyScope getScope() {
+        return scope;
+    }
+
+    public String getCurrentValue() {
+        return currentValue;
+    }
+
+    public String getDefValue() {
+        return defValue;
+    }
+
+    public String getMinValue() {
+        return minValue;
+    }
+
+    public String getMaxValue() {
+        return maxValue;
+    }
+
+    public PreferenceType getType() {
+        return type;
+    }
+
+    public static final class Builder {
+        private String key;
+        private String owner;
+        private String description;
+        private boolean fromFile;
+        private @NotNull PropertyScope scope;
+        private String currentValue;
+        private String defValue;
+        private String minValue;
+        private String maxValue;
+        private @NotNull PreferenceType type;
+
+        private Builder() {
+        }
+
+        public Builder key(String val) {
+            key = val;
+            return this;
+        }
+
+        public Builder owner(String val) {
+            owner = val;
+            return this;
+        }
+
+        public Builder description(String val) {
+            description = val;
+            return this;
+        }
+
+        public Builder fromFile(boolean val) {
+            fromFile = val;
+            return this;
+        }
+
+        public Builder scope(@NotNull PropertyScope val) {
+            scope = val;
+            return this;
+        }
+
+        public Builder currentValue(String val) {
+            currentValue = val;
+            return this;
+        }
+
+        public Builder defValue(String val) {
+            defValue = val;
+            return this;
+        }
+
+        public Builder minValue(String val) {
+            minValue = val;
+            return this;
+        }
+
+        public Builder maxValue(String val) {
+            maxValue = val;
+            return this;
+        }
+
+        public Builder type(@NotNull PreferenceType val) {
+            type = val;
+            return this;
+        }
+
+        public PreferenceEO build() {
+            return new PreferenceEO(this);
+        }
     }
 }

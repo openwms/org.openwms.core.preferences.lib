@@ -15,11 +15,6 @@
  */
 package org.openwms.core.configuration.impl.file;
 
-import org.openwms.core.configuration.PropertyScope;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 
@@ -32,26 +27,12 @@ import java.io.Serializable;
 @XmlTransient
 public abstract class AbstractPreference implements Serializable {
 
-    @Id
-    @Column(name = "C_PK")
-    @GeneratedValue
-    private Long id;
-    /** Suffix for the FIND_BY_OWNER named query. Default {@value} */
-    public static final String FIND_BY_OWNER = ".findByOwner";
-
     /**
      * Return all fields as an array of objects.
      *
      * @return fields as array
      */
     protected abstract Object[] getFields();
-
-    /**
-     * Return the particular type of the preference.
-     *
-     * @return The type of the preference
-     */
-    public abstract PropertyScope getType();
 
     /**
      * Return a {@link PreferenceKey} of this preference.
