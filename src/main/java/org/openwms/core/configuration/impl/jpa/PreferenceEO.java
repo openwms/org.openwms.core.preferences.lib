@@ -18,27 +18,24 @@ package org.openwms.core.configuration.impl.jpa;
 import org.ameba.integration.jpa.ApplicationEntity;
 import org.openwms.core.configuration.PreferenceType;
 import org.openwms.core.configuration.PropertyScope;
+import org.openwms.core.configuration.impl.file.PreferenceKey;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
- * An AbstractPreferenceEO is a superclass for all other preference classes within the application. It encapsulates some common behavior
- * of preference types.
+ * An PreferenceEO is the persistent entity class that represents preferences in the database.
  *
  * @author Heiko Scherrer
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "COR_PREF_PREFERENCE")
-public abstract class AbstractPreferenceEO extends ApplicationEntity implements Serializable {
+public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     /** Suffix for the FIND_ALL named query. Default {@value} */
     public static final String FIND_ALL = ".findAll";
@@ -49,7 +46,14 @@ public abstract class AbstractPreferenceEO extends ApplicationEntity implements 
     /** Parameter name for the owner. Default {@value} */
     public static final String NQ_PARAM_OWNER = ":owner";
 
-    /** Description text of the {@link AbstractPreferenceEO}. */
+    /** Key field of the {@link PreferenceEO}. */
+    @Column(name = "C_KEY")
+    private String key;
+
+    @Column(name = "C_OWNER")
+    protected String owner;
+
+    /** Description text of the {@link PreferenceEO}. */
     @Column(name = "C_DESCRIPTION")
     protected String description;
 
@@ -63,14 +67,27 @@ public abstract class AbstractPreferenceEO extends ApplicationEntity implements 
     @Column(name = "C_SCOPE", nullable = false)
     protected PropertyScope scope;
 
+    /** A current value of the {@link PreferenceEO}. */
+    @Column(name = "C_CURRENT_VALUE")
+    private String currentValue;
+
+    /** The default value of the {@link PreferenceEO}. */
+    @Column(name = "C_MIN_VALUE")
+    private String defValue;
+
+    /** The minimum value of the {@link PreferenceEO}. */
+    @Column(name = "C_MIN_VALUE")
+    private String minValue;
+
+    /** The maximum value of the {@link PreferenceEO}. */
+    @Column(name = "C_MAX_VALUE")
+    private String maxValue;
+
     /** Type of this preference. */
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "C_TYPE", nullable = false)
     protected PreferenceType type;
-
-    @Column(name = "C_OWNER")
-    protected String owner;
 
     /**
      * Return all fields as an array of objects.
@@ -90,6 +107,8 @@ public abstract class AbstractPreferenceEO extends ApplicationEntity implements 
      * Return a {@link PreferenceKey} of this preference.
      *
      * @return A {@link PreferenceKey}
-    public abstract PreferenceKey getPrefKey();
      */
+    public PreferenceKey getPrefKey() {
+        return new PreferenceKey(this.owner, this.key, this.scope);
+    }
 }

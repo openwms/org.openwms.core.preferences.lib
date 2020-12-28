@@ -54,7 +54,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
     private static final Logger LOGGER = LoggerFactory.getLogger(XMLPreferenceDaoImpl.class);
     private final ApplicationContext ctx;
     private final Unmarshaller unmarshaller;
-    @Value("${openwms.core.config.initial-properties:}")
+    @Value("${openwms.core.config.initial-properties}")
     private String fileName;
     private volatile Resource fileResource;
     private volatile Preferences preferences;

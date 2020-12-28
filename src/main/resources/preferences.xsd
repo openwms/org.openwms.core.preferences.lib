@@ -21,6 +21,7 @@
         <xs:simpleContent>
             <xs:extension base="xs:string">
                 <xs:attribute name="val" type="xs:string" />
+                <xs:attribute name="type" type="xs:string" />
                 <xs:attribute name="floatValue" type="xs:float" />
                 <xs:attribute name="minimum" type="xs:int" default="0" />
                 <xs:attribute name="maximum" type="xs:int" default="0" />

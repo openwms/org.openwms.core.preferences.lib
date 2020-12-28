@@ -75,6 +75,39 @@ logging:
 
 ---
 spring:
+  profiles: ASYNCHRONOUS
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
+
+management:
+  health:
+    rabbit:
+      enabled: true
+
+---
+spring:
+  profiles: DEMO
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        hbm2ddl:
+          import_files: import-DEMO.sql
+
+openwms:
+  core:
+    config:
+      initial-properties: classpath*:initial-preferences.xml
+
+---
+spring:
   profiles: HEROKU
   main:
     banner-mode: "OFF"
@@ -107,23 +140,6 @@ owms:
     url: http://user:sa@owms-services:8761
   srv:
     hostname: preferences-service
-
----
-spring:
-  profiles: ASYNCHRONOUS
-  cloud:
-    config:
-      discovery:
-        enabled: true
-      enabled: true
-      fail-fast: true # true means retry
-    discovery:
-      enabled: true
-
-management:
-  health:
-    rabbit:
-      enabled: true
 
 ---
 spring:

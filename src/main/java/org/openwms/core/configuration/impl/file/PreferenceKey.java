@@ -24,7 +24,7 @@ import java.util.Arrays;
  * 
  * @author Heiko Scherrer
  */
-class PreferenceKey implements Serializable {
+public class PreferenceKey implements Serializable {
 
     private Serializable[] fields;
 

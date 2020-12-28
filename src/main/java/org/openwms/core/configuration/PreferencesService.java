@@ -16,7 +16,7 @@
 package org.openwms.core.configuration;
 
 import org.openwms.core.configuration.impl.file.GenericPreference;
-import org.openwms.core.configuration.impl.jpa.AbstractPreferenceEO;
+import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
@@ -39,7 +39,7 @@ public interface PreferencesService {
      * @param <T> Any subtype of {@link GenericPreference}
      * @return A Collection of preferences of type T, never {@literal null}
      */
-    Collection<AbstractPreferenceEO> findAll(@NotEmpty String owner);
+    Collection<PreferenceEO> findAll(@NotEmpty String owner);
 
     /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
@@ -68,6 +68,6 @@ public interface PreferencesService {
 
     /**
      *
-    void reloadInitialPreferences();
      */
+    void reloadInitialPreferences();
 }

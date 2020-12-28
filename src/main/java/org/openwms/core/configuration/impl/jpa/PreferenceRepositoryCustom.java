@@ -27,9 +27,9 @@ interface PreferenceRepositoryCustom {
     /**
      * Find and return all preferences that are of the given {@code clazz} type.
      *
-     * @param clazz A subclass of {@link AbstractPreferenceEO} to search for
-     * @param <T> Any type of {@link AbstractPreferenceEO}
+     * @param clazz A subclass of {@link PreferenceEO} to search for
+     * @param <T> Any type of {@link PreferenceEO}
      * @return A list of all preferences or an empty list, never {@literal null}
      */
-    <T extends AbstractPreferenceEO> List<T> findByType(Class<T> clazz);
+    <T extends PreferenceEO> List<T> findByType(Class<T> clazz);
 }

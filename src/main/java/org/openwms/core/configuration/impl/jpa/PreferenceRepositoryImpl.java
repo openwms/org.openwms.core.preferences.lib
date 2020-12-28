@@ -41,8 +41,8 @@ class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
      * {@inheritDoc}
      */
     @Override
-    public <T extends AbstractPreferenceEO> List<T> findByType(Class<T> clazz) {
-        List<T> result = em.createNamedQuery(clazz.getSimpleName() + AbstractPreferenceEO.FIND_ALL, clazz).getResultList();
+    public <T extends PreferenceEO> List<T> findByType(Class<T> clazz) {
+        List<T> result = em.createNamedQuery(clazz.getSimpleName() + PreferenceEO.FIND_ALL, clazz).getResultList();
         return result == null ? Collections.emptyList() : result;
     }
 }

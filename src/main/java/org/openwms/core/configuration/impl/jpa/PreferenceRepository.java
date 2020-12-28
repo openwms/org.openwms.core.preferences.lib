@@ -20,11 +20,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * A PreferenceRepository is a Spring Data JPA repository that deals with {@link AbstractPreferenceEO}s.
+ * A PreferenceRepository is a Spring Data JPA repository that deals with {@link PreferenceEO}s.
  *
  * @author Heiko Scherrer
  */
-interface PreferenceRepository extends JpaRepository<AbstractPreferenceEO, Long>, PreferenceRepositoryCustom {
+interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, PreferenceRepositoryCustom {
 
-    List<AbstractPreferenceEO> findAllByOwner(String owner);
+    List<PreferenceEO> findAllByOwner(String owner);
 }

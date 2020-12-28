@@ -16,14 +16,19 @@
 package org.openwms.core.configuration.impl.jpa;
 
 import org.ameba.annotation.TxService;
+import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.PreferencesService;
+import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.openwms.core.configuration.impl.file.PreferenceDao;
+import org.openwms.core.configuration.impl.file.PreferenceKey;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A PreferencesServiceImpl is a transactional Spring powered service implementation to manage {@code Preferences}.
@@ -36,18 +41,20 @@ class PreferencesServiceImpl implements PreferencesService {
 
     private final PreferenceDao fileDao;
     private final PreferenceRepository preferenceRepository;
+    private final BeanMapper mapper;
 
-    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository) {
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper) {
         this.fileDao = fileDao;
         this.preferenceRepository = preferenceRepository;
+        this.mapper = mapper;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Collection<AbstractPreferenceEO> findAll(@NotEmpty String owner) {
-        List<AbstractPreferenceEO> result = preferenceRepository.findAllByOwner(owner);
+    public Collection<PreferenceEO> findAll(@NotEmpty String owner) {
+        List<PreferenceEO> result = preferenceRepository.findAllByOwner(owner);
         return result == null ? Collections.emptyList() : result;
     }
 
@@ -89,22 +96,23 @@ class PreferencesServiceImpl implements PreferencesService {
 
     /**
      *
+     */
     @Override
     public void reloadInitialPreferences() {
         mergeApplicationProperties();
     }
-     */
 
     /**
      *
+     */
     private void mergeApplicationProperties() {
         List<GenericPreference> fromFile = fileDao.findAll();
-        List<AbstractPreferenceEO> persistedPrefs = preferenceRepository.findAll();
+        Map<PreferenceKey, PreferenceEO> persistedPrefs = preferenceRepository.findAll().stream()
+                .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -> p));
         for (GenericPreference pref : fromFile) {
-            if (!persistedPrefs.contains(pref)) {
-                preferenceRepository.save(pref);
+            if (!persistedPrefs.containsKey(pref.getPrefKey())) {
+                preferenceRepository.save(mapper.map(pref, PreferenceEO.class));
             }
         }
     }
-     */
 }
