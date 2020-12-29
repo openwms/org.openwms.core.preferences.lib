@@ -52,7 +52,7 @@ public interface PreferencesApi {
      * @return An infinite filtered stream of AbstractPreferences
      */
     @GetMapping(value = API_PREFERENCES, params = {"owner"})
-    <T extends AbstractPreferenceVO<T>> Flux<T> findBy(
+    <T extends PreferenceVO<T>> Flux<T> findBy(
             @RequestParam("owner") String owner
     );
 
@@ -64,7 +64,7 @@ public interface PreferencesApi {
      * @return An infinite filtered stream of AbstractPreferences
      */
     @GetMapping(value = API_PREFERENCES, params = {"owner", "type"})
-    <T extends AbstractPreferenceVO<T>> Flux<T> findBy(
+    <T extends PreferenceVO<T>> Flux<T> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type
     );
@@ -78,7 +78,7 @@ public interface PreferencesApi {
      * @return One single instance
      */
     @GetMapping(value = API_PREFERENCES, params = {"owner", "type", "key"})
-    <T extends AbstractPreferenceVO<T>> Mono<T> findBy(
+    <T extends PreferenceVO<T>> Mono<T> findBy(
             @RequestParam("owner") String owner,
             @RequestParam("type") PropertyScope type,
             @RequestParam("key") String key
@@ -91,7 +91,7 @@ public interface PreferencesApi {
      * @param preference The content to update the preference with
      */
     @PutMapping(value = API_PREFERENCES + "/{pKey}")
-    <T extends AbstractPreferenceVO<T>> ResponseEntity<Void> update(
+    <T extends PreferenceVO<T>> ResponseEntity<Void> update(
             @PathVariable("pKey") String pKey,
             @RequestBody T preference
     );

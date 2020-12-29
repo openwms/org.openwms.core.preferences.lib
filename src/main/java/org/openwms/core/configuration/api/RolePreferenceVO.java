@@ -16,9 +16,9 @@
 package org.openwms.core.configuration.api;
 
 /**
- * A StringPreferenceVO.
+ * A RolePreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public class StringPreferenceVO extends AbstractPreferenceVO<StringPreferenceVO> {
+public class RolePreferenceVO extends PreferenceVO<RolePreferenceVO>{
 }

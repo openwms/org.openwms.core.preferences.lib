@@ -16,9 +16,9 @@
 package org.openwms.core.configuration.api;
 
 /**
- * A DateTimePreferenceVO.
+ * A ModulePreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public class DateTimePreferenceVO extends AbstractPreferenceVO<DateTimePreferenceVO> {
+public class ModulePreferenceVO extends PreferenceVO<ModulePreferenceVO>{
 }

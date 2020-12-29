@@ -169,6 +169,18 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         this.type = type;
     }
 
+    /**
+     * Return a {@link PreferenceKey} of this preference.
+     *
+     * @return A {@link PreferenceKey}
+     */
+    public PreferenceKey getPrefKey() {
+        return new PreferenceKey(this.owner, this.key, this.scope);
+    }
+
+    public PreferenceEO() {
+    }
+
     private PreferenceEO(Builder builder) {
         key = builder.key;
         owner = builder.owner;
@@ -184,15 +196,6 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     public static Builder newBuilder() {
         return new Builder();
-    }
-
-    /**
-     * Return a {@link PreferenceKey} of this preference.
-     *
-     * @return A {@link PreferenceKey}
-     */
-    public PreferenceKey getPrefKey() {
-        return new PreferenceKey(this.owner, this.key, this.scope);
     }
 
     public static final class Builder {

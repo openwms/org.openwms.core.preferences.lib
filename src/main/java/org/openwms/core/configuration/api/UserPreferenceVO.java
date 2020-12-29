@@ -16,9 +16,9 @@
 package org.openwms.core.configuration.api;
 
 /**
- * A FloatPreferenceVO.
+ * A UserPreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public class FloatPreferenceVO extends AbstractPreferenceVO<FloatPreferenceVO> {
+public class UserPreferenceVO extends PreferenceVO<UserPreferenceVO>{
 }

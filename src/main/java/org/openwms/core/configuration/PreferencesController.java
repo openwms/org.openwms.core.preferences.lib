@@ -17,7 +17,8 @@ package org.openwms.core.configuration;
 
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
-import org.openwms.core.configuration.api.AbstractPreferenceVO;
+import org.openwms.core.configuration.api.PreferenceVO;
+import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import reactor.core.publisher.Flux;
@@ -44,10 +45,10 @@ public class PreferencesController {
     }
 
     @GetMapping(value = API_PREFERENCES, headers = HEADER_VALUE_X_TENANT)
-    public Flux<AbstractPreferenceVO> findBy(
+    public Flux<PreferenceVO> findBy(
             @RequestHeader(HEADER_VALUE_X_TENANT) String tenant
     ) {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(tenant)), AbstractPreferenceVO.class)).log();
+        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(tenant)), UserPreferenceVO.class)).log();
     }
 /*
     @GetMapping(value = API_PREFERENCES, headers = HEADER_VALUE_X_TENANT, params = "key")

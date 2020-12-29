@@ -16,9 +16,9 @@
 package org.openwms.core.configuration.api;
 
 /**
- * A BoolPreferenceVO.
+ * A ApplicationPreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public class BoolPreferenceVO extends AbstractPreferenceVO<BoolPreferenceVO> {
+public class ApplicationPreferenceVO extends PreferenceVO<ApplicationPreferenceVO>{
 }

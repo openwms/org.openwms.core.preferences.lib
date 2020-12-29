@@ -15,24 +15,34 @@
  */
 package org.openwms.core.configuration.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.ameba.http.AbstractBase;
 
 import java.util.Objects;
 
 /**
- * A AbstractPreferenceVO.
+ * A PreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public abstract class AbstractPreferenceVO<T extends AbstractPreferenceVO<T>> extends AbstractBase {
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
 
+    @JsonProperty("pKey")
     private String pKey;
 
+    @JsonProperty("key")
     private String key;
 
+    @JsonProperty("owner")
     private String owner;
 
+    @JsonProperty("description")
     private String description;
+
+    @JsonProperty("value")
+    private Object val;
 
     public String getpKey() {
         return pKey;
@@ -66,20 +76,29 @@ public abstract class AbstractPreferenceVO<T extends AbstractPreferenceVO<T>> ex
         this.description = description;
     }
 
+    public Object getVal() {
+        return val;
+    }
+
+    public void setVal(Object val) {
+        this.val = val;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        AbstractPreferenceVO<?> that = (AbstractPreferenceVO<?>) o;
+        PreferenceVO<?> that = (PreferenceVO<?>) o;
         return Objects.equals(pKey, that.pKey) &&
                 Objects.equals(key, that.key) &&
                 Objects.equals(owner, that.owner) &&
-                Objects.equals(description, that.description);
+                Objects.equals(description, that.description) &&
+                Objects.equals(val, that.val);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, key, owner, description);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description, val);
     }
 }
