@@ -16,56 +16,10 @@
 				<class-a>java.time.ZonedDateTime</class-a>
 				<class-b>java.time.ZonedDateTime</class-b>
 			</converter>
+			<converter type="org.openwms.core.configuration.impl.PreferenceConverter">
+				<class-a>org.openwms.core.configuration.impl.file.GenericPreference</class-a>
+				<class-b>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-b>
+			</converter>
         </custom-converters>
 	</configuration>
-
-    <mapping>
-		<class-a>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-a>
-		<class-b>org.openwms.core.configuration.api.BoolPreferenceVO</class-b>
-        <field>
-            <a is-accessible="true">pKey</a>
-            <b is-accessible="true">pKey</b>
-        </field>
-		<field>
-			<a is-accessible="true">description</a>
-			<b is-accessible="true">description</b>
-		</field>
-		<field>
-			<a is-accessible="true">owner</a>
-			<b is-accessible="true">owner</b>
-		</field>
-		<field>
-			<a is-accessible="true">currentValue</a>
-			<b is-accessible="true">currentValue</b>
-		</field>
-		<field type="one-way">
-			<a is-accessible="true">defaultValue</a>
-			<b is-accessible="true">defaultValue</b>
-		</field>
-    </mapping>
-
-	<mapping>
-		<class-a>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-a>
-		<class-b>org.openwms.core.configuration.api.BoolPreferenceVO</class-b>
-		<field>
-			<a is-accessible="true">pKey</a>
-			<b is-accessible="true">pKey</b>
-		</field>
-		<field>
-			<a is-accessible="true">description</a>
-			<b is-accessible="true">description</b>
-		</field>
-		<field>
-			<a is-accessible="true">owner</a>
-			<b is-accessible="true">owner</b>
-		</field>
-		<field>
-			<a is-accessible="true">currentValue</a>
-			<b is-accessible="true">currentValue</b>
-		</field>
-		<field type="one-way">
-			<a is-accessible="true">defaultValue</a>
-			<b is-accessible="true">defaultValue</b>
-		</field>
-	</mapping>
 </mappings>

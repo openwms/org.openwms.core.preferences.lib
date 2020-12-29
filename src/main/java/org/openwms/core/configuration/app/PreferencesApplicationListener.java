@@ -42,6 +42,6 @@ class PreferencesApplicationListener implements ApplicationListener<MergePropert
      */
     @Override
     public void onApplicationEvent(MergePropertiesEvent event) {
-//        service.reloadInitialPreferences();
+        service.reloadInitialPreferences();
     }
 }

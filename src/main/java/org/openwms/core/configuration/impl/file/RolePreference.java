@@ -15,11 +15,9 @@
  */
 package org.openwms.core.configuration.impl.file;
 
-import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
@@ -35,19 +33,12 @@ import java.io.Serializable;
 public class RolePreference extends GenericPreference implements Serializable {
 
     /**
-     * Type of this preference.
-     */
-    @XmlTransient
-    private PropertyScope type = PropertyScope.ROLE;
-    /**
      * Owner of the {@code RolePreference}.
      */
-    @XmlAttribute(name = "owner", required = true)
     private String owner;
     /**
      * Key value of the {@link RolePreference}.
      */
-    @XmlAttribute(name = "key", required = true)
     private String key;
 
     /**
@@ -78,8 +69,13 @@ public class RolePreference extends GenericPreference implements Serializable {
      *
      * @return the key.
      */
+    @XmlAttribute(name = "key", required = true)
     public String getKey() {
         return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
@@ -87,18 +83,13 @@ public class RolePreference extends GenericPreference implements Serializable {
      *
      * @return the rolename.
      */
+    @XmlAttribute(name = "owner", required = true)
     public String getOwner() {
         return owner;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see GenericPreference#getType()
-     */
-    @Override
-    public PropertyScope getType() {
-        return PropertyScope.ROLE;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     /**
@@ -108,7 +99,7 @@ public class RolePreference extends GenericPreference implements Serializable {
      */
     @Override
     protected Object[] getFields() {
-        return new Object[]{getType(), getOwner(), getKey()};
+        return new Object[]{getOwner(), getKey(), getType()};
     }
 
     /**
@@ -120,7 +111,7 @@ public class RolePreference extends GenericPreference implements Serializable {
      */
     @Override
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getType(), getOwner(), getKey());
+        return new PreferenceKey(getOwner(), getKey(), getType());
     }
 
     /**
@@ -173,7 +164,7 @@ public class RolePreference extends GenericPreference implements Serializable {
         } else if (!owner.equals(other.owner)) {
             return false;
         }
-        return type == other.type;
+        return type.equals(other.type);
     }
 
     /**

@@ -16,13 +16,12 @@
 package org.openwms.core.configuration.impl.file;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * An ApplicationPreference is used to store a configuration setting in application scope. <p> The table model of an ApplicationPreference
@@ -35,14 +34,7 @@ import java.io.Serializable;
 @XmlType(name = "applicationPreference", namespace = "http://www.openwms.org/schema/preferences")
 public class ApplicationPreference extends GenericPreference implements Serializable {
 
-    /** Query to find all {@code ApplicationPreference}s. Name is {@value}. */
-    public static final String NQ_FIND_BY_OWNER = "ApplicationPreference" + FIND_BY_OWNER;
-
-    @XmlTransient
-    private PropertyScope type = PropertyScope.APPLICATION;
-
     /** Key of the preference (not nullable). */
-    @XmlAttribute(name = "key", required = true)
     private String key;
 
     /** Create a new {@code ApplicationPreference}. Only defined by the JAXB implementation. */
@@ -65,13 +57,11 @@ public class ApplicationPreference extends GenericPreference implements Serializ
 
     private ApplicationPreference(Builder builder) {
         setValue(builder.value);
-        binValue = builder.binValue;
-        floatValue = builder.floatValue;
+        type = builder.type;
         setDescription(builder.description);
         minimum = builder.minimum;
         maximum = builder.maximum;
         key = builder.key;
-        type = PropertyScope.APPLICATION;
     }
 
     /**
@@ -79,16 +69,13 @@ public class ApplicationPreference extends GenericPreference implements Serializ
      *
      * @return the key
      */
+    @XmlAttribute(name = "key", required = true)
     public String getKey() {
         return key;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public PropertyScope getType() {
-        return type;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
@@ -96,7 +83,7 @@ public class ApplicationPreference extends GenericPreference implements Serializ
      */
     @Override
     protected Object[] getFields() {
-        return new Object[]{getType(), getKey()};
+        return new Object[]{getKey(), getType()};
     }
 
     /**
@@ -109,48 +96,22 @@ public class ApplicationPreference extends GenericPreference implements Serializ
     @Override
     @JsonIgnore
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getType(), getKey());
+        return new PreferenceKey(getKey(), getType());
     }
 
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Uses the type and the key for the hashCode calculation.
-     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        ApplicationPreference that = (ApplicationPreference) o;
+        return type.equals(that.type) &&
+                Objects.equals(key, that.key);
+    }
+
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((key == null) ? 0 : key.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * Comparison done with the type and the key fields. Not delegated to super class.
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (null == obj) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        ApplicationPreference other = (ApplicationPreference) obj;
-        if (key == null) {
-            if (other.key != null) {
-                return false;
-            }
-        } else if (!key.equals(other.key)) {
-            return false;
-        }
-        return type == other.type;
+        return Objects.hash(super.hashCode(), type, key);
     }
 
     @Override
@@ -161,107 +122,49 @@ public class ApplicationPreference extends GenericPreference implements Serializ
                 "} " + super.toString();
     }
 
-    /**
-     * {@code ApplicationPreference} builder static inner class.
-     */
     public static final class Builder {
-
-        private PropertyScope type;
-        private String key;
         private String value;
-        private Serializable binValue;
-        private Float floatValue;
+        private String type;
         private String description;
-        private int minimum;
-        private int maximum;
+        private String minimum;
+        private String maximum;
+        private String key;
 
-        public Builder() {
+        private Builder() {
         }
 
-        /**
-         * Sets the {@code key} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code key} to set
-         * @return a reference to this Builder
-         */
-        public Builder withKey(String val) {
-            key = val;
-            return this;
-        }
-
-        /**
-         * Returns a {@code ApplicationPreference} built from the parameters previously set.
-         *
-         * @return a {@code ApplicationPreference} built with parameters of this {@code ApplicationPreference.Builder}
-         */
-        public ApplicationPreference build() {
-            return new ApplicationPreference(this);
-        }
-
-        /**
-         * Sets the {@code value} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code value} to set
-         * @return a reference to this Builder
-         */
-        public Builder withValue(String val) {
+        public Builder value(String val) {
             value = val;
             return this;
         }
 
-        /**
-         * Sets the {@code binValue} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code binValue} to set
-         * @return a reference to this Builder
-         */
-        public Builder withBinValue(Serializable val) {
-            binValue = val;
+        public Builder type(String val) {
+            type = val;
             return this;
         }
 
-        /**
-         * Sets the {@code floatValue} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code floatValue} to set
-         * @return a reference to this Builder
-         */
-        public Builder withFloatValue(Float val) {
-            floatValue = val;
-            return this;
-        }
-
-        /**
-         * Sets the {@code description} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code description} to set
-         * @return a reference to this Builder
-         */
-        public Builder withDescription(String val) {
+        public Builder description(String val) {
             description = val;
             return this;
         }
 
-        /**
-         * Sets the {@code minimum} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code minimum} to set
-         * @return a reference to this Builder
-         */
-        public Builder withMinimum(int val) {
+        public Builder minimum(String val) {
             minimum = val;
             return this;
         }
 
-        /**
-         * Sets the {@code maximum} and returns a reference to this Builder so that the methods can be chained together.
-         *
-         * @param val the {@code maximum} to set
-         * @return a reference to this Builder
-         */
-        public Builder withMaximum(int val) {
+        public Builder maximum(String val) {
             maximum = val;
             return this;
+        }
+
+        public Builder key(String val) {
+            key = val;
+            return this;
+        }
+
+        public ApplicationPreference build() {
+            return new ApplicationPreference(this);
         }
     }
 }

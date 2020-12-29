@@ -59,7 +59,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     /** Flag to remember if the preference was originally imported from a file. */
     @Column(name = "C_FROM_FILE")
-    private boolean fromFile = true;
+    private boolean fromFile;
 
     /** Scope of this preference. */
     @Enumerated(EnumType.STRING)
@@ -69,10 +69,10 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     /** A current value of the {@link PreferenceEO}. */
     @Column(name = "C_CURRENT_VALUE")
-    private String currentValue;
+    private String val;
 
     /** The default value of the {@link PreferenceEO}. */
-    @Column(name = "C_MIN_VALUE")
+    @Column(name = "C_DEF_VALUE")
     private String defValue;
 
     /** The minimum value of the {@link PreferenceEO}. */
@@ -89,13 +89,93 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     @Column(name = "C_TYPE", nullable = false)
     protected PreferenceType type;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVal() {
+        return val;
+    }
+
+    public void setVal(String val) {
+        this.val = val;
+    }
+
+    public boolean isFromFile() {
+        return fromFile;
+    }
+
+    public void setFromFile(boolean fromFile) {
+        this.fromFile = fromFile;
+    }
+
+    public PropertyScope getScope() {
+        return scope;
+    }
+
+    public void setScope(PropertyScope scope) {
+        this.scope = scope;
+    }
+
+    public String getDefValue() {
+        return defValue;
+    }
+
+    public void setDefValue(String defValue) {
+        this.defValue = defValue;
+    }
+
+    public String getMinValue() {
+        return minValue;
+    }
+
+    public void setMinValue(String minValue) {
+        this.minValue = minValue;
+    }
+
+    public String getMaxValue() {
+        return maxValue;
+    }
+
+    public void setMaxValue(String maxValue) {
+        this.maxValue = maxValue;
+    }
+
+    public PreferenceType getType() {
+        return type;
+    }
+
+    public void setType(PreferenceType type) {
+        this.type = type;
+    }
+
     private PreferenceEO(Builder builder) {
         key = builder.key;
         owner = builder.owner;
         description = builder.description;
         fromFile = builder.fromFile;
         scope = builder.scope;
-        currentValue = builder.currentValue;
+        val = builder.val;
         defValue = builder.defValue;
         minValue = builder.minValue;
         maxValue = builder.maxValue;
@@ -115,53 +195,13 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         return new PreferenceKey(this.owner, this.key, this.scope);
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isFromFile() {
-        return fromFile;
-    }
-
-    public PropertyScope getScope() {
-        return scope;
-    }
-
-    public String getCurrentValue() {
-        return currentValue;
-    }
-
-    public String getDefValue() {
-        return defValue;
-    }
-
-    public String getMinValue() {
-        return minValue;
-    }
-
-    public String getMaxValue() {
-        return maxValue;
-    }
-
-    public PreferenceType getType() {
-        return type;
-    }
-
     public static final class Builder {
         private String key;
         private String owner;
         private String description;
         private boolean fromFile;
         private @NotNull PropertyScope scope;
-        private String currentValue;
+        private String val;
         private String defValue;
         private String minValue;
         private String maxValue;
@@ -195,8 +235,8 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
             return this;
         }
 
-        public Builder currentValue(String val) {
-            currentValue = val;
+        public Builder val(String val) {
+            this.val = val;
             return this;
         }
 

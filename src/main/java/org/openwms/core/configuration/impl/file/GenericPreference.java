@@ -36,32 +36,21 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     /** The String value of the {@code AbstractPreference}. */
     protected String value;
 
-    /** A binary value for this {@link GenericPreference}. */
-    @XmlTransient
-    protected Serializable binValue;
-
-    /** A float value of the {@link GenericPreference}. */
-    @XmlAttribute(name = "floatValue")
-    protected Float floatValue;
-
-    /** A float value of the {@link GenericPreference}. */
-    @XmlAttribute(name = "type")
+    /** A data type of the value. */
     protected String type;
 
     /** Description text of the {@link GenericPreference}. */
     protected String description;
 
     /** Minimum value. */
-    @XmlAttribute(name = "minimum")
-    protected int minimum = 0;
+    protected String minimum;
 
     /** Maximum value. */
-    @XmlAttribute(name = "maximum")
-    protected int maximum = 0;
+    protected String maximum;
 
     /** Flag to remember if the preference was originally imported from a file. */
     @XmlTransient
-    private boolean fromFile = true;
+    private final boolean fromFile = true;
 
     /* ----------------------------- methods ------------------- */
 
@@ -84,30 +73,19 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         this.value = value;
     }
 
-    /**
-     * Get the binValue.
-     *
-     * @return the binValue.
-     */
-    @XmlTransient
-    @JsonIgnore
-    public Serializable getBinValue() {
-        return binValue;
+    public void setMinimum(String minimum) {
+        this.minimum = minimum;
     }
 
-    /**
-     * Get the <code>floatValue</code> of the {@link GenericPreference}.
-     *
-     * @return The floatValue of the preference
-     */
-    public Float getFloatValue() {
-        return floatValue;
+    public void setMaximum(String maximum) {
+        this.maximum = maximum;
     }
 
     /**
      *
      * @return
      */
+    @XmlAttribute(name = "type")
     public String getType() {
         return type;
     }
@@ -136,7 +114,8 @@ public abstract class GenericPreference extends AbstractPreference implements Se
      *
      * @return The possible minimum value
      */
-    public int getMinimum() {
+    @XmlAttribute(name = "minimum")
+    public String getMinimum() {
         return minimum;
     }
 
@@ -145,7 +124,8 @@ public abstract class GenericPreference extends AbstractPreference implements Se
      *
      * @return The possible maximum value
      */
-    public int getMaximum() {
+    @XmlAttribute(name = "maximum")
+    public String getMaximum() {
         return maximum;
     }
 
@@ -164,8 +144,6 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     public String toString() {
         return "GenericPreference{" +
                 "value='" + value + '\'' +
-                ", binValue=" + binValue +
-                ", floatValue=" + floatValue +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 ", minimum=" + minimum +
@@ -179,18 +157,20 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GenericPreference that = (GenericPreference) o;
-        return minimum == that.minimum &&
-                maximum == that.maximum &&
-                fromFile == that.fromFile &&
+        return fromFile == that.fromFile &&
                 Objects.equals(value, that.value) &&
-                Objects.equals(binValue, that.binValue) &&
-                Objects.equals(floatValue, that.floatValue) &&
                 Objects.equals(type, that.type) &&
-                Objects.equals(description, that.description);
+                Objects.equals(description, that.description) &&
+                Objects.equals(minimum, that.minimum) &&
+                Objects.equals(maximum, that.maximum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, binValue, floatValue, type, description, minimum, maximum, fromFile);
+        return Objects.hash(value, type, description, minimum, maximum, fromFile);
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

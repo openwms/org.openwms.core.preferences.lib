@@ -15,12 +15,9 @@
  */
 package org.openwms.core.configuration.impl.file;
 
-import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
-import javax.persistence.Column;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
@@ -35,16 +32,10 @@ import java.io.Serializable;
 @XmlType(name = "userPreference", namespace = "http://www.openwms.org/schema/usermanagement")
 public class UserPreference extends GenericPreference implements Serializable {
 
-    /** Type of this preference. */
-    @XmlTransient
-    private PropertyScope type = PropertyScope.USER;
-
-    /** Owner of the {@link GenericPreference}. */
-    @XmlAttribute(name = "owner", required = true)
+    /** Owner of the {@link UserPreference}. */
     private String owner;
 
-    /** Key value of the {@link GenericPreference}. */
-    @XmlAttribute(name = "key", required = true)
+    /** Key value of the {@link UserPreference}. */
     private String key;
 
     /** Create a new UserPreference. Defined for the JAXB implementation. */
@@ -73,8 +64,13 @@ public class UserPreference extends GenericPreference implements Serializable {
      *
      * @return the owner.
      */
+    @XmlAttribute(name = "owner", required = true)
     public String getOwner() {
         return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     /**
@@ -82,18 +78,13 @@ public class UserPreference extends GenericPreference implements Serializable {
      *
      * @return the key.
      */
+    @XmlAttribute(name = "key", required = true)
     public String getKey() {
         return key;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see GenericPreference#getType()
-     */
-    @Override
-    public PropertyScope getType() {
-        return PropertyScope.USER;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
@@ -103,7 +94,7 @@ public class UserPreference extends GenericPreference implements Serializable {
      */
     @Override
     protected Object[] getFields() {
-        return new Object[]{getType(), getOwner(), getKey()};
+        return new Object[]{getOwner(), getKey(), getType()};
     }
 
     /**
@@ -113,7 +104,7 @@ public class UserPreference extends GenericPreference implements Serializable {
      */
     @Override
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getType(), getOwner(), getKey());
+        return new PreferenceKey(getOwner(), getKey(), getType());
     }
 
     /**
@@ -166,7 +157,7 @@ public class UserPreference extends GenericPreference implements Serializable {
         } else if (!owner.equals(other.owner)) {
             return false;
         }
-        return type == other.type;
+        return type.equals(other.type);
     }
 
     /**

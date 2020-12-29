@@ -23,21 +23,21 @@ package org.openwms.core.configuration;
 public enum PreferenceType {
 
     /** Float presentation. */
-    FLOAT(Float.class.getSimpleName()),
+    FLOAT(Float.class.getName()),
 
     /** String representation. */
-    STRING(String.class.getSimpleName()),
+    STRING(String.class.getName()),
 
     /** Integer representation. */
-    INT(Integer.class.getSimpleName()),
+    INT(Integer.class.getName()),
 
     /** Any Object. */
-    OBJECT(Object.class.getSimpleName()),
+    OBJECT(Object.class.getName()),
 
     /** Boolean type. */
-    BOOL(Boolean.class.getSimpleName());
+    BOOL(Boolean.class.getName());
 
-    private String clazz;
+    private final String clazz;
 
     PreferenceType(String clazz) {
         this.clazz = clazz;

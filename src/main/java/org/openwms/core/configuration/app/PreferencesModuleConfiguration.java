@@ -21,9 +21,11 @@ import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
 import org.openwms.core.configuration.config.ModuleProperties;
 import org.openwms.core.configuration.impl.file.FilePackage;
+import org.openwms.core.startup.LocalServiceInitializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -44,6 +46,11 @@ import javax.validation.Validator;
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
 public class PreferencesModuleConfiguration {
+
+    @Bean
+    LocalServiceInitializer localServiceInitializer(ApplicationContext ctx) {
+        return new LocalServiceInitializer(ctx);
+    }
 
     @Bean
     MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
