@@ -73,14 +73,6 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         this.value = value;
     }
 
-    public void setMinimum(String minimum) {
-        this.minimum = minimum;
-    }
-
-    public void setMaximum(String maximum) {
-        this.maximum = maximum;
-    }
-
     /**
      *
      * @return
@@ -88,6 +80,10 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     @XmlAttribute(name = "type")
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
@@ -119,6 +115,10 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         return minimum;
     }
 
+    public void setMinimum(String minimum) {
+        this.minimum = minimum;
+    }
+
     /**
      * Return the possible maximum value of the {@link GenericPreference}.
      *
@@ -127,6 +127,10 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     @XmlAttribute(name = "maximum")
     public String getMaximum() {
         return maximum;
+    }
+
+    public void setMaximum(String maximum) {
+        this.maximum = maximum;
     }
 
     /**
@@ -168,9 +172,5 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     @Override
     public int hashCode() {
         return Objects.hash(value, type, description, minimum, maximum, fromFile);
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

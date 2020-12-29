@@ -73,16 +73,16 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
     }
 
     @Test
-    void shall_return_all_for_owner() {
+    void shall_return_all_for_user() {
         this.client
                 .get()
                 .uri(API_PREFERENCES)
-                .attribute("owner", "SA")
+                .attribute("user", "openwms")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .consumeWith(
-                        document("prefs-findforowner", preprocessResponse(prettyPrint()))
+                        document("prefs-findforuser", preprocessResponse(prettyPrint()))
                 )
         ;
     }

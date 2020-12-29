@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.impl;
 
+import org.ameba.exception.NotFoundException;
 import org.dozer.DozerConverter;
 import org.dozer.Mapper;
 import org.dozer.MapperAware;
@@ -61,24 +62,24 @@ public class PreferenceConverter extends DozerConverter<GenericPreference, Prefe
                     .description(p.getDescription())
                     .val(p.getValue())
                     .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow())
+                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.APPLICATION)
                     .minValue(p.getMinimum())
                     .maxValue(p.getMaximum())
                     .build();
         }
         if (source.getClass().equals(ModulePreference.class)) {
-            ModulePreference mp = (ModulePreference) source;
+            ModulePreference p = (ModulePreference) source;
             return PreferenceEO.newBuilder()
-                    .key(mp.getKey())
-                    .owner(mp.getOwner())
-                    .description(mp.getDescription())
-                    .val(mp.getValue())
+                    .key(p.getKey())
+                    .owner(p.getOwner())
+                    .description(p.getDescription())
+                    .val(p.getValue())
                     .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(mp.getType())).findFirst().orElseThrow())
+                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.MODULE)
-                    .minValue(mp.getMinimum())
-                    .maxValue(mp.getMaximum())
+                    .minValue(p.getMinimum())
+                    .maxValue(p.getMaximum())
                     .build();
         }
         if (source.getClass().equals(RolePreference.class)) {
@@ -89,7 +90,7 @@ public class PreferenceConverter extends DozerConverter<GenericPreference, Prefe
                     .description(p.getDescription())
                     .val(p.getValue())
                     .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow())
+                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.ROLE)
                     .minValue(p.getMinimum())
                     .maxValue(p.getMaximum())
@@ -103,7 +104,7 @@ public class PreferenceConverter extends DozerConverter<GenericPreference, Prefe
                     .description(p.getDescription())
                     .val(p.getValue())
                     .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow())
+                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.getClazz().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.USER)
                     .minValue(p.getMinimum())
                     .maxValue(p.getMaximum())
