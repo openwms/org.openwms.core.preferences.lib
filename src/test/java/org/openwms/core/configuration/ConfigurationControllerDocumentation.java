@@ -76,7 +76,7 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
     void shall_return_all_for_user() {
         this.client
                 .get()
-                .uri(API_PREFERENCES)
+                .uri(u -> u.path(API_PREFERENCES).queryParam("user", "openwms").build())
                 .attribute("user", "openwms")
                 .exchange()
                 .expectStatus().isOk()
