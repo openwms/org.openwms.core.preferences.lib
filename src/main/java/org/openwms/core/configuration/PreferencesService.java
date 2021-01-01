@@ -35,6 +35,11 @@ import java.util.Collection;
 public interface PreferencesService {
 
     /**
+     * Find and return all {@code Preferences}.
+     */
+    Collection<PreferenceEO> findAll();
+
+    /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
      *
      * @param owner

@@ -55,6 +55,14 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
+    public Collection<PreferenceEO> findAll() {
+        return preferenceRepository.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope) {
         Collection<PreferenceEO> result = preferenceRepository.findAllByOwnerAndAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;

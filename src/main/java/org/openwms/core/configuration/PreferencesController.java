@@ -46,6 +46,11 @@ public class PreferencesController {
         this.mapper = mapper;
     }
 
+    @GetMapping(value = API_PREFERENCES)
+    public Flux<UserPreferenceVO> findAll() {
+        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), UserPreferenceVO.class)).log();
+    }
+
     @GetMapping(value = API_PREFERENCES, params = "user")
     public Flux<UserPreferenceVO> findBy(
             @RequestParam("user") String user

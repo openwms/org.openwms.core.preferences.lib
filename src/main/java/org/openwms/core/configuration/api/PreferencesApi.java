@@ -15,7 +15,6 @@
  */
 package org.openwms.core.configuration.api;
 
-import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +38,10 @@ public interface PreferencesApi {
     /**
      * Find and return all existing preferences.
      *
-     * @return An infinite stream of all AbstractPreferences
+     * @return An infinite stream of all PreferenceVO
      */
     @GetMapping(value = API_PREFERENCES)
-    Flux<GenericPreference> findAll();
+    Flux<PreferenceVO> findAll();
 
     /**
      * Find and return all existing UserPreferences that belong to an {@code user}.
