@@ -19,6 +19,7 @@ import org.openwms.core.configuration.PropertyScope;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A PreferenceRepository is a Spring Data JPA repository that deals with {@link PreferenceEO}s.
@@ -27,7 +28,9 @@ import java.util.List;
  */
 interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, PreferenceRepositoryCustom {
 
+    Optional<PreferenceEO> findBypKey(String pKey);
+
     List<PreferenceEO> findAllByOwnerAndAndScope(String owner, PropertyScope scope);
 
-    PreferenceEO findAllByOwnerAndAndScopeAndKey(String owner, PropertyScope scope, String key);
+    Optional<PreferenceEO> findAllByOwnerAndAndScopeAndKey(String owner, PropertyScope scope, String key);
 }

@@ -17,11 +17,15 @@ package org.openwms.core.configuration;
 
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
+import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -52,7 +56,7 @@ public class PreferencesController {
     }
 
     @GetMapping(value = API_PREFERENCES, params = "user")
-    public Flux<UserPreferenceVO> findBy(
+    public Flux<UserPreferenceVO> findByUser(
             @RequestParam("user") String user
     ) {
         return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user, PropertyScope.USER)), UserPreferenceVO.class)).log();
@@ -69,5 +73,26 @@ public class PreferencesController {
         }
         UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);
         return ResponseEntity.ok(Mono.just(p));
+    }
+
+    @GetMapping(value = API_PREFERENCES + "/{pKey}")
+    public ResponseEntity<Mono<UserPreferenceVO>> findByPKey(
+            @PathVariable("pKey") String pKey
+    ) {
+        PreferenceEO eo = preferencesService.findBy(pKey);
+        if (eo == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());
+        }
+        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);
+        return ResponseEntity.ok(Mono.just(p));
+    }
+
+    @PutMapping(value = API_PREFERENCES + "/{pKey}")
+    public ResponseEntity<Void> update(
+            @PathVariable("pKey") String pKey,
+            @RequestBody PreferenceVO preference
+    ) {
+        preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));
+        return ResponseEntity.noContent().build();
     }
 }

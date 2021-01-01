@@ -49,6 +49,14 @@ public interface PreferencesService {
     Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope);
 
     /**
+     * Find and return the {@code Preferences} identified by the {@code pKey}.
+     *
+     * @param pKey The persistent identifier
+     * @return The instance, or {@literal null}
+     */
+    PreferenceEO findBy(@NotEmpty String pKey);
+
+    /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
      *
      * @param <T> Any subtype of {@link GenericPreference}
@@ -60,11 +68,11 @@ public interface PreferencesService {
     /**
      * Create or update the given {@code Preference}.
      *
-     * @param <T> Any subtype of {@link GenericPreference}
-     * @param preference {@link GenericPreference} entity to save
-     * @return Saved {@link GenericPreference} entity instance
-    <T extends AbstractPreferenceEO> T save(@NotNull T preference);
+     * @param pKey The persistent identifier of the preference to update
+     * @param preference {@link PreferenceEO} entity to save
+     * @return Saved {@link PreferenceEO} entity instance
      */
+    PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference);
 
     /**
      * Delete an existing {@code Preference}.
@@ -74,7 +82,7 @@ public interface PreferencesService {
      */
 
     /**
-     *
+     * Load properties from file and merge them with the ones in the database.
      */
     void reloadInitialPreferences();
 }

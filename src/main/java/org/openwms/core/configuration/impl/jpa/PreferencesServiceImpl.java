@@ -16,6 +16,7 @@
 package org.openwms.core.configuration.impl.jpa;
 
 import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.PreferencesService;
 import org.openwms.core.configuration.PropertyScope;
@@ -30,7 +31,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.lang.String.format;
 
 /**
  * A PreferencesServiceImpl is a transactional Spring powered service implementation to manage {@code Preferences}.
@@ -68,27 +72,31 @@ class PreferencesServiceImpl implements PreferencesService {
         return result == null ? Collections.emptyList() : result;
     }
 
+    @Override
+    public PreferenceEO findBy(@NotEmpty String pKey) {
+        return preferenceRepository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("Preference with key [%s] does not exist", pKey)));
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
-        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key);
+        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -> new NotFoundException(format("Preference with owner [%s], scope [%s] and key [%s] does not exist", owner, scope, key)));
     }
 
     /**
      * {@inheritDoc}
-     * <p>
-     * Not allowed to call this implementation with a {@literal null} argument.
-     *
-     * @throws IllegalArgumentException when {@code preference} is {@literal null}
-    @Override
-    @FireAfterTransaction(events = {ConfigurationChangedEvent.class})
-    public <T extends AbstractPreferenceEO> T save(T preference) {
-        Assert.notNull(preference, "Not allowed to call save with a NULL argument");
-        return preferenceRepository.save(preference);
-    }
      */
+    @Override
+    public PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference) {
+        Optional<PreferenceEO> eoOpt = preferenceRepository.findBypKey(pKey);
+        if (eoOpt.isEmpty()) {
+            throw new NotFoundException(format("Preference with key [%s] does not exist", pKey));
+        }
+        PreferenceEO eo = eoOpt.get();
+        return preferenceRepository.save(mapper.mapFromTo(preference, eo));
+    }
 
     /**
      * {@inheritDoc}
