@@ -15,7 +15,6 @@
  */
 package org.openwms.core.configuration.api;
 
-import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -46,41 +45,26 @@ public interface PreferencesApi {
     Flux<GenericPreference> findAll();
 
     /**
-     * Find and return all existing preferences that belong to one {@code owner}.
+     * Find and return all existing UserPreferences that belong to an {@code user}.
      *
-     * @param owner The owner of the preferences
+     * @param user The owning user of the preferences
      * @return An infinite filtered stream of AbstractPreferences
      */
-    @GetMapping(value = API_PREFERENCES, params = {"owner"})
+    @GetMapping(value = API_PREFERENCES, params = {"user"})
     <T extends PreferenceVO<T>> Flux<T> findBy(
-            @RequestParam("owner") String owner
+            @RequestParam("user") String user
     );
 
     /**
-     * Find and return all existing preferences that belong to one {@code owner} and are of one particular {@code type}.
+     * Find and return one UserPreference that belongs to an {@code user} and has the given {@code key}.
      *
-     * @param owner The owner of the preferences
-     * @param type The type of the preferences
-     * @return An infinite filtered stream of AbstractPreferences
-     */
-    @GetMapping(value = API_PREFERENCES, params = {"owner", "type"})
-    <T extends PreferenceVO<T>> Flux<T> findBy(
-            @RequestParam("owner") String owner,
-            @RequestParam("type") PropertyScope type
-    );
-
-    /**
-     * Find and return one preference that belongs to one {@code owner} and is of one particular {@code type} and has the given {@code key}.
-     *
-     * @param owner The owner of the preference
-     * @param type The type of the preference
+     * @param user The owning user of the preference
      * @param key The key of the preference
      * @return One single instance
      */
-    @GetMapping(value = API_PREFERENCES, params = {"owner", "type", "key"})
+    @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
     <T extends PreferenceVO<T>> Mono<T> findBy(
-            @RequestParam("owner") String owner,
-            @RequestParam("type") PropertyScope type,
+            @RequestParam("user") String user,
             @RequestParam("key") String key
     );
 

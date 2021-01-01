@@ -20,5 +20,5 @@ package org.openwms.core.configuration.api;
  *
  * @author Heiko Scherrer
  */
-public class UserPreferenceVO extends PreferenceVO<UserPreferenceVO>{
+public class UserPreferenceVO extends PreferenceVO<UserPreferenceVO> {
 }

@@ -18,12 +18,14 @@ package org.openwms.core.configuration.impl.jpa;
 import org.ameba.annotation.TxService;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.PreferencesService;
+import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.openwms.core.configuration.impl.file.PreferenceDao;
 import org.openwms.core.configuration.impl.file.PreferenceKey;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -53,21 +55,18 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
-    public Collection<PreferenceEO> findAll(@NotEmpty String owner) {
-        List<PreferenceEO> result = preferenceRepository.findAllByOwner(owner);
+    public Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope) {
+        Collection<PreferenceEO> result = preferenceRepository.findAllByOwnerAndAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;
     }
 
     /**
      * {@inheritDoc}
-    @Override
-    public Collection<AbstractPreferenceEO> findBy(@NotEmpty String owner, @NotEmpty String key) {
-        Collection<T> result = (owner == null || owner.isEmpty())
-                ? preferenceRepository.find(clazz)
-                : preferenceRepository.findByType(clazz, owner);
-        return result == null ? Collections.emptyList() : result;
-    }
      */
+    @Override
+    public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
+        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key);
+    }
 
     /**
      * {@inheritDoc}

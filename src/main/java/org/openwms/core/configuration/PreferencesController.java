@@ -18,9 +18,13 @@ package org.openwms.core.configuration;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
+import org.openwms.core.configuration.impl.jpa.PreferenceEO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 
@@ -46,14 +50,19 @@ public class PreferencesController {
     public Flux<UserPreferenceVO> findBy(
             @RequestParam("user") String user
     ) {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user)), UserPreferenceVO.class)).log();
+        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user, PropertyScope.USER)), UserPreferenceVO.class)).log();
     }
-/*
-    @GetMapping(value = API_PREFERENCES, headers = HEADER_VALUE_X_TENANT, params = "key")
-    public <T extends AbstractPreferenceVO<T>> Flux<T> findBy(
-            @RequestHeader(HEADER_VALUE_X_TENANT) String tenant,
+
+    @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
+    public ResponseEntity<Mono<UserPreferenceVO>> findBy(
+            @RequestParam("user") String user,
             @RequestParam("key") String key
     ) {
-        return Flux.fromIterable(mapper.eosToVos(new ArrayList(preferencesService.findBy(AbstractPreferenceEO.class, tenant, key)))).log();
+        PreferenceEO eo = preferencesService.findBy(user, PropertyScope.USER, key);
+        if (eo == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());
+        }
+        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);
+        return ResponseEntity.ok(Mono.just(p));
     }
-*/}
+}

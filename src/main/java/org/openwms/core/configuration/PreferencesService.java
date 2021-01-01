@@ -19,6 +19,7 @@ import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 /**
@@ -36,10 +37,11 @@ public interface PreferencesService {
     /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
      *
-     * @param <T> Any subtype of {@link GenericPreference}
+     * @param owner
+     * @param scope
      * @return A Collection of preferences of type T, never {@literal null}
      */
-    Collection<PreferenceEO> findAll(@NotEmpty String owner);
+    Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope);
 
     /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
@@ -47,8 +49,8 @@ public interface PreferencesService {
      * @param <T> Any subtype of {@link GenericPreference}
      * @param clazz The class of preference to search for
      * @return A Collection of preferences of type T, never {@literal null}
-    Collection<AbstractPreferenceEO> findBy(@NotEmpty String owner, @NotEmpty String key);
      */
+    PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key);
 
     /**
      * Create or update the given {@code Preference}.

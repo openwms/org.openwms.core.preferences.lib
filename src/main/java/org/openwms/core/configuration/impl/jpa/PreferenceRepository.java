@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.impl.jpa;
 
+import org.openwms.core.configuration.PropertyScope;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -26,5 +27,7 @@ import java.util.List;
  */
 interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, PreferenceRepositoryCustom {
 
-    List<PreferenceEO> findAllByOwner(String owner);
+    List<PreferenceEO> findAllByOwnerAndAndScope(String owner, PropertyScope scope);
+
+    PreferenceEO findAllByOwnerAndAndScopeAndKey(String owner, PropertyScope scope, String key);
 }
