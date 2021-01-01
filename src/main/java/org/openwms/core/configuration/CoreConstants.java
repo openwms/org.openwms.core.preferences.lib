@@ -16,34 +16,16 @@
 package org.openwms.core.configuration;
 
 /**
- * A PreferenceType.
+ * A CoreConstants contains service-wide constants.
  *
  * @author Heiko Scherrer
  */
-public enum PreferenceType {
+public final class CoreConstants {
 
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
+    /** API version. */
+    public static final String API_VERSION = "v1";
+    /** API root to hit Preferences (plural). */
+    public static final String API_PREFERENCES = "/" + API_VERSION + "/preferences";
 
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
+    private CoreConstants() { }
 }

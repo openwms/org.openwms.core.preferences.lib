@@ -13,37 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.configuration.impl.file;
+
+import java.util.List;
 
 /**
- * A PreferenceType.
- *
+ * A PreferenceDao offers basic functionality to find and retrieve {@link GenericPreference}s.
+ * 
  * @author Heiko Scherrer
  */
-public enum PreferenceType {
+public interface PreferenceDao {
 
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
-
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
+    /**
+     * Find all entities and return them as a {@link java.util.List}.
+     * 
+     * @return List of all entities
+     */
+    List<GenericPreference> findAll();
 }

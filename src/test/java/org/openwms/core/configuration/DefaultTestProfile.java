@@ -15,35 +15,20 @@
  */
 package org.openwms.core.configuration;
 
+import org.junit.jupiter.api.BeforeAll;
+
 /**
- * A PreferenceType.
+ * A DefaultTestProfile.
  *
  * @author Heiko Scherrer
  */
-public enum PreferenceType {
+public class DefaultTestProfile {
 
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
-
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getClazz() {
-        return clazz;
+    @BeforeAll
+    static void onBeforeAll() {
+        String property = System.getProperty("spring.profiles.active", "");
+        if ("".equals(property)) {
+            System.setProperty("spring.profiles.active", "TEST");
+        }
     }
 }

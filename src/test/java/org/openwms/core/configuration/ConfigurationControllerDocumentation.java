@@ -17,14 +17,13 @@ package org.openwms.core.configuration;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openwms.core.CoreApplicationTest;
-import org.openwms.core.DefaultTestProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.openwms.core.CoreConstants.API_CONFIGURATIONS;
+import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
@@ -36,6 +35,7 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
  * @author Heiko Scherrer
  */
 @CoreApplicationTest
+@Sql(scripts = "classpath:test.sql")
 class ConfigurationControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
@@ -55,7 +55,7 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
     void shall_return_all_preferences() {
         this.client
                 .get()
-                .uri(API_CONFIGURATIONS)
+                .uri(API_PREFERENCES)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
@@ -73,16 +73,16 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
     }
 
     @Test
-    void shall_return_all_for_owner() {
+    void shall_return_all_for_user() {
         this.client
                 .get()
-                .uri(API_CONFIGURATIONS)
-                .attribute("owner", "SA")
+                .uri(u -> u.path(API_PREFERENCES).queryParam("user", "openwms").build())
+                .attribute("user", "openwms")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .consumeWith(
-                        document("prefs-findforowner", preprocessResponse(prettyPrint()))
+                        document("prefs-findforuser", preprocessResponse(prettyPrint()))
                 )
         ;
     }

@@ -13,37 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.configuration.impl.file;
+
+import org.openwms.core.configuration.impl.file.ApplicationPreference;
 
 /**
- * A PreferenceType.
+ * A MockApplicationPreference.
  *
  * @author Heiko Scherrer
  */
-public enum PreferenceType {
+public class MockApplicationPreference extends ApplicationPreference {
 
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
-
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getClazz() {
-        return clazz;
+    /**
+     * Create a new MockApplicationPreference.
+     *
+     * @param key The key
+     */
+    public MockApplicationPreference(String key) {
+        super(key);
     }
 }

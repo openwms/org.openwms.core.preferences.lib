@@ -13,37 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
-
 /**
- * A PreferenceType.
- *
- * @author Heiko Scherrer
+ * Contains Spring configuration mapping classes.
  */
-public enum PreferenceType {
-
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
-
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
-}
+package org.openwms.core.configuration.config;

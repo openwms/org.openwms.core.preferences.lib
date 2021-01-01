@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains the internal implementation of the configuration service.
+ * Contains the internal implementation of the component.
  */
 package org.openwms.core.configuration.impl;

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<configuration>
+		<stop-on-errors>true</stop-on-errors>
+		<date-format>MM/dd/yyyy HH:mm</date-format>
+		<wildcard>true</wildcard>
+		<custom-converters>
+			<converter type="org.ameba.mapping.LocalDateTimeConverter">
+				<class-a>java.time.LocalDateTime</class-a>
+				<class-b>java.time.LocalDateTime</class-b>
+			</converter>
+			<converter type="org.ameba.mapping.ZonedDateTimeConverter">
+				<class-a>java.time.ZonedDateTime</class-a>
+				<class-b>java.time.ZonedDateTime</class-b>
+			</converter>
+			<converter type="org.openwms.core.configuration.impl.PreferenceConverter">
+				<class-a>org.openwms.core.configuration.impl.file.GenericPreference</class-a>
+				<class-b>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-b>
+			</converter>
+        </custom-converters>
+	</configuration>
+
+	<mapping>
+		<class-a>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-a>
+		<class-b>org.openwms.core.configuration.api.UserPreferenceVO</class-b>
+		<field>
+			<a is-accessible="true">pKey</a>
+			<b is-accessible="true">pKey</b>
+		</field>
+		<field>
+			<a is-accessible="true">key</a>
+			<b is-accessible="true">key</b>
+		</field>
+		<field>
+			<a is-accessible="true">owner</a>
+			<b is-accessible="true">owner</b>
+		</field>
+		<field>
+			<a is-accessible="true">description</a>
+			<b is-accessible="true">description</b>
+		</field>
+		<field>
+			<a is-accessible="true">val</a>
+			<b is-accessible="true">val</b>
+		</field>
+	</mapping>
+
+</mappings>

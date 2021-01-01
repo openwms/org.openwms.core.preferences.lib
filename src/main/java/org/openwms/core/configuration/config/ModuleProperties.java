@@ -13,37 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.configuration.config;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * A PreferenceType.
+ * A ModuleProperties defines module specific Spring Boot properties.
  *
  * @author Heiko Scherrer
  */
-public enum PreferenceType {
+@ConfigurationProperties(prefix = "openwms.core.config")
+public class ModuleProperties {
 
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
+    /** Spring resource location to load the initial preferences from. */
+    private String initialProperties = "classpath:initial-preferences.xml";
 
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
+    public String getInitialProperties() {
+        return initialProperties;
     }
 
-    public String getClazz() {
-        return clazz;
+    public void setInitialProperties(String initialProperties) {
+        this.initialProperties = initialProperties;
     }
 }

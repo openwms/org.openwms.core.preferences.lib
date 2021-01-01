@@ -13,37 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.configuration.impl.jpa;
+
+import java.util.List;
 
 /**
- * A PreferenceType.
+ * A PreferenceRepositoryCustom defines additional custom methods to search preferences by class type.
  *
  * @author Heiko Scherrer
  */
-public enum PreferenceType {
+interface PreferenceRepositoryCustom {
 
-    /** Float presentation. */
-    FLOAT(Float.class.getName()),
-
-    /** String representation. */
-    STRING(String.class.getName()),
-
-    /** Integer representation. */
-    INT(Integer.class.getName()),
-
-    /** Any Object. */
-    OBJECT(Object.class.getName()),
-
-    /** Boolean type. */
-    BOOL(Boolean.class.getName());
-
-    private final String clazz;
-
-    PreferenceType(String clazz) {
-        this.clazz = clazz;
-    }
-
-    public String getClazz() {
-        return clazz;
-    }
+    /**
+     * Find and return all preferences that are of the given {@code clazz} type.
+     *
+     * @param clazz A subclass of {@link PreferenceEO} to search for
+     * @param <T> Any type of {@link PreferenceEO}
+     * @return A list of all preferences or an empty list, never {@literal null}
+     */
+    <T extends PreferenceEO> List<T> findByType(Class<T> clazz);
 }
