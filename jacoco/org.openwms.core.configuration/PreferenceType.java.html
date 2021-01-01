@@ -20,26 +20,31 @@ package org.openwms.core.configuration;
  *
  * @author Heiko Scherrer
  */
-<span class="nc" id="L23">public enum PreferenceType {</span>
+<span class="fc" id="L23">public enum PreferenceType {</span>
 
-    /**
-     * Float presentation.
-     */
-<span class="nc" id="L28">    FLOAT,</span>
+    /** Float presentation. */
+<span class="fc" id="L26">    FLOAT(Float.class.getName()),</span>
 
-    /**
-     * String representation.
-     */
-<span class="nc" id="L33">    STRING,</span>
+    /** String representation. */
+<span class="fc" id="L29">    STRING(String.class.getName()),</span>
 
-    /**
-     * Integer representation.
-     */
-<span class="nc" id="L38">    INT,</span>
+    /** Integer representation. */
+<span class="fc" id="L32">    INT(Integer.class.getName()),</span>
 
-    /**
-     * Any Object.
-     */
-<span class="nc" id="L43">    OBJECT</span>
+    /** Any Object. */
+<span class="fc" id="L35">    OBJECT(Object.class.getName()),</span>
+
+    /** Boolean type. */
+<span class="fc" id="L38">    BOOL(Boolean.class.getName());</span>
+
+    private final String clazz;
+
+<span class="fc" id="L42">    PreferenceType(String clazz) {</span>
+<span class="fc" id="L43">        this.clazz = clazz;</span>
+<span class="fc" id="L44">    }</span>
+
+    public String getClazz() {
+<span class="fc" id="L47">        return clazz;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

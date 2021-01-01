@@ -1,6 +1,1 @@
-generic_preference
-cor_app_preference
-cor_module_preference
-cor_role_preference
-cor_user_preference
-cor_module
+cor_pref_preference

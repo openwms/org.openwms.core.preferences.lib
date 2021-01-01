@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferencesServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.configuration.impl.jpa</a> &gt; <span class="el_source">PreferencesServiceImpl.java</span></div><h1>PreferencesServiceImpl.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2020 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.configuration.impl.jpa;
+
+import org.ameba.annotation.TxService;
+import org.ameba.exception.NotFoundException;
+import org.ameba.mapping.BeanMapper;
+import org.openwms.core.configuration.PreferencesService;
+import org.openwms.core.configuration.PropertyScope;
+import org.openwms.core.configuration.impl.file.GenericPreference;
+import org.openwms.core.configuration.impl.file.PreferenceDao;
+import org.openwms.core.configuration.impl.file.PreferenceKey;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+
+/**
+ * A PreferencesServiceImpl is a transactional Spring powered service implementation to manage {@code Preferences}.
+ *
+ * @author Heiko Scherrer
+ */
+@Validated
+@TxService
+class PreferencesServiceImpl implements PreferencesService {
+
+    private final PreferenceDao fileDao;
+    private final PreferenceRepository preferenceRepository;
+    private final BeanMapper mapper;
+
+<span class="fc" id="L52">    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper) {</span>
+<span class="fc" id="L53">        this.fileDao = fileDao;</span>
+<span class="fc" id="L54">        this.preferenceRepository = preferenceRepository;</span>
+<span class="fc" id="L55">        this.mapper = mapper;</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;PreferenceEO&gt; findAll() {
+<span class="nc" id="L63">        return preferenceRepository.findAll();</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Collection&lt;PreferenceEO&gt; findAll(@NotEmpty String owner, @NotNull PropertyScope scope) {
+<span class="nc" id="L71">        Collection&lt;PreferenceEO&gt; result = preferenceRepository.findAllByOwnerAndAndScope(owner, scope);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
+    }
+
+    @Override
+    public PreferenceEO findBy(@NotEmpty String pKey) {
+<span class="nc" id="L77">        return preferenceRepository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey)));</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
+<span class="nc" id="L85">        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with owner [%s], scope [%s] and key [%s] does not exist&quot;, owner, scope, key)));</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference) {
+<span class="nc" id="L93">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
+<span class="nc" id="L95">            throw new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey));</span>
+        }
+<span class="nc" id="L97">        PreferenceEO eo = eoOpt.get();</span>
+<span class="nc" id="L98">        return preferenceRepository.save(mapper.mapFromTo(preference, eo));</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException when {@code preference} is {@literal null}
+    @Override
+    public void delete(AbstractPreferenceEO preference) {
+        Assert.notNull(preference, &quot;Not allowed to call remove with a NULL argument&quot;);
+        preferenceRepository.delete(preference);
+    }
+     */
+
+    /**
+     *
+     */
+    @Override
+    public void reloadInitialPreferences() {
+<span class="fc" id="L117">        mergeApplicationProperties();</span>
+<span class="fc" id="L118">    }</span>
+
+    /**
+     *
+     */
+    private void mergeApplicationProperties() {
+<span class="fc" id="L124">        List&lt;GenericPreference&gt; fromFile = fileDao.findAll();</span>
+<span class="fc" id="L125">        Map&lt;PreferenceKey, PreferenceEO&gt; persistedPrefs = preferenceRepository.findAll().stream()</span>
+<span class="pc" id="L126">                .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -&gt; p));</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (GenericPreference pref : fromFile) {</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            if (!persistedPrefs.containsKey(pref.getPrefKey())) {</span>
+<span class="fc" id="L129">                preferenceRepository.save(mapper.map(pref, PreferenceEO.class));</span>
+            }
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
