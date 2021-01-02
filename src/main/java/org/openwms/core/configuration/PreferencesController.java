@@ -22,6 +22,7 @@ import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -93,6 +94,14 @@ public class PreferencesController {
             @RequestBody PreferenceVO preference
     ) {
         preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
+    ResponseEntity<Void> delete(
+            @PathVariable("pKey") String pKey
+    ) {
+        preferencesService.delete(pKey);
         return ResponseEntity.noContent().build();
     }
 }

@@ -72,7 +72,7 @@ public interface PreferencesApi {
      * @param pKey The persistent key of the preference to update
      */
     @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
-    <T extends PreferenceVO<T>> ResponseEntity<Void> delete(
+    ResponseEntity<Void> delete(
             @PathVariable("pKey") String pKey
     );
 }
