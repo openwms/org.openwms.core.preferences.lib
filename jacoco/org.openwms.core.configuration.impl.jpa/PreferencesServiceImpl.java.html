@@ -72,9 +72,12 @@ class PreferencesServiceImpl implements PreferencesService {
 <span class="nc bnc" id="L72" title="All 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PreferenceEO findBy(@NotEmpty String pKey) {
-<span class="nc" id="L77">        return preferenceRepository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey)));</span>
+<span class="nc" id="L80">        return preferenceRepository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey)));</span>
     }
 
     /**
@@ -82,7 +85,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
-<span class="nc" id="L85">        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with owner [%s], scope [%s] and key [%s] does not exist&quot;, owner, scope, key)));</span>
+<span class="nc" id="L88">        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with owner [%s], scope [%s] and key [%s] does not exist&quot;, owner, scope, key)));</span>
     }
 
     /**
@@ -90,45 +93,44 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference) {
-<span class="nc" id="L93">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
-<span class="nc" id="L95">            throw new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey));</span>
+<span class="nc" id="L96">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
+<span class="nc" id="L98">            throw new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey));</span>
         }
-<span class="nc" id="L97">        PreferenceEO eo = eoOpt.get();</span>
-<span class="nc" id="L98">        return preferenceRepository.save(mapper.mapFromTo(preference, eo));</span>
+<span class="nc" id="L100">        PreferenceEO eo = eoOpt.get();</span>
+<span class="nc" id="L101">        return preferenceRepository.save(mapper.mapFromTo(preference, eo));</span>
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException when {@code preference} is {@literal null}
-    @Override
-    public void delete(AbstractPreferenceEO preference) {
-        Assert.notNull(preference, &quot;Not allowed to call remove with a NULL argument&quot;);
-        preferenceRepository.delete(preference);
-    }
      */
+    @Override
+    public void delete(@NotEmpty String pKey) {
+<span class="nc" id="L109">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
+<span class="nc" id="L111">            throw new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey));</span>
+        }
+<span class="nc" id="L113">        PreferenceEO eo = eoOpt.get();</span>
+<span class="nc" id="L114">        preferenceRepository.delete(eo);</span>
+<span class="nc" id="L115">    }</span>
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void reloadInitialPreferences() {
-<span class="fc" id="L117">        mergeApplicationProperties();</span>
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L122">        mergeApplicationProperties();</span>
+<span class="fc" id="L123">    }</span>
 
-    /**
-     *
-     */
     private void mergeApplicationProperties() {
-<span class="fc" id="L124">        List&lt;GenericPreference&gt; fromFile = fileDao.findAll();</span>
-<span class="fc" id="L125">        Map&lt;PreferenceKey, PreferenceEO&gt; persistedPrefs = preferenceRepository.findAll().stream()</span>
-<span class="pc" id="L126">                .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -&gt; p));</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">        for (GenericPreference pref : fromFile) {</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            if (!persistedPrefs.containsKey(pref.getPrefKey())) {</span>
-<span class="fc" id="L129">                preferenceRepository.save(mapper.map(pref, PreferenceEO.class));</span>
+<span class="fc" id="L126">        List&lt;GenericPreference&gt; fromFile = fileDao.findAll();</span>
+<span class="fc" id="L127">        Map&lt;PreferenceKey, PreferenceEO&gt; persistedPrefs = preferenceRepository.findAll().stream()</span>
+<span class="pc" id="L128">                .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -&gt; p));</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        for (GenericPreference pref : fromFile) {</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">            if (!persistedPrefs.containsKey(pref.getPrefKey())) {</span>
+<span class="fc" id="L131">                preferenceRepository.save(mapper.map(pref, PreferenceEO.class));</span>
             }
-<span class="fc" id="L131">        }</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L133">        }</span>
+<span class="fc" id="L134">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
