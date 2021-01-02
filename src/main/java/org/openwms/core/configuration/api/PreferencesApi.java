@@ -17,6 +17,7 @@ package org.openwms.core.configuration.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,5 +64,15 @@ public interface PreferencesApi {
     <T extends PreferenceVO<T>> ResponseEntity<Void> update(
             @PathVariable("pKey") String pKey,
             @RequestBody T preference
+    );
+
+    /**
+     * Delete an existing preference identified by its persistent key.
+     *
+     * @param pKey The persistent key of the preference to update
+     */
+    @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
+    <T extends PreferenceVO<T>> ResponseEntity<Void> delete(
+            @PathVariable("pKey") String pKey
     );
 }
