@@ -42,8 +42,8 @@ public interface PreferencesService {
     /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
      *
-     * @param owner
-     * @param scope
+     * @param owner The owner of the preference
+     * @param scope What kind of preference it is
      * @return A Collection of preferences of type T, never {@literal null}
      */
     Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope);
@@ -59,8 +59,9 @@ public interface PreferencesService {
     /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
      *
-     * @param <T> Any subtype of {@link GenericPreference}
-     * @param clazz The class of preference to search for
+     * @param owner The owner of the preference
+     * @param scope What kind of preference it is
+     * @param key The preference key
      * @return A Collection of preferences of type T, never {@literal null}
      */
     PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key);
@@ -77,9 +78,9 @@ public interface PreferencesService {
     /**
      * Delete an existing {@code Preference}.
      *
-     * @param preference The {@link GenericPreference} to delete
-    void delete(@NotNull AbstractPreferenceEO preference);
+     * @param pKey The persistent identifier of the preference to delete.
      */
+    void delete(@NotEmpty String pKey);
 
     /**
      * Load properties from file and merge them with the ones in the database.

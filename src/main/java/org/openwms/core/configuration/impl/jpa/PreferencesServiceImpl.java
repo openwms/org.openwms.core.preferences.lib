@@ -72,6 +72,9 @@ class PreferencesServiceImpl implements PreferencesService {
         return result == null ? Collections.emptyList() : result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PreferenceEO findBy(@NotEmpty String pKey) {
         return preferenceRepository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("Preference with key [%s] does not exist", pKey)));
@@ -100,26 +103,25 @@ class PreferencesServiceImpl implements PreferencesService {
 
     /**
      * {@inheritDoc}
-     *
-     * @throws IllegalArgumentException when {@code preference} is {@literal null}
-    @Override
-    public void delete(AbstractPreferenceEO preference) {
-        Assert.notNull(preference, "Not allowed to call remove with a NULL argument");
-        preferenceRepository.delete(preference);
-    }
      */
+    @Override
+    public void delete(@NotEmpty String pKey) {
+        Optional<PreferenceEO> eoOpt = preferenceRepository.findBypKey(pKey);
+        if (eoOpt.isEmpty()) {
+            throw new NotFoundException(format("Preference with key [%s] does not exist", pKey));
+        }
+        PreferenceEO eo = eoOpt.get();
+        preferenceRepository.delete(eo);
+    }
 
     /**
-     *
+     * {@inheritDoc}
      */
     @Override
     public void reloadInitialPreferences() {
         mergeApplicationProperties();
     }
 
-    /**
-     *
-     */
     private void mergeApplicationProperties() {
         List<GenericPreference> fromFile = fileDao.findAll();
         Map<PreferenceKey, PreferenceEO> persistedPrefs = preferenceRepository.findAll().stream()
