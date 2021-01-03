@@ -16,6 +16,7 @@
 package org.openwms.core.configuration.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.ameba.annotation.EnableAspects;
 import org.ameba.app.BaseConfiguration;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
@@ -43,6 +44,7 @@ import javax.validation.Validator;
  */
 @Configuration
 @EnableWebFlux
+@EnableAspects
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
 public class PreferencesModuleConfiguration {

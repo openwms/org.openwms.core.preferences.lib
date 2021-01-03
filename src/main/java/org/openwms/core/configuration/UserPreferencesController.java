@@ -17,16 +17,12 @@ package org.openwms.core.configuration;
 
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
-import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,47 +36,33 @@ import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
  * @author Heiko Scherrer
  */
 @MeasuredRestController
-public class PreferencesController {
+public class UserPreferencesController {
 
     private final PreferencesService preferencesService;
     private final BeanMapper mapper;
 
-    public PreferencesController(PreferencesService preferencesService, BeanMapper mapper) {
+    public UserPreferencesController(PreferencesService preferencesService, BeanMapper mapper) {
         this.preferencesService = preferencesService;
         this.mapper = mapper;
     }
 
-    @GetMapping(value = API_PREFERENCES)
-    public Flux<PreferenceVO> findAll() {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), PreferenceVO.class)).log();
+    @GetMapping(value = API_PREFERENCES, params = "user")
+    public Flux<UserPreferenceVO> findByUser(
+            @RequestParam("user") String user
+    ) {
+        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user, PropertyScope.USER)), UserPreferenceVO.class)).log();
     }
 
-    @GetMapping(value = API_PREFERENCES + "/{pKey}")
-    public ResponseEntity<Mono<UserPreferenceVO>> findByPKey(
-            @PathVariable("pKey") String pKey
+    @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
+    public ResponseEntity<Mono<UserPreferenceVO>> findByUserAndKey(
+            @RequestParam("user") String user,
+            @RequestParam("key") String key
     ) {
-        PreferenceEO eo = preferencesService.findBy(pKey);
+        PreferenceEO eo = preferencesService.findBy(user, PropertyScope.USER, key);
         if (eo == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());
         }
         UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);
         return ResponseEntity.ok(Mono.just(p));
-    }
-
-    @PutMapping(value = API_PREFERENCES + "/{pKey}")
-    public ResponseEntity<Void> update(
-            @PathVariable("pKey") String pKey,
-            @RequestBody PreferenceVO preference
-    ) {
-        preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
-    ResponseEntity<Void> delete(
-            @PathVariable("pKey") String pKey
-    ) {
-        preferencesService.delete(pKey);
-        return ResponseEntity.noContent().build();
     }
 }

@@ -44,6 +44,9 @@ public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
     @JsonProperty("value")
     private Object val;
 
+    @JsonProperty("type")
+    private String type;
+
     public String getpKey() {
         return pKey;
     }
@@ -84,6 +87,14 @@ public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
         this.val = val;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,11 +105,12 @@ public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
                 Objects.equals(key, that.key) &&
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(val, that.val);
+                Objects.equals(val, that.val) &&
+                Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, key, owner, description, val);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, type);
     }
 }

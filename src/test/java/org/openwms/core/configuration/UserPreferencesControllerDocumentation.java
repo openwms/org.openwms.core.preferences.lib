@@ -30,13 +30,13 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
 
 /**
- * A ConfigurationControllerDocumentation.
+ * A UserPreferencesControllerDocumentation.
  *
  * @author Heiko Scherrer
  */
 @CoreApplicationTest
 @Sql(scripts = "classpath:test.sql")
-class ConfigurationControllerDocumentation extends DefaultTestProfile {
+class UserPreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
     private ApplicationContext context;
@@ -49,27 +49,6 @@ class ConfigurationControllerDocumentation extends DefaultTestProfile {
                 .configureClient()
                 .filter(documentationConfiguration(restDocumentation))
                 .build();
-    }
-
-    @Test
-    void shall_return_all_preferences() {
-        this.client
-                .get()
-                .uri(API_PREFERENCES)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findall", preprocessResponse(prettyPrint()))
-                )
-                .jsonPath("$[0].value").isEqualTo("en_US")
-                .jsonPath("$[0].floatValue").isEqualTo(22.1f)
-                .jsonPath("$[0].description").isEqualTo("description")
-                .jsonPath("$[0].minimum").isEqualTo(10)
-                .jsonPath("$[0].maximum").isEqualTo(100)
-                .jsonPath("$[0].type").isEqualTo("APPLICATION")
-                .jsonPath("$[0].key").isEqualTo("defaultLanguage")
-        ;
     }
 
     @Test

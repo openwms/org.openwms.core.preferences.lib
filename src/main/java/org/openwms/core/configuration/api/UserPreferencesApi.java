@@ -50,7 +50,7 @@ public interface UserPreferencesApi {
      * @return One single instance
      */
     @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
-    <T extends PreferenceVO<T>> Mono<T> findBy(
+    <T extends PreferenceVO<T>> Mono<T> findByUserAndKey(
             @RequestParam("user") String user,
             @RequestParam("key") String key
     );

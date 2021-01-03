@@ -15,6 +15,7 @@
     <logger name="org.hibernate.type" level="OFF"/>
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.openwms" level="DEBUG"/>
+    <logger name="reactor" level="WARN"/>
 
     <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>

@@ -15,6 +15,8 @@
  */
 package org.openwms.core.configuration;
 
+import java.util.Arrays;
+
 /**
  * A PreferenceType.
  *
@@ -45,5 +47,9 @@ public enum PreferenceType {
 
     public String getClazz() {
         return clazz;
+    }
+
+    public static PreferenceType getForClazz(String clazz) {
+        return Arrays.stream(PreferenceType.values()).filter(p -> p.getClazz().equals(clazz)).findFirst().orElse(null);
     }
 }

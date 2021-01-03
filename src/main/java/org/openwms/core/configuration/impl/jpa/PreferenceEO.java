@@ -21,6 +21,7 @@ import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.impl.file.PreferenceKey;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -84,7 +85,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     private String maxValue;
 
     /** Type of this preference. */
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = PreferenceTypeConverter.class)
     @NotNull
     @Column(name = "C_TYPE", nullable = false)
     protected PreferenceType type;
