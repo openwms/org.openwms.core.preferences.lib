@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,46 +45,26 @@ public class PreferencesController {
     private final PreferencesService preferencesService;
     private final BeanMapper mapper;
 
-<span class="fc" id="L49">    public PreferencesController(PreferencesService preferencesService, BeanMapper mapper) {</span>
-<span class="fc" id="L50">        this.preferencesService = preferencesService;</span>
-<span class="fc" id="L51">        this.mapper = mapper;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L48">    public PreferencesController(PreferencesService preferencesService, BeanMapper mapper) {</span>
+<span class="fc" id="L49">        this.preferencesService = preferencesService;</span>
+<span class="fc" id="L50">        this.mapper = mapper;</span>
+<span class="fc" id="L51">    }</span>
 
     @GetMapping(value = API_PREFERENCES)
-    public Flux&lt;UserPreferenceVO&gt; findAll() {
-<span class="nc" id="L56">        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), UserPreferenceVO.class)).log();</span>
-    }
-
-    @GetMapping(value = API_PREFERENCES, params = &quot;user&quot;)
-    public Flux&lt;UserPreferenceVO&gt; findByUser(
-            @RequestParam(&quot;user&quot;) String user
-    ) {
-<span class="nc" id="L63">        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user, PropertyScope.USER)), UserPreferenceVO.class)).log();</span>
-    }
-
-    @GetMapping(value = API_PREFERENCES, params = {&quot;user&quot;, &quot;key&quot;})
-    public ResponseEntity&lt;Mono&lt;UserPreferenceVO&gt;&gt; findBy(
-            @RequestParam(&quot;user&quot;) String user,
-            @RequestParam(&quot;key&quot;) String key
-    ) {
-<span class="nc" id="L71">        PreferenceEO eo = preferencesService.findBy(user, PropertyScope.USER, key);</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (eo == null) {</span>
-<span class="nc" id="L73">            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());</span>
-        }
-<span class="nc" id="L75">        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);</span>
-<span class="nc" id="L76">        return ResponseEntity.ok(Mono.just(p));</span>
+    public Flux&lt;PreferenceVO&gt; findAll() {
+<span class="nc" id="L55">        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), PreferenceVO.class)).log();</span>
     }
 
     @GetMapping(value = API_PREFERENCES + &quot;/{pKey}&quot;)
     public ResponseEntity&lt;Mono&lt;UserPreferenceVO&gt;&gt; findByPKey(
             @PathVariable(&quot;pKey&quot;) String pKey
     ) {
-<span class="nc" id="L83">        PreferenceEO eo = preferencesService.findBy(pKey);</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (eo == null) {</span>
-<span class="nc" id="L85">            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());</span>
+<span class="nc" id="L62">        PreferenceEO eo = preferencesService.findBy(pKey);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (eo == null) {</span>
+<span class="nc" id="L64">            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());</span>
         }
-<span class="nc" id="L87">        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);</span>
-<span class="nc" id="L88">        return ResponseEntity.ok(Mono.just(p));</span>
+<span class="nc" id="L66">        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);</span>
+<span class="nc" id="L67">        return ResponseEntity.ok(Mono.just(p));</span>
     }
 
     @PutMapping(value = API_PREFERENCES + &quot;/{pKey}&quot;)
@@ -93,16 +72,16 @@ public class PreferencesController {
             @PathVariable(&quot;pKey&quot;) String pKey,
             @RequestBody PreferenceVO preference
     ) {
-<span class="nc" id="L96">        preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));</span>
-<span class="nc" id="L97">        return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L75">        preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));</span>
+<span class="nc" id="L76">        return ResponseEntity.noContent().build();</span>
     }
 
     @DeleteMapping(value = API_PREFERENCES + &quot;/{pKey}&quot;)
     ResponseEntity&lt;Void&gt; delete(
             @PathVariable(&quot;pKey&quot;) String pKey
     ) {
-<span class="nc" id="L104">        preferencesService.delete(pKey);</span>
-<span class="nc" id="L105">        return ResponseEntity.noContent().build();</span>
+<span class="nc" id="L83">        preferencesService.delete(pKey);</span>
+<span class="nc" id="L84">        return ResponseEntity.noContent().build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

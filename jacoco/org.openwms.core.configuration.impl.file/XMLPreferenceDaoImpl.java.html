@@ -40,9 +40,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them internally in a Map. An initial preferences file can be configured
- * with a property &lt;i&gt;openwms.core.config.initial-properties&lt;/i&gt; in the application.properties file. &lt;p&gt; On a {@link
- * ReloadFilePreferencesEvent} the internal Map is cleared and reloaded. &lt;/p&gt;
+ * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them in-memory in a Map. An initial preferences file can be configured
+ * with a property {@code openwms.core.config.initial-properties} in the application.properties file.
+ *
+ * &lt;p&gt;On a {@link ReloadFilePreferencesEvent} the internal Map is cleared and reloaded.&lt;/p&gt;
  *
  * @author Heiko Scherrer
  * @see org.openwms.core.event.ReloadFilePreferencesEvent
@@ -51,78 +52,74 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener&lt;ReloadFilePreferencesEvent&gt; {
 
-<span class="fc" id="L54">    private static final Logger LOGGER = LoggerFactory.getLogger(XMLPreferenceDaoImpl.class);</span>
+<span class="fc" id="L55">    private static final Logger LOGGER = LoggerFactory.getLogger(XMLPreferenceDaoImpl.class);</span>
     private final ApplicationContext ctx;
     private final Unmarshaller unmarshaller;
     @Value(&quot;${openwms.core.config.initial-properties}&quot;)
     private String fileName;
-    private volatile Resource fileResource;
-    private volatile Preferences preferences;
-<span class="fc" id="L61">    private Map&lt;PreferenceKey, GenericPreference&gt; prefs = new ConcurrentHashMap&lt;&gt;();</span>
+    private Resource fileResource;
+    private Preferences preferences;
+<span class="fc" id="L62">    private final Map&lt;PreferenceKey, GenericPreference&gt; prefs = new ConcurrentHashMap&lt;&gt;();</span>
 
-<span class="fc" id="L63">    XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {</span>
-<span class="fc" id="L64">        this.ctx = ctx;</span>
-<span class="fc" id="L65">        this.unmarshaller = unmarshaller;</span>
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L64">    XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {</span>
+<span class="fc" id="L65">        this.ctx = ctx;</span>
+<span class="fc" id="L66">        this.unmarshaller = unmarshaller;</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * {@inheritDoc}
-     *
-     * @see PreferenceDao#findAll()
      */
     @Override
     public List&lt;GenericPreference&gt; findAll() {
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        return preferences == null ? Collections.emptyList() : preferences.getAll();</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        return preferences == null ? Collections.emptyList() : preferences.getAll();</span>
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
      */
     @Override
     public void onApplicationEvent(ReloadFilePreferencesEvent event) {
-<span class="nc" id="L85">        reloadResources();</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L82">        reloadResources();</span>
+<span class="nc" id="L83">    }</span>
 
     /**
      * On bean initialization load all preferences into a Map.
      */
     @PostConstruct
     private void loadResources() {
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (initialPropertiesExist()) {</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (initialPropertiesExist()) {</span>
             try {
-<span class="fc" id="L95">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
-<span class="fc bfc" id="L96" title="All 2 branches covered.">                for (GenericPreference pref : preferences.getAll()) {</span>
-<span class="pc bpc" id="L97" title="1 of 2 branches missed.">                    if (prefs.containsKey(pref.getPrefKey())) {</span>
-<span class="nc" id="L98">                        throw new NoUniqueResultException(&quot;Preference with key &quot; + pref.getPrefKey() + &quot; already loaded.&quot;);</span>
+<span class="fc" id="L92">                preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">                for (GenericPreference pref : preferences.getAll()) {</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">                    if (prefs.containsKey(pref.getPrefKey())) {</span>
+<span class="nc" id="L95">                        throw new NoUniqueResultException(&quot;Preference with key &quot; + pref.getPrefKey() + &quot; already loaded.&quot;);</span>
                     }
-<span class="fc" id="L100">                    prefs.put(pref.getPrefKey(), pref);</span>
-<span class="fc" id="L101">                }</span>
-<span class="fc" id="L102">                LOGGER.debug(&quot;Loaded {} properties into cache&quot;, preferences.getAll().size());</span>
-<span class="nc" id="L103">            } catch (XmlMappingException xme) {</span>
-<span class="nc" id="L104">                throw new IntegrationLayerException(&quot;Exception while unmarshalling from &quot; + fileName, xme);</span>
-<span class="nc" id="L105">            } catch (IOException ioe) {</span>
-<span class="nc" id="L106">                throw new ResourceNotFoundException(&quot;Exception while accessing the resource with name &quot; + fileName, ioe);</span>
-<span class="fc" id="L107">            }</span>
+<span class="fc" id="L97">                    prefs.put(pref.getPrefKey(), pref);</span>
+<span class="fc" id="L98">                }</span>
+<span class="fc" id="L99">                LOGGER.debug(&quot;Loaded {} properties into cache&quot;, preferences.getAll().size());</span>
+<span class="nc" id="L100">            } catch (XmlMappingException xme) {</span>
+<span class="nc" id="L101">                throw new IntegrationLayerException(&quot;Exception while unmarshalling from &quot; + fileName, xme);</span>
+<span class="nc" id="L102">            } catch (IOException ioe) {</span>
+<span class="nc" id="L103">                throw new ResourceNotFoundException(&quot;Exception while accessing the resource with name &quot; + fileName, ioe);</span>
+<span class="fc" id="L104">            }</span>
         }
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L106">    }</span>
 
     private boolean initialPropertiesExist() {
-<span class="pc bpc" id="L112" title="2 of 4 branches missed.">        if (fileName != null &amp;&amp; !fileName.isEmpty()) {</span>
-<span class="fc" id="L113">            fileResource = ctx.getResource(fileName);</span>
+<span class="pc bpc" id="L109" title="2 of 4 branches missed.">        if (fileName != null &amp;&amp; !fileName.isEmpty()) {</span>
+<span class="fc" id="L110">            fileResource = ctx.getResource(fileName);</span>
         }
-<span class="pc bpc" id="L115" title="2 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
-<span class="nc" id="L116">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
-<span class="nc" id="L117">            return false;</span>
+<span class="pc bpc" id="L112" title="2 of 4 branches missed.">        if (fileResource == null || !fileResource.exists()) {</span>
+<span class="nc" id="L113">            LOGGER.debug(&quot;File to load initial preferences does not exist or is not preset. Filename [{}]&quot;, fileName);</span>
+<span class="nc" id="L114">            return false;</span>
         }
-<span class="fc" id="L119">        return true;</span>
+<span class="fc" id="L116">        return true;</span>
     }
 
     private void reloadResources() {
-<span class="nc" id="L123">        preferences = null;</span>
-<span class="nc" id="L124">        prefs.clear();</span>
-<span class="nc" id="L125">        loadResources();</span>
-<span class="nc" id="L126">    }</span>
+<span class="nc" id="L120">        preferences = null;</span>
+<span class="nc" id="L121">        prefs.clear();</span>
+<span class="nc" id="L122">        loadResources();</span>
+<span class="nc" id="L123">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

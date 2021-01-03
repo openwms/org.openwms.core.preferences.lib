@@ -21,6 +21,7 @@ import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.impl.file.PreferenceKey;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -84,90 +85,90 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     private String maxValue;
 
     /** Type of this preference. */
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = PreferenceTypeConverter.class)
     @NotNull
     @Column(name = &quot;C_TYPE&quot;, nullable = false)
     protected PreferenceType type;
 
     public String getKey() {
-<span class="nc" id="L93">        return key;</span>
+<span class="nc" id="L94">        return key;</span>
     }
 
     public void setKey(String key) {
-<span class="nc" id="L97">        this.key = key;</span>
-<span class="nc" id="L98">    }</span>
+<span class="nc" id="L98">        this.key = key;</span>
+<span class="nc" id="L99">    }</span>
 
     public String getOwner() {
-<span class="nc" id="L101">        return owner;</span>
+<span class="nc" id="L102">        return owner;</span>
     }
 
     public void setOwner(String owner) {
-<span class="nc" id="L105">        this.owner = owner;</span>
-<span class="nc" id="L106">    }</span>
+<span class="nc" id="L106">        this.owner = owner;</span>
+<span class="nc" id="L107">    }</span>
 
     public String getDescription() {
-<span class="nc" id="L109">        return description;</span>
+<span class="nc" id="L110">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="nc" id="L113">        this.description = description;</span>
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L114">        this.description = description;</span>
+<span class="nc" id="L115">    }</span>
 
     public String getVal() {
-<span class="nc" id="L117">        return val;</span>
+<span class="nc" id="L118">        return val;</span>
     }
 
     public void setVal(String val) {
-<span class="nc" id="L121">        this.val = val;</span>
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L122">        this.val = val;</span>
+<span class="nc" id="L123">    }</span>
 
     public boolean isFromFile() {
-<span class="nc" id="L125">        return fromFile;</span>
+<span class="nc" id="L126">        return fromFile;</span>
     }
 
     public void setFromFile(boolean fromFile) {
-<span class="nc" id="L129">        this.fromFile = fromFile;</span>
-<span class="nc" id="L130">    }</span>
+<span class="nc" id="L130">        this.fromFile = fromFile;</span>
+<span class="nc" id="L131">    }</span>
 
     public PropertyScope getScope() {
-<span class="nc" id="L133">        return scope;</span>
+<span class="nc" id="L134">        return scope;</span>
     }
 
     public void setScope(PropertyScope scope) {
-<span class="nc" id="L137">        this.scope = scope;</span>
-<span class="nc" id="L138">    }</span>
+<span class="nc" id="L138">        this.scope = scope;</span>
+<span class="nc" id="L139">    }</span>
 
     public String getDefValue() {
-<span class="nc" id="L141">        return defValue;</span>
+<span class="nc" id="L142">        return defValue;</span>
     }
 
     public void setDefValue(String defValue) {
-<span class="nc" id="L145">        this.defValue = defValue;</span>
-<span class="nc" id="L146">    }</span>
+<span class="nc" id="L146">        this.defValue = defValue;</span>
+<span class="nc" id="L147">    }</span>
 
     public String getMinValue() {
-<span class="nc" id="L149">        return minValue;</span>
+<span class="nc" id="L150">        return minValue;</span>
     }
 
     public void setMinValue(String minValue) {
-<span class="nc" id="L153">        this.minValue = minValue;</span>
-<span class="nc" id="L154">    }</span>
+<span class="nc" id="L154">        this.minValue = minValue;</span>
+<span class="nc" id="L155">    }</span>
 
     public String getMaxValue() {
-<span class="nc" id="L157">        return maxValue;</span>
+<span class="nc" id="L158">        return maxValue;</span>
     }
 
     public void setMaxValue(String maxValue) {
-<span class="nc" id="L161">        this.maxValue = maxValue;</span>
-<span class="nc" id="L162">    }</span>
+<span class="nc" id="L162">        this.maxValue = maxValue;</span>
+<span class="nc" id="L163">    }</span>
 
     public PreferenceType getType() {
-<span class="nc" id="L165">        return type;</span>
+<span class="nc" id="L166">        return type;</span>
     }
 
     public void setType(PreferenceType type) {
-<span class="nc" id="L169">        this.type = type;</span>
-<span class="nc" id="L170">    }</span>
+<span class="nc" id="L170">        this.type = type;</span>
+<span class="nc" id="L171">    }</span>
 
     /**
      * Return a {@link PreferenceKey} of this preference.
@@ -175,27 +176,27 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
      * @return A {@link PreferenceKey}
      */
     public PreferenceKey getPrefKey() {
-<span class="nc" id="L178">        return new PreferenceKey(this.owner, this.key, this.scope);</span>
+<span class="nc" id="L179">        return new PreferenceKey(this.owner, this.key, this.scope);</span>
     }
 
-<span class="fc" id="L181">    public PreferenceEO() {</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L182">    public PreferenceEO() {</span>
+<span class="fc" id="L183">    }</span>
 
-<span class="fc" id="L184">    private PreferenceEO(Builder builder) {</span>
-<span class="fc" id="L185">        key = builder.key;</span>
-<span class="fc" id="L186">        owner = builder.owner;</span>
-<span class="fc" id="L187">        description = builder.description;</span>
-<span class="fc" id="L188">        fromFile = builder.fromFile;</span>
-<span class="fc" id="L189">        scope = builder.scope;</span>
-<span class="fc" id="L190">        val = builder.val;</span>
-<span class="fc" id="L191">        defValue = builder.defValue;</span>
-<span class="fc" id="L192">        minValue = builder.minValue;</span>
-<span class="fc" id="L193">        maxValue = builder.maxValue;</span>
-<span class="fc" id="L194">        type = builder.type;</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L185">    private PreferenceEO(Builder builder) {</span>
+<span class="fc" id="L186">        key = builder.key;</span>
+<span class="fc" id="L187">        owner = builder.owner;</span>
+<span class="fc" id="L188">        description = builder.description;</span>
+<span class="fc" id="L189">        fromFile = builder.fromFile;</span>
+<span class="fc" id="L190">        scope = builder.scope;</span>
+<span class="fc" id="L191">        val = builder.val;</span>
+<span class="fc" id="L192">        defValue = builder.defValue;</span>
+<span class="fc" id="L193">        minValue = builder.minValue;</span>
+<span class="fc" id="L194">        maxValue = builder.maxValue;</span>
+<span class="fc" id="L195">        type = builder.type;</span>
+<span class="fc" id="L196">    }</span>
 
     public static Builder newBuilder() {
-<span class="fc" id="L198">        return new Builder();</span>
+<span class="fc" id="L199">        return new Builder();</span>
     }
 
     public static final class Builder {
@@ -214,57 +215,57 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         }
 
         public Builder key(String val) {
-<span class="fc" id="L217">            key = val;</span>
-<span class="fc" id="L218">            return this;</span>
+<span class="fc" id="L218">            key = val;</span>
+<span class="fc" id="L219">            return this;</span>
         }
 
         public Builder owner(String val) {
-<span class="nc" id="L222">            owner = val;</span>
-<span class="nc" id="L223">            return this;</span>
+<span class="nc" id="L223">            owner = val;</span>
+<span class="nc" id="L224">            return this;</span>
         }
 
         public Builder description(String val) {
-<span class="fc" id="L227">            description = val;</span>
-<span class="fc" id="L228">            return this;</span>
+<span class="fc" id="L228">            description = val;</span>
+<span class="fc" id="L229">            return this;</span>
         }
 
         public Builder fromFile(boolean val) {
-<span class="fc" id="L232">            fromFile = val;</span>
-<span class="fc" id="L233">            return this;</span>
+<span class="fc" id="L233">            fromFile = val;</span>
+<span class="fc" id="L234">            return this;</span>
         }
 
         public Builder scope(@NotNull PropertyScope val) {
-<span class="fc" id="L237">            scope = val;</span>
-<span class="fc" id="L238">            return this;</span>
+<span class="fc" id="L238">            scope = val;</span>
+<span class="fc" id="L239">            return this;</span>
         }
 
         public Builder val(String val) {
-<span class="fc" id="L242">            this.val = val;</span>
-<span class="fc" id="L243">            return this;</span>
+<span class="fc" id="L243">            this.val = val;</span>
+<span class="fc" id="L244">            return this;</span>
         }
 
         public Builder defValue(String val) {
-<span class="nc" id="L247">            defValue = val;</span>
-<span class="nc" id="L248">            return this;</span>
+<span class="nc" id="L248">            defValue = val;</span>
+<span class="nc" id="L249">            return this;</span>
         }
 
         public Builder minValue(String val) {
-<span class="fc" id="L252">            minValue = val;</span>
-<span class="fc" id="L253">            return this;</span>
+<span class="fc" id="L253">            minValue = val;</span>
+<span class="fc" id="L254">            return this;</span>
         }
 
         public Builder maxValue(String val) {
-<span class="fc" id="L257">            maxValue = val;</span>
-<span class="fc" id="L258">            return this;</span>
+<span class="fc" id="L258">            maxValue = val;</span>
+<span class="fc" id="L259">            return this;</span>
         }
 
         public Builder type(@NotNull PreferenceType val) {
-<span class="fc" id="L262">            type = val;</span>
-<span class="fc" id="L263">            return this;</span>
+<span class="fc" id="L263">            type = val;</span>
+<span class="fc" id="L264">            return this;</span>
         }
 
         public PreferenceEO build() {
-<span class="fc" id="L267">            return new PreferenceEO(this);</span>
+<span class="fc" id="L268">            return new PreferenceEO(this);</span>
         }
     }
 }

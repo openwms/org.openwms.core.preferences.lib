@@ -16,6 +16,7 @@
 package org.openwms.core.configuration.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import org.ameba.annotation.EnableAspects;
 import org.ameba.app.BaseConfiguration;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
@@ -43,37 +44,38 @@ import javax.validation.Validator;
  */
 @Configuration
 @EnableWebFlux
+@EnableAspects
 @EnableConfigurationProperties(ModuleProperties.class)
 @Import(BaseConfiguration.class)
-<span class="fc" id="L48">public class PreferencesModuleConfiguration {</span>
+<span class="fc" id="L50">public class PreferencesModuleConfiguration {</span>
 
     @Bean
     LocalServiceInitializer localServiceInitializer(ApplicationContext ctx) {
-<span class="fc" id="L52">        return new LocalServiceInitializer(ctx);</span>
+<span class="fc" id="L54">        return new LocalServiceInitializer(ctx);</span>
     }
 
     @Bean
     MeterRegistryCustomizer&lt;MeterRegistry&gt; metricsCommonTags(@Value(&quot;${spring.application.name}&quot;) String applicationName) {
-<span class="fc" id="L57">        return registry -&gt; registry.config().commonTags(&quot;application&quot;, applicationName);</span>
+<span class="fc" id="L59">        return registry -&gt; registry.config().commonTags(&quot;application&quot;, applicationName);</span>
     }
 
     @Bean
     MethodValidationPostProcessor methodValidationPostProcessor(Validator validatorFactoryBean) {
-<span class="fc" id="L62">        MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();</span>
-<span class="fc" id="L63">        mvpp.setValidator(validatorFactoryBean);</span>
-<span class="fc" id="L64">        return mvpp;</span>
+<span class="fc" id="L64">        MethodValidationPostProcessor mvpp = new MethodValidationPostProcessor();</span>
+<span class="fc" id="L65">        mvpp.setValidator(validatorFactoryBean);</span>
+<span class="fc" id="L66">        return mvpp;</span>
     }
 
     public @Bean
     BeanMapper beanMapper() {
-<span class="fc" id="L69">        return new DozerMapperImpl(&quot;META-INF/dozer/core-prefs-bean-mappings.xml&quot;);</span>
+<span class="fc" id="L71">        return new DozerMapperImpl(&quot;META-INF/dozer/core-prefs-bean-mappings.xml&quot;);</span>
     }
 
     @Bean
     Unmarshaller unmarshaller() {
-<span class="fc" id="L74">        Jaxb2Marshaller um = new Jaxb2Marshaller();</span>
-<span class="fc" id="L75">        um.setContextPath(FilePackage.class.getPackageName());</span>
-<span class="fc" id="L76">        return um;</span>
+<span class="fc" id="L76">        Jaxb2Marshaller um = new Jaxb2Marshaller();</span>
+<span class="fc" id="L77">        um.setContextPath(FilePackage.class.getPackageName());</span>
+<span class="fc" id="L78">        return um;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

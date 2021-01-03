@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.ameba.http.AbstractBase;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -27,7 +28,7 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-<span class="nc" id="L30">public class PreferenceVO&lt;T extends PreferenceVO&lt;T&gt;&gt; extends AbstractBase {</span>
+<span class="nc" id="L31">public class PreferenceVO&lt;T extends PreferenceVO&lt;T&gt;&gt; extends AbstractBase {</span>
 
     @JsonProperty(&quot;pKey&quot;)
     private String pKey;
@@ -42,64 +43,76 @@ import java.util.Objects;
     private String description;
 
     @JsonProperty(&quot;value&quot;)
-    private Object val;
+    private Serializable val;
+
+    @JsonProperty(&quot;type&quot;)
+    private String type;
 
     public String getpKey() {
-<span class="nc" id="L48">        return pKey;</span>
+<span class="nc" id="L52">        return pKey;</span>
     }
 
     public void setpKey(String pKey) {
-<span class="nc" id="L52">        this.pKey = pKey;</span>
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L56">        this.pKey = pKey;</span>
+<span class="nc" id="L57">    }</span>
 
     public String getKey() {
-<span class="nc" id="L56">        return key;</span>
+<span class="nc" id="L60">        return key;</span>
     }
 
     public void setKey(String key) {
-<span class="nc" id="L60">        this.key = key;</span>
-<span class="nc" id="L61">    }</span>
+<span class="nc" id="L64">        this.key = key;</span>
+<span class="nc" id="L65">    }</span>
 
     public String getOwner() {
-<span class="nc" id="L64">        return owner;</span>
+<span class="nc" id="L68">        return owner;</span>
     }
 
     public void setOwner(String owner) {
-<span class="nc" id="L68">        this.owner = owner;</span>
-<span class="nc" id="L69">    }</span>
+<span class="nc" id="L72">        this.owner = owner;</span>
+<span class="nc" id="L73">    }</span>
 
     public String getDescription() {
-<span class="nc" id="L72">        return description;</span>
+<span class="nc" id="L76">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="nc" id="L76">        this.description = description;</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L80">        this.description = description;</span>
+<span class="nc" id="L81">    }</span>
 
-    public Object getVal() {
-<span class="nc" id="L80">        return val;</span>
+    public Serializable getVal() {
+<span class="nc" id="L84">        return val;</span>
     }
 
-    public void setVal(Object val) {
-<span class="nc" id="L84">        this.val = val;</span>
-<span class="nc" id="L85">    }</span>
+    public void setVal(Serializable val) {
+<span class="nc" id="L88">        this.val = val;</span>
+<span class="nc" id="L89">    }</span>
+
+    public String getType() {
+<span class="nc" id="L92">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="nc" id="L96">        this.type = type;</span>
+<span class="nc" id="L97">    }</span>
 
     @Override
     public boolean equals(Object o) {
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (this == o) return true;</span>
-<span class="nc bnc" id="L90" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
-<span class="nc" id="L92">        PreferenceVO&lt;?&gt; that = (PreferenceVO&lt;?&gt;) o;</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">        return Objects.equals(pKey, that.pKey) &amp;&amp;</span>
-<span class="nc bnc" id="L94" title="All 2 branches missed.">                Objects.equals(key, that.key) &amp;&amp;</span>
-<span class="nc bnc" id="L95" title="All 2 branches missed.">                Objects.equals(owner, that.owner) &amp;&amp;</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">                Objects.equals(description, that.description) &amp;&amp;</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">                Objects.equals(val, that.val);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
+<span class="nc" id="L104">        PreferenceVO&lt;?&gt; that = (PreferenceVO&lt;?&gt;) o;</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        return Objects.equals(pKey, that.pKey) &amp;&amp;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">                Objects.equals(key, that.key) &amp;&amp;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                Objects.equals(owner, that.owner) &amp;&amp;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                Objects.equals(description, that.description) &amp;&amp;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                Objects.equals(val, that.val) &amp;&amp;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                Objects.equals(type, that.type);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L102">        return Objects.hash(super.hashCode(), pKey, key, owner, description, val);</span>
+<span class="nc" id="L115">        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, type);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

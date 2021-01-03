@@ -68,8 +68,8 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public Collection&lt;PreferenceEO&gt; findAll(@NotEmpty String owner, @NotNull PropertyScope scope) {
-<span class="nc" id="L71">        Collection&lt;PreferenceEO&gt; result = preferenceRepository.findAllByOwnerAndAndScope(owner, scope);</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
+<span class="fc" id="L71">        Collection&lt;PreferenceEO&gt; result = preferenceRepository.findAllByOwnerAndAndScope(owner, scope);</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
     }
 
     /**

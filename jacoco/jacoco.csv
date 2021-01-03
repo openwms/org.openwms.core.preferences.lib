@@ -2,9 +2,9 @@ GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.api,ApplicationPreferenceVO,3,0,0,0,1,0,1,0,1,0
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.api,RolePreferenceVO,3,0,0,0,1,0,1,0,1,0
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.api,UserPreferenceVO,3,0,0,0,1,0,1,0,1,0
-OpenWMS.org CORE: Preferences,org.openwms.core.configuration.api,PreferenceVO,130,0,18,0,26,0,22,0,13,0
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration.api,PreferenceVO,148,0,20,0,30,0,25,0,15,0
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.api,ModulePreferenceVO,3,0,0,0,1,0,1,0,1,0
-OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.file,GenericPreference,61,85,9,9,7,22,14,10,5,10
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.file,GenericPreference,54,76,8,8,6,20,12,10,4,10
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.file,ApplicationPreference,90,52,8,4,14,14,10,6,4,6
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.file,UserPreference,178,5,24,0,39,2,22,1,10,1
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.file,PreferenceKey,6,37,3,3,3,11,3,3,0,3
@@ -21,10 +21,12 @@ OpenWMS.org CORE: Preferences,org.openwms.core.configuration.app,PreferencesDist
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.jpa,PreferenceRepositoryImpl,15,3,2,0,2,1,2,1,1,1
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.jpa,PreferenceEO.Builder,10,45,0,0,4,17,2,9,2,9
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.jpa,PreferenceEO,91,50,0,0,31,15,21,3,21,3
-OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.jpa,PreferencesServiceImpl,136,56,7,3,16,15,13,4,9,3
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.jpa,PreferenceTypeConverter,9,8,3,1,4,3,3,2,1,2
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl.jpa,PreferencesServiceImpl,126,66,6,4,14,17,12,5,8,4
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.impl,PreferenceConverter,354,58,18,2,83,17,18,4,8,4
-OpenWMS.org CORE: Preferences,org.openwms.core.configuration,PreferencesController,97,9,4,0,16,4,8,1,6,1
-OpenWMS.org CORE: Preferences,org.openwms.core.configuration,PreferenceType,0,75,0,0,0,10,0,3,0,3
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration,UserPreferencesController,25,24,2,0,5,5,2,2,1,2
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration,PreferencesController,57,9,2,0,10,4,5,1,4,1
+OpenWMS.org CORE: Preferences,org.openwms.core.configuration,PreferenceType,15,75,0,0,1,10,2,3,2,3
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration,Starter,18,3,0,0,4,1,1,1,1,1
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration,PropertyScope,0,44,0,0,0,5,0,1,0,1
 OpenWMS.org CORE: Preferences,org.openwms.core.configuration.config,ModuleProperties,3,10,0,0,1,4,1,2,1,2

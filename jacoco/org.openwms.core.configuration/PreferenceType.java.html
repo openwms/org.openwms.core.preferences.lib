@@ -15,36 +15,42 @@
  */
 package org.openwms.core.configuration;
 
+import java.util.Arrays;
+
 /**
  * A PreferenceType.
  *
  * @author Heiko Scherrer
  */
-<span class="fc" id="L23">public enum PreferenceType {</span>
+<span class="fc" id="L25">public enum PreferenceType {</span>
 
     /** Float presentation. */
-<span class="fc" id="L26">    FLOAT(Float.class.getName()),</span>
+<span class="fc" id="L28">    FLOAT(Float.class.getName()),</span>
 
     /** String representation. */
-<span class="fc" id="L29">    STRING(String.class.getName()),</span>
+<span class="fc" id="L31">    STRING(String.class.getName()),</span>
 
     /** Integer representation. */
-<span class="fc" id="L32">    INT(Integer.class.getName()),</span>
+<span class="fc" id="L34">    INT(Integer.class.getName()),</span>
 
     /** Any Object. */
-<span class="fc" id="L35">    OBJECT(Object.class.getName()),</span>
+<span class="fc" id="L37">    OBJECT(Object.class.getName()),</span>
 
     /** Boolean type. */
-<span class="fc" id="L38">    BOOL(Boolean.class.getName());</span>
+<span class="fc" id="L40">    BOOL(Boolean.class.getName());</span>
 
     private final String clazz;
 
-<span class="fc" id="L42">    PreferenceType(String clazz) {</span>
-<span class="fc" id="L43">        this.clazz = clazz;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L44">    PreferenceType(String clazz) {</span>
+<span class="fc" id="L45">        this.clazz = clazz;</span>
+<span class="fc" id="L46">    }</span>
 
     public String getClazz() {
-<span class="fc" id="L47">        return clazz;</span>
+<span class="fc" id="L49">        return clazz;</span>
+    }
+
+    public static PreferenceType getForClazz(String clazz) {
+<span class="nc" id="L53">        return Arrays.stream(PreferenceType.values()).filter(p -&gt; p.getClazz().equals(clazz)).findFirst().orElse(null);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
