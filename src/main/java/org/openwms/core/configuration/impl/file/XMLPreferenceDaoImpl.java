@@ -40,9 +40,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them internally in a Map. An initial preferences file can be configured
- * with a property <i>openwms.core.config.initial-properties</i> in the application.properties file. <p> On a {@link
- * ReloadFilePreferencesEvent} the internal Map is cleared and reloaded. </p>
+ * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them in-memory in a Map. An initial preferences file can be configured
+ * with a property {@code openwms.core.config.initial-properties} in the application.properties file.
+ *
+ * <p>On a {@link ReloadFilePreferencesEvent} the internal Map is cleared and reloaded.</p>
  *
  * @author Heiko Scherrer
  * @see org.openwms.core.event.ReloadFilePreferencesEvent
@@ -56,9 +57,9 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
     private final Unmarshaller unmarshaller;
     @Value("${openwms.core.config.initial-properties}")
     private String fileName;
-    private volatile Resource fileResource;
-    private volatile Preferences preferences;
-    private Map<PreferenceKey, GenericPreference> prefs = new ConcurrentHashMap<>();
+    private Resource fileResource;
+    private Preferences preferences;
+    private final Map<PreferenceKey, GenericPreference> prefs = new ConcurrentHashMap<>();
 
     XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller) {
         this.ctx = ctx;
@@ -67,8 +68,6 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
 
     /**
      * {@inheritDoc}
-     *
-     * @see PreferenceDao#findAll()
      */
     @Override
     public List<GenericPreference> findAll() {
@@ -77,8 +76,6 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
 
     /**
      * {@inheritDoc}
-     *
-     * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
      */
     @Override
     public void onApplicationEvent(ReloadFilePreferencesEvent event) {

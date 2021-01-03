@@ -15,8 +15,6 @@
  */
 package org.openwms.core.configuration.impl.file;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -50,7 +48,7 @@ public abstract class GenericPreference extends AbstractPreference implements Se
 
     /** Flag to remember if the preference was originally imported from a file. */
     @XmlTransient
-    private final boolean fromFile = true;
+    private static final boolean fromFile = true;
 
     /* ----------------------------- methods ------------------- */
 
@@ -74,8 +72,9 @@ public abstract class GenericPreference extends AbstractPreference implements Se
     }
 
     /**
+     * Get the property value type.
      *
-     * @return
+     * @return Type as String
      */
     @XmlAttribute(name = "type")
     public String getType() {
@@ -133,17 +132,6 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         this.maximum = maximum;
     }
 
-    /**
-     * Return all fields as concatenated String.
-     *
-     * @return fields as String
-     */
-    @JsonIgnore
-    public String getPropertiesAsString() {
-        // TODO [openwms]: 17/05/16
-        return null;
-    }
-
     @Override
     public String toString() {
         return "GenericPreference{" +
@@ -161,16 +149,15 @@ public abstract class GenericPreference extends AbstractPreference implements Se
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GenericPreference that = (GenericPreference) o;
-        return fromFile == that.fromFile &&
-                Objects.equals(value, that.value) &&
-                Objects.equals(type, that.type) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(minimum, that.minimum) &&
-                Objects.equals(maximum, that.maximum);
+        return Objects.equals(value, that.value)
+                && Objects.equals(type, that.type)
+                && Objects.equals(description, that.description)
+                && Objects.equals(minimum, that.minimum)
+                && Objects.equals(maximum, that.maximum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, type, description, minimum, maximum, fromFile);
+        return Objects.hash(value, type, description, minimum, maximum);
     }
 }

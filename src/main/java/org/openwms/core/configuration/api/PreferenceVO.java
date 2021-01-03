@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.ameba.http.AbstractBase;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -42,7 +43,7 @@ public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
     private String description;
 
     @JsonProperty("value")
-    private Object val;
+    private Serializable val;
 
     @JsonProperty("type")
     private String type;
@@ -79,11 +80,11 @@ public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
         this.description = description;
     }
 
-    public Object getVal() {
+    public Serializable getVal() {
         return val;
     }
 
-    public void setVal(Object val) {
+    public void setVal(Serializable val) {
         this.val = val;
     }
 
