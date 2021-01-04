@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
@@ -35,7 +36,10 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
  * @author Heiko Scherrer
  */
 @CoreApplicationTest
-@Sql(scripts = "classpath:test.sql")
+@SqlGroup({
+        @Sql(scripts = "classpath:test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(scripts = "classpath:delete.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+})
 class UserPreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
@@ -55,13 +59,33 @@ class UserPreferencesControllerDocumentation extends DefaultTestProfile {
     void shall_return_all_for_user() {
         this.client
                 .get()
-                .uri(u -> u.path(API_PREFERENCES).queryParam("user", "openwms").build())
-                .attribute("user", "openwms")
+                .uri(u -> u.path(API_PREFERENCES)
+                        .queryParam("user", "openwms")
+                        .build()
+                )
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .consumeWith(
                         document("prefs-findforuser", preprocessResponse(prettyPrint()))
+                )
+        ;
+    }
+
+    @Test
+    void shall_return_all_for_user_and_key() {
+        this.client
+                .get()
+                .uri(u -> u.path(API_PREFERENCES)
+                        .queryParam("user", "owner1")
+                        .queryParam("key", "key1")
+                        .build()
+                )
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-findforuserkey", preprocessResponse(prettyPrint()))
                 )
         ;
     }
