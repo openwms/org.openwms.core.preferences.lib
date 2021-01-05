@@ -60,7 +60,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public Collection&lt;PreferenceEO&gt; findAll() {
-<span class="nc" id="L63">        return preferenceRepository.findAll();</span>
+<span class="fc" id="L63">        return preferenceRepository.findAll();</span>
     }
 
     /**
@@ -77,7 +77,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public PreferenceEO findBy(@NotEmpty String pKey) {
-<span class="nc" id="L80">        return preferenceRepository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey)));</span>
+<span class="fc" id="L80">        return preferenceRepository.findBypKey(pKey).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey)));</span>
     }
 
     /**
@@ -85,7 +85,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
-<span class="nc" id="L88">        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with owner [%s], scope [%s] and key [%s] does not exist&quot;, owner, scope, key)));</span>
+<span class="fc" id="L88">        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -&gt; new NotFoundException(format(&quot;Preference with owner [%s], scope [%s] and key [%s] does not exist&quot;, owner, scope, key)));</span>
     }
 
     /**
@@ -93,12 +93,12 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference) {
-<span class="nc" id="L96">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
+<span class="fc" id="L96">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
 <span class="nc" id="L98">            throw new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey));</span>
         }
-<span class="nc" id="L100">        PreferenceEO eo = eoOpt.get();</span>
-<span class="nc" id="L101">        return preferenceRepository.save(mapper.mapFromTo(preference, eo));</span>
+<span class="fc" id="L100">        PreferenceEO eo = eoOpt.get();</span>
+<span class="fc" id="L101">        return preferenceRepository.save(mapper.mapFromTo(preference, eo));</span>
     }
 
     /**

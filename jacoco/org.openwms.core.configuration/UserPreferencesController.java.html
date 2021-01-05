@@ -18,8 +18,6 @@ package org.openwms.core.configuration;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
-import org.openwms.core.configuration.impl.jpa.PreferenceEO;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,16 +39,16 @@ public class UserPreferencesController {
     private final PreferencesService preferencesService;
     private final BeanMapper mapper;
 
-<span class="fc" id="L44">    public UserPreferencesController(PreferencesService preferencesService, BeanMapper mapper) {</span>
-<span class="fc" id="L45">        this.preferencesService = preferencesService;</span>
-<span class="fc" id="L46">        this.mapper = mapper;</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L42">    public UserPreferencesController(PreferencesService preferencesService, BeanMapper mapper) {</span>
+<span class="fc" id="L43">        this.preferencesService = preferencesService;</span>
+<span class="fc" id="L44">        this.mapper = mapper;</span>
+<span class="fc" id="L45">    }</span>
 
     @GetMapping(value = API_PREFERENCES, params = &quot;user&quot;)
     public Flux&lt;UserPreferenceVO&gt; findByUser(
             @RequestParam(&quot;user&quot;) String user
     ) {
-<span class="fc" id="L53">        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user, PropertyScope.USER)), UserPreferenceVO.class)).log();</span>
+<span class="fc" id="L51">        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll(user, PropertyScope.USER)), UserPreferenceVO.class)).log();</span>
     }
 
     @GetMapping(value = API_PREFERENCES, params = {&quot;user&quot;, &quot;key&quot;})
@@ -58,12 +56,7 @@ public class UserPreferencesController {
             @RequestParam(&quot;user&quot;) String user,
             @RequestParam(&quot;key&quot;) String key
     ) {
-<span class="nc" id="L61">        PreferenceEO eo = preferencesService.findBy(user, PropertyScope.USER, key);</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (eo == null) {</span>
-<span class="nc" id="L63">            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());</span>
-        }
-<span class="nc" id="L65">        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);</span>
-<span class="nc" id="L66">        return ResponseEntity.ok(Mono.just(p));</span>
+<span class="fc" id="L59">        return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findBy(user, PropertyScope.USER, key), UserPreferenceVO.class)));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>

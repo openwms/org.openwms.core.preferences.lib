@@ -38,10 +38,10 @@ import javax.persistence.Converter;
 
     @Override
     public PreferenceType convertToEntityAttribute(String dbData) {
-<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (dbData == null) {</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (dbData == null) {</span>
 <span class="nc" id="L42">            return null;</span>
         }
-<span class="nc" id="L44">        return PreferenceType.getForClazz(dbData);</span>
+<span class="fc" id="L44">        return PreferenceType.getForClazz(dbData);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.5.201910111838</span></div></body></html>
