@@ -89,4 +89,22 @@ class UserPreferencesControllerDocumentation extends DefaultTestProfile {
                 )
         ;
     }
+
+    @Test
+    void shall_fail_with_unknown_key() {
+        this.client
+                .get()
+                .uri(u -> u.path(API_PREFERENCES)
+                        .queryParam("user", "owner1")
+                        .queryParam("key", "UNKNOWN")
+                        .build()
+                )
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-findforuserkey404", preprocessResponse(prettyPrint()))
+                )
+        ;
+    }
 }

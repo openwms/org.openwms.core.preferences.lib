@@ -20,32 +20,10 @@
 				<class-a>org.openwms.core.configuration.impl.file.GenericPreference</class-a>
 				<class-b>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-b>
 			</converter>
+			<converter type="org.openwms.core.configuration.impl.PreferenceVOConverter">
+				<class-a>org.openwms.core.configuration.api.PreferenceVO</class-a>
+				<class-b>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-b>
+			</converter>
         </custom-converters>
 	</configuration>
-
-	<mapping>
-		<class-a>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-a>
-		<class-b>org.openwms.core.configuration.api.UserPreferenceVO</class-b>
-		<field>
-			<a is-accessible="true">pKey</a>
-			<b is-accessible="true">pKey</b>
-		</field>
-		<field>
-			<a is-accessible="true">key</a>
-			<b is-accessible="true">key</b>
-		</field>
-		<field>
-			<a is-accessible="true">owner</a>
-			<b is-accessible="true">owner</b>
-		</field>
-		<field>
-			<a is-accessible="true">description</a>
-			<b is-accessible="true">description</b>
-		</field>
-		<field>
-			<a is-accessible="true">val</a>
-			<b is-accessible="true">val</b>
-		</field>
-	</mapping>
-
 </mappings>

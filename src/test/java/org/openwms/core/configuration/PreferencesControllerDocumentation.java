@@ -15,12 +15,16 @@
  */
 package org.openwms.core.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
@@ -37,7 +41,10 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
  * @author Heiko Scherrer
  */
 @CoreApplicationTest
-@Sql(scripts = "classpath:test.sql")
+@SqlGroup({
+        @Sql(scripts = "classpath:test.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD),
+        @Sql(scripts = "classpath:delete.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+})
 class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
@@ -80,6 +87,57 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .jsonPath("$[0].description").exists()
                 .jsonPath("$[0].@class").exists()
                 .jsonPath("$[0].type").exists()
+        ;
+    }
+
+    @Test
+    void shall_return_preference_by_key() {
+        this.client
+                .get()
+                .uri(u -> u.path(API_PREFERENCES + "/1000")
+                        .build()
+                )
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-findbykey",
+                                preprocessResponse(prettyPrint())
+                        )
+                )
+                .jsonPath("$.key").isEqualTo("key1")
+                .jsonPath("$.value").isEqualTo("current val")
+                .jsonPath("$.description").isEqualTo("String description")
+                .jsonPath("$.@class").isEqualTo("org.openwms.core.configuration.api.PreferenceVO")
+                .jsonPath("$.type").isEqualTo("STRING")
+        ;
+    }
+
+    @Test
+    void shall_update_preference_by_key() throws Exception {
+        ObjectMapper om = new ObjectMapper();
+        UserPreferenceVO vo = new UserPreferenceVO();
+        vo.setpKey("1000");
+        vo.setKey("keyX");
+        vo.setOwner("owner2");
+        vo.setDescription("A Boolean");
+        vo.setType("BOOL");
+        vo.setVal(true);
+        this.client
+                .put()
+                .uri(u -> u.path(API_PREFERENCES + "/1000")
+                        .build()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(om.writeValueAsString(vo))
+                .exchange()
+                .expectStatus().isNoContent()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-update",
+                                preprocessResponse(prettyPrint())
+                        )
+                )
         ;
     }
 }
