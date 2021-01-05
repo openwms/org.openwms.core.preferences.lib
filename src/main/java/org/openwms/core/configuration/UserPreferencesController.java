@@ -18,8 +18,6 @@ package org.openwms.core.configuration;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
-import org.openwms.core.configuration.impl.jpa.PreferenceEO;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,11 +56,6 @@ public class UserPreferencesController {
             @RequestParam("user") String user,
             @RequestParam("key") String key
     ) {
-        PreferenceEO eo = preferencesService.findBy(user, PropertyScope.USER, key);
-        if (eo == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.empty());
-        }
-        UserPreferenceVO p = mapper.map(eo, UserPreferenceVO.class);
-        return ResponseEntity.ok(Mono.just(p));
+        return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findBy(user, PropertyScope.USER, key), UserPreferenceVO.class)));
     }
 }

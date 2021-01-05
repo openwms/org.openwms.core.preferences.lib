@@ -34,3 +34,5 @@ image::images/ClassDiagram.svg[]
 include::1-index.adoc[]
 
 include::2-configuration.adoc[]
+
+include::3-userprefs.adoc[]
