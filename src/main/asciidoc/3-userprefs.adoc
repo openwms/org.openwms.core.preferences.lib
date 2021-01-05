@@ -1,0 +1,25 @@
+== UserPreference
+
+A `UserPreference` is a `Preference` that is only valid for a single user.
+
+=== Find all UserPreferences of an User
+Send a HTTP GET request without the user name as query parameter to find all existing `UserPreferences` of that user.
+
+include::{generated}/prefs-findforuser/http-request.adoc[]
+
+The server responds with an array of all `UserPreferences`, that might be empty if no `UserPreferences` exist.
+
+include::{generated}/prefs-findforuser/http-response.adoc[]
+
+=== Find a UserPreference by Key
+Send a HTTP GET request with the persistent key and the user name as query parameters to find and return the `UserPreference`.
+
+include::{generated}/prefs-findforuserkey/http-request.adoc[]
+
+The server returns the `UserPreference` if exists.
+
+include::{generated}/prefs-findforuserkey/http-response.adoc[]
+
+or responds with a `404 NOT-FOUND` if the `UserPreference` does not exist.
+
+include::{generated}/prefs-findforuserkey404/http-response.adoc[]

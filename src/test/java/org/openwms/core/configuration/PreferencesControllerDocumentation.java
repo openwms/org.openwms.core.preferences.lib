@@ -28,6 +28,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -114,6 +115,24 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
     }
 
     @Test
+    void shall_return_preference_by_key_404() {
+        this.client
+                .get()
+                .uri(u -> u.path(API_PREFERENCES + "/UNKNOWN")
+                        .build()
+                )
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-findbykey404",
+                                preprocessResponse(prettyPrint())
+                        )
+                )
+        ;
+    }
+
+    @Test
     void shall_update_preference_by_key() throws Exception {
         ObjectMapper om = new ObjectMapper();
         UserPreferenceVO vo = new UserPreferenceVO();
@@ -135,7 +154,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .expectBody()
                 .consumeWith(
                         document("prefs-update",
-                                preprocessResponse(prettyPrint())
+                                preprocessRequest(prettyPrint())
                         )
                 )
         ;

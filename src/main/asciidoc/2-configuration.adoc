@@ -8,7 +8,7 @@ Apart from users and roles a `Preference` can also be assigned to an abstract th
 example. This is of type `ModulePreference`. The whole application consists of several Microservices that may require common preferences
 that are valid for all modules, those are stores of type `ApplicationPreference`.
 
-All kind of preferences share same data stored in a supertype called `AbstractPreference`. Each subtype defines the scope as a property and
+All kind of preferences share same data stored in a supertype called `Preference`. Each subtype defines the scope as a property and
 an owner of the `Preference`. This might be the name of the user, the role name or the Microservice name. A `Preference` is identified by
 `type`, `owner` and the `key` field.
 
@@ -17,15 +17,29 @@ Send a HTTP GET request without any further query parameters to find and return 
 
 include::{generated}/prefs-findall/http-request.adoc[]
 
-The server responds with an array of all `Preferences`.
+The server responds with an array of all `Preferences`, that might be empty if no `Preferences` exist.
 
 include::{generated}/prefs-findall/http-response.adoc[]
 
-=== Find all Preferences for Owner
-Send a HTTP GET request without any further query parameters to find and return all existing `Preferences` of an owner.
+=== Find a Preference by Key
+Send a HTTP GET request with the persistent key as part of the path to find and return the `Preference`.
 
-include::{generated}/prefs-findforowner/http-request.adoc[]
+include::{generated}/prefs-findbykey/http-request.adoc[]
 
-The server responds with an array of all `Preferences`.
+The server returns the `Preference` if exists.
 
-include::{generated}/prefs-findforowner/http-response.adoc[]
+include::{generated}/prefs-findbykey/http-response.adoc[]
+
+or responds with a `404 NOT-FOUND` if the `Preference` does not exist.
+
+include::{generated}/prefs-findbykey404/http-response.adoc[]
+
+=== Update an existing Preference
+To modify an existing `Preference` an `PUT` request with the `Preference` as request body is expected. The `Preference` to update is
+identified by the persistent key as part of the path.
+
+include::{generated}/prefs-update/http-request.adoc[]
+
+The server responds with `204 NO-CONTENT`.
+
+include::{generated}/prefs-update/http-response.adoc[]

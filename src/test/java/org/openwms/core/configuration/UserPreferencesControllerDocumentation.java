@@ -60,7 +60,7 @@ class UserPreferencesControllerDocumentation extends DefaultTestProfile {
         this.client
                 .get()
                 .uri(u -> u.path(API_PREFERENCES)
-                        .queryParam("user", "openwms")
+                        .queryParam("user", "owner1")
                         .build()
                 )
                 .exchange()
