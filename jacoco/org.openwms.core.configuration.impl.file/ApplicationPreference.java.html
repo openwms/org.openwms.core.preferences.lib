@@ -105,21 +105,20 @@ public class ApplicationPreference extends GenericPreference implements Serializ
 <span class="pc bpc" id="L105" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
 <span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (!super.equals(o)) return false;</span>
 <span class="fc" id="L107">        ApplicationPreference that = (ApplicationPreference) o;</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        return type.equals(that.type) &amp;&amp;</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">                Objects.equals(key, that.key);</span>
+<span class="fc" id="L108">        return Objects.equals(key, that.key);</span>
     }
 
     @Override
     public int hashCode() {
-<span class="nc" id="L114">        return Objects.hash(super.hashCode(), type, key);</span>
+<span class="fc" id="L113">        return Objects.hash(super.hashCode(), key);</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L119">        return &quot;ApplicationPreference{&quot; +</span>
+<span class="fc" id="L118">        return &quot;ApplicationPreference{&quot; +</span>
                 &quot;type=&quot; + type +
                 &quot;, key='&quot; + key + '\'' +
-<span class="nc" id="L122">                &quot;} &quot; + super.toString();</span>
+<span class="fc" id="L121">                &quot;} &quot; + super.toString();</span>
     }
 
     public static final class Builder {
@@ -134,37 +133,37 @@ public class ApplicationPreference extends GenericPreference implements Serializ
         }
 
         public Builder value(String val) {
-<span class="nc" id="L137">            value = val;</span>
-<span class="nc" id="L138">            return this;</span>
+<span class="nc" id="L136">            value = val;</span>
+<span class="nc" id="L137">            return this;</span>
         }
 
         public Builder type(String val) {
-<span class="nc" id="L142">            type = val;</span>
-<span class="nc" id="L143">            return this;</span>
+<span class="nc" id="L141">            type = val;</span>
+<span class="nc" id="L142">            return this;</span>
         }
 
         public Builder description(String val) {
-<span class="nc" id="L147">            description = val;</span>
-<span class="nc" id="L148">            return this;</span>
+<span class="nc" id="L146">            description = val;</span>
+<span class="nc" id="L147">            return this;</span>
         }
 
         public Builder minimum(String val) {
-<span class="nc" id="L152">            minimum = val;</span>
-<span class="nc" id="L153">            return this;</span>
+<span class="nc" id="L151">            minimum = val;</span>
+<span class="nc" id="L152">            return this;</span>
         }
 
         public Builder maximum(String val) {
-<span class="nc" id="L157">            maximum = val;</span>
-<span class="nc" id="L158">            return this;</span>
+<span class="nc" id="L156">            maximum = val;</span>
+<span class="nc" id="L157">            return this;</span>
         }
 
         public Builder key(String val) {
-<span class="nc" id="L162">            key = val;</span>
-<span class="nc" id="L163">            return this;</span>
+<span class="nc" id="L161">            key = val;</span>
+<span class="nc" id="L162">            return this;</span>
         }
 
         public ApplicationPreference build() {
-<span class="nc" id="L167">            return new ApplicationPreference(this);</span>
+<span class="nc" id="L166">            return new ApplicationPreference(this);</span>
         }
     }
 }

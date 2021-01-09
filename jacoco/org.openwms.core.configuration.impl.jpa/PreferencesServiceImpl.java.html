@@ -106,13 +106,13 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public void delete(@NotEmpty String pKey) {
-<span class="nc" id="L109">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
+<span class="fc" id="L109">        Optional&lt;PreferenceEO&gt; eoOpt = preferenceRepository.findBypKey(pKey);</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">        if (eoOpt.isEmpty()) {</span>
 <span class="nc" id="L111">            throw new NotFoundException(format(&quot;Preference with key [%s] does not exist&quot;, pKey));</span>
         }
-<span class="nc" id="L113">        PreferenceEO eo = eoOpt.get();</span>
-<span class="nc" id="L114">        preferenceRepository.delete(eo);</span>
-<span class="nc" id="L115">    }</span>
+<span class="fc" id="L113">        PreferenceEO eo = eoOpt.get();</span>
+<span class="fc" id="L114">        preferenceRepository.delete(eo);</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * {@inheritDoc}
