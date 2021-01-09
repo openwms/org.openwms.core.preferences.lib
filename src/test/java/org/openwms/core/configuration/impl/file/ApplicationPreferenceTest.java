@@ -94,7 +94,7 @@ class ApplicationPreferenceTest {
         Schema schema = schemaFactory.newSchema(ResourceUtils.getFile("classpath:preferences.xsd"));
         // Schema schema = schemaFactory.newSchema(new
         // URL("http://www.openwms.org/schema/preferences.xsd"));
-        JAXBContext ctx = JAXBContext.newInstance("org.openwms.core.configuration.file");
+        JAXBContext ctx = JAXBContext.newInstance("org.openwms.core.configuration.impl.file");
         Unmarshaller unmarshaller = ctx.createUnmarshaller();
         unmarshaller.setSchema(schema);
         unmarshaller.setEventHandler(new ValidationEventHandler() {

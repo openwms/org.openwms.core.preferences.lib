@@ -76,7 +76,6 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                                         fieldWithPath("[]").description("An array of all existing preferences"),
                                         fieldWithPath("[].key").description("The preference key"),
                                         fieldWithPath("[].value").description("The preference value"),
-                                        fieldWithPath("[].type").description("The preference value type"),
                                         fieldWithPath("[].description").description("The descriptive text of the preference"),
                                         fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
                                         fieldWithPath("[].@class").description("Metadata used internally to clarify the preference type")
@@ -87,7 +86,6 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .jsonPath("$[0].value").exists()
                 .jsonPath("$[0].description").exists()
                 .jsonPath("$[0].@class").exists()
-                .jsonPath("$[0].type").exists()
         ;
     }
 
@@ -109,8 +107,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .jsonPath("$.key").isEqualTo("key1")
                 .jsonPath("$.value").isEqualTo("current val")
                 .jsonPath("$.description").isEqualTo("String description")
-                .jsonPath("$.@class").isEqualTo("org.openwms.core.configuration.api.PreferenceVO")
-                .jsonPath("$.type").isEqualTo("STRING")
+                .jsonPath("$.@class").isEqualTo("org.openwms.core.configuration.api.UserPreferenceVO")
         ;
     }
 
@@ -154,6 +151,24 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .expectBody()
                 .consumeWith(
                         document("prefs-update",
+                                preprocessRequest(prettyPrint())
+                        )
+                )
+        ;
+    }
+
+    @Test
+    void shall_delete_preference() throws Exception {
+        this.client
+                .delete()
+                .uri(u -> u.path(API_PREFERENCES + "/1000")
+                        .build()
+                )
+                .exchange()
+                .expectStatus().isNoContent()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-delete",
                                 preprocessRequest(prettyPrint())
                         )
                 )

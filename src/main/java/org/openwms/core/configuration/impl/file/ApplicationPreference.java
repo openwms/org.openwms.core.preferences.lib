@@ -105,13 +105,12 @@ public class ApplicationPreference extends GenericPreference implements Serializ
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ApplicationPreference that = (ApplicationPreference) o;
-        return type.equals(that.type) &&
-                Objects.equals(key, that.key);
+        return Objects.equals(key, that.key);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), type, key);
+        return Objects.hash(super.hashCode(), key);
     }
 
     @Override
