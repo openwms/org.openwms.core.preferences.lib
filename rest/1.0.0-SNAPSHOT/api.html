@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-51)">
+<meta name="author" content="(1.0.0-SNAPSHOT-52)">
 <title>OpenWMS.org CORE: RESTful API (Preferences Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org CORE: RESTful API (Preferences Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-51)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-52)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -469,6 +469,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_find_all_preferences">Find all Preferences</a></li>
 <li><a href="#_find_a_preference_by_key">Find a Preference by Key</a></li>
 <li><a href="#_update_an_existing_preference">Update an existing Preference</a></li>
+<li><a href="#_delete_a_preference">Delete a Preference</a></li>
 </ul>
 </li>
 <li><a href="#_userpreference">UserPreference</a>
@@ -486,7 +487,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Copyright © 2005-2020</p>
+<p>Copyright © 2005-2021</p>
 </div>
 <div class="paragraph">
 <p>Copies of this document may be made for your own use and for distribution to others, provided that you do not charge any fee for such copies
@@ -777,16 +778,18 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 360
+Content-Length: 398
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
   "description" : "String description",
   "value" : "current val"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
   "description" : "String description",
@@ -813,10 +816,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 177
+Content-Length: 196
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
   "description" : "String description",
@@ -834,12 +838,12 @@ Content-Type: application/json
 Content-Length: 160
 
 {
-  "timestamp" : 1610225844664,
+  "timestamp" : 1610269508015,
   "path" : "/v1/preferences/UNKNOWN",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "35625483"
+  "requestId" : "41b4fa8b"
 }</code></pre>
 </div>
 </div>
@@ -878,6 +882,30 @@ Host: localhost:8080
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_delete_a_preference"><a class="anchor" href="#_delete_a_preference"></a><a class="link" href="#_delete_a_preference">Delete a Preference</a></h3>
+<div class="paragraph">
+<p>To delete an existing <code>Preference</code> one can call the URI to the resource with a HTTP <code>DELETE</code> request. The persistent key of the <code>Preference</code>
+is required to identify the resource to delete.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /v1/preferences/1000 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The server responds with <code>204 NO-CONTENT</code> is the resource has been deleted successfully.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the resource doesn&#8217;t exist and could not be deleted the server responds with a <code>404 NOT-FOUND</code>.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -904,16 +932,18 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 360
+Content-Length: 398
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
   "description" : "String description",
   "value" : "current val"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
   "description" : "String description",
@@ -940,10 +970,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 177
+Content-Length: 196
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
   "description" : "String description",
@@ -958,15 +989,15 @@ Content-Length: 177
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
 Content-Type: application/json
-Content-Length: 152
+Content-Length: 151
 
 {
-  "timestamp" : 1610225843610,
+  "timestamp" : 1610269507146,
   "path" : "/v1/preferences",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "58d14463"
+  "requestId" : "eb9fa69"
 }</code></pre>
 </div>
 </div>
@@ -976,7 +1007,7 @@ Content-Length: 152
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-09 20:54:46 UTC
+Last updated 2021-01-10 09:02:36 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

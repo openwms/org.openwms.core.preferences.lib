@@ -476,16 +476,18 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 360
+Content-Length: 398
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
   "description" : "String description",
   "value" : "current val"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
   "description" : "String description",
@@ -512,10 +514,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 177
+Content-Length: 196
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
   "description" : "String description",
@@ -533,12 +536,12 @@ Content-Type: application/json
 Content-Length: 160
 
 {
-  "timestamp" : 1610225844664,
+  "timestamp" : 1610269508015,
   "path" : "/v1/preferences/UNKNOWN",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "35625483"
+  "requestId" : "41b4fa8b"
 }</code></pre>
 </div>
 </div>
@@ -577,12 +580,36 @@ Host: localhost:8080
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_delete_a_preference">Delete a Preference</h3>
+<div class="paragraph">
+<p>To delete an existing <code>Preference</code> one can call the URI to the resource with a HTTP <code>DELETE</code> request. The persistent key of the <code>Preference</code>
+is required to identify the resource to delete.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/preferences/1000 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The server responds with <code>204 NO-CONTENT</code> is the resource has been deleted successfully.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the resource doesn&#8217;t exist and could not be deleted the server responds with a <code>404 NOT-FOUND</code>.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-01-09 20:54:46 UTC
+Last updated 2021-01-10 09:02:36 UTC
 </div>
 </div>
 </body>

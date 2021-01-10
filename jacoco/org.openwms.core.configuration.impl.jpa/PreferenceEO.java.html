@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceEO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.configuration.impl.jpa</a> &gt; <span class="el_source">PreferenceEO.java</span></div><h1>PreferenceEO.java</h1><pre class="source lang-java linenums">/*
- * Copyright 2005-2020 the original author or authors.
+ * Copyright 2005-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -170,33 +170,38 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 <span class="fc" id="L170">        this.type = type;</span>
 <span class="fc" id="L171">    }</span>
 
+    @Override
+    public void setPersistentKey(String pKey) {
+<span class="fc" id="L175">        super.setPersistentKey(pKey);</span>
+<span class="fc" id="L176">    }</span>
+
     /**
      * Return a {@link PreferenceKey} of this preference.
      *
      * @return A {@link PreferenceKey}
      */
     public PreferenceKey getPrefKey() {
-<span class="nc" id="L179">        return new PreferenceKey(this.owner, this.key, this.scope);</span>
+<span class="nc" id="L184">        return new PreferenceKey(this.owner, this.key, this.scope);</span>
     }
 
-<span class="fc" id="L182">    public PreferenceEO() {</span>
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L187">    public PreferenceEO() {</span>
+<span class="fc" id="L188">    }</span>
 
-<span class="fc" id="L185">    private PreferenceEO(Builder builder) {</span>
-<span class="fc" id="L186">        key = builder.key;</span>
-<span class="fc" id="L187">        owner = builder.owner;</span>
-<span class="fc" id="L188">        description = builder.description;</span>
-<span class="fc" id="L189">        fromFile = builder.fromFile;</span>
-<span class="fc" id="L190">        scope = builder.scope;</span>
-<span class="fc" id="L191">        val = builder.val;</span>
-<span class="fc" id="L192">        defValue = builder.defValue;</span>
-<span class="fc" id="L193">        minValue = builder.minValue;</span>
-<span class="fc" id="L194">        maxValue = builder.maxValue;</span>
-<span class="fc" id="L195">        type = builder.type;</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L190">    private PreferenceEO(Builder builder) {</span>
+<span class="fc" id="L191">        key = builder.key;</span>
+<span class="fc" id="L192">        owner = builder.owner;</span>
+<span class="fc" id="L193">        description = builder.description;</span>
+<span class="fc" id="L194">        fromFile = builder.fromFile;</span>
+<span class="fc" id="L195">        scope = builder.scope;</span>
+<span class="fc" id="L196">        val = builder.val;</span>
+<span class="fc" id="L197">        defValue = builder.defValue;</span>
+<span class="fc" id="L198">        minValue = builder.minValue;</span>
+<span class="fc" id="L199">        maxValue = builder.maxValue;</span>
+<span class="fc" id="L200">        type = builder.type;</span>
+<span class="fc" id="L201">    }</span>
 
     public static Builder newBuilder() {
-<span class="fc" id="L199">        return new Builder();</span>
+<span class="fc" id="L204">        return new Builder();</span>
     }
 
     public static final class Builder {
@@ -215,57 +220,57 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         }
 
         public Builder key(String val) {
-<span class="fc" id="L218">            key = val;</span>
-<span class="fc" id="L219">            return this;</span>
-        }
-
-        public Builder owner(String val) {
-<span class="fc" id="L223">            owner = val;</span>
+<span class="fc" id="L223">            key = val;</span>
 <span class="fc" id="L224">            return this;</span>
         }
 
-        public Builder description(String val) {
-<span class="fc" id="L228">            description = val;</span>
+        public Builder owner(String val) {
+<span class="fc" id="L228">            owner = val;</span>
 <span class="fc" id="L229">            return this;</span>
         }
 
-        public Builder fromFile(boolean val) {
-<span class="fc" id="L233">            fromFile = val;</span>
+        public Builder description(String val) {
+<span class="fc" id="L233">            description = val;</span>
 <span class="fc" id="L234">            return this;</span>
         }
 
-        public Builder scope(@NotNull PropertyScope val) {
-<span class="fc" id="L238">            scope = val;</span>
+        public Builder fromFile(boolean val) {
+<span class="fc" id="L238">            fromFile = val;</span>
 <span class="fc" id="L239">            return this;</span>
         }
 
-        public Builder val(String val) {
-<span class="fc" id="L243">            this.val = val;</span>
+        public Builder scope(@NotNull PropertyScope val) {
+<span class="fc" id="L243">            scope = val;</span>
 <span class="fc" id="L244">            return this;</span>
         }
 
+        public Builder val(String val) {
+<span class="fc" id="L248">            this.val = val;</span>
+<span class="fc" id="L249">            return this;</span>
+        }
+
         public Builder defValue(String val) {
-<span class="nc" id="L248">            defValue = val;</span>
-<span class="nc" id="L249">            return this;</span>
+<span class="nc" id="L253">            defValue = val;</span>
+<span class="nc" id="L254">            return this;</span>
         }
 
         public Builder minValue(String val) {
-<span class="fc" id="L253">            minValue = val;</span>
-<span class="fc" id="L254">            return this;</span>
-        }
-
-        public Builder maxValue(String val) {
-<span class="fc" id="L258">            maxValue = val;</span>
+<span class="fc" id="L258">            minValue = val;</span>
 <span class="fc" id="L259">            return this;</span>
         }
 
-        public Builder type(@NotNull PreferenceType val) {
-<span class="fc" id="L263">            type = val;</span>
+        public Builder maxValue(String val) {
+<span class="fc" id="L263">            maxValue = val;</span>
 <span class="fc" id="L264">            return this;</span>
         }
 
+        public Builder type(@NotNull PreferenceType val) {
+<span class="fc" id="L268">            type = val;</span>
+<span class="fc" id="L269">            return this;</span>
+        }
+
         public PreferenceEO build() {
-<span class="fc" id="L268">            return new PreferenceEO(this);</span>
+<span class="fc" id="L273">            return new PreferenceEO(this);</span>
         }
     }
 }
