@@ -74,7 +74,8 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                                 preprocessResponse(prettyPrint()),
                                 responseFields(
                                         fieldWithPath("[]").description("An array of all existing preferences"),
-                                        fieldWithPath("[].key").description("The preference key"),
+                                        fieldWithPath("[].pKey").description("The persistent unique key"),
+                                        fieldWithPath("[].key").description("The business key, unique combined with the owner"),
                                         fieldWithPath("[].value").description("The preference value"),
                                         fieldWithPath("[].description").description("The descriptive text of the preference"),
                                         fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
@@ -82,6 +83,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                                 )
                         )
                 )
+                .jsonPath("$[0].pKey").exists()
                 .jsonPath("$[0].key").exists()
                 .jsonPath("$[0].value").exists()
                 .jsonPath("$[0].description").exists()

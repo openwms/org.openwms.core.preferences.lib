@@ -38,7 +38,7 @@ public interface UserPreferencesApi {
      * @return An infinite filtered stream of PreferenceVO
      */
     @GetMapping(value = API_PREFERENCES, params = {"user"})
-    <T extends PreferenceVO<T>> Flux<T> findByUser(
+    Flux<PreferenceVO> findByUser(
             @RequestParam("user") String user
     );
 
@@ -50,7 +50,7 @@ public interface UserPreferencesApi {
      * @return One single instance
      */
     @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
-    <T extends PreferenceVO<T>> Mono<T> findByUserAndKey(
+    Mono<PreferenceVO> findByUserAndKey(
             @RequestParam("user") String user,
             @RequestParam("key") String key
     );

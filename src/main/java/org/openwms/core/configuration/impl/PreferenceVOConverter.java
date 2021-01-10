@@ -56,17 +56,19 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         }
         if (ApplicationPreferenceVO.class.equals(source.getClass())) {
             ApplicationPreferenceVO p = (ApplicationPreferenceVO) source;
-            return PreferenceEO.newBuilder()
+            PreferenceEO eo = PreferenceEO.newBuilder()
                     .key(p.getKey())
                     .description(p.getDescription())
                     .val(p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.APPLICATION)
                     .build();
+            eo.setPersistentKey(p.getpKey());
+            return eo;
         }
         if (ModulePreferenceVO.class.equals(source.getClass())) {
             ModulePreferenceVO p = (ModulePreferenceVO) source;
-            return PreferenceEO.newBuilder()
+            PreferenceEO eo = PreferenceEO.newBuilder()
                     .key(p.getKey())
                     .owner(p.getOwner())
                     .description(p.getDescription())
@@ -74,10 +76,12 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.MODULE)
                     .build();
+            eo.setPersistentKey(p.getpKey());
+            return eo;
         }
         if (RolePreferenceVO.class.equals(source.getClass())) {
             RolePreferenceVO p = (RolePreferenceVO) source;
-            return PreferenceEO.newBuilder()
+            PreferenceEO eo = PreferenceEO.newBuilder()
                     .key(p.getKey())
                     .owner(p.getOwner())
                     .description(p.getDescription())
@@ -85,10 +89,12 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.ROLE)
                     .build();
+            eo.setPersistentKey(p.getpKey());
+            return eo;
         }
         if (UserPreferenceVO.class.equals(source.getClass())) {
             UserPreferenceVO p = (UserPreferenceVO) source;
-            return PreferenceEO.newBuilder()
+            PreferenceEO eo = PreferenceEO.newBuilder()
                     .key(p.getKey())
                     .owner(p.getOwner())
                     .description(p.getDescription())
@@ -96,6 +102,8 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.USER)
                     .build();
+            eo.setPersistentKey(p.getpKey());
+            return eo;
         }
         throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
     }
@@ -110,6 +118,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         }
         if (source.getScope() == PropertyScope.APPLICATION) {
             ApplicationPreferenceVO p = new ApplicationPreferenceVO();
+            p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
@@ -118,6 +127,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         }
         if (source.getScope() == PropertyScope.MODULE) {
             ModulePreferenceVO p = new ModulePreferenceVO();
+            p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setOwner(source.getOwner());
             p.setVal(source.getVal());
@@ -127,6 +137,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         }
         if (source.getScope() == PropertyScope.ROLE) {
             RolePreferenceVO p = new RolePreferenceVO();
+            p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setOwner(source.getOwner());
             p.setVal(source.getVal());
@@ -136,6 +147,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         }
         if (source.getScope() == PropertyScope.USER) {
             UserPreferenceVO p = new UserPreferenceVO();
+            p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setOwner(source.getOwner());
             p.setVal(source.getVal());

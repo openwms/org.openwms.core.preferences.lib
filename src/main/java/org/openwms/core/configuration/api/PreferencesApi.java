@@ -41,7 +41,7 @@ public interface PreferencesApi {
      * @return An infinite stream of all PreferenceVO
      */
     @GetMapping(value = API_PREFERENCES)
-    <T extends PreferenceVO<T>> Flux<T> findAll();
+    Flux<PreferenceVO> findAll();
 
     /**
      * Find and return an Preference identified by its persistent key.
@@ -50,7 +50,7 @@ public interface PreferencesApi {
      * @return The instance
      */
     @GetMapping(value = API_PREFERENCES + "/{pKey}")
-    <T extends PreferenceVO<T>> Mono<T> findByPKey(
+    Mono<PreferenceVO> findByPKey(
             @PathVariable("pKey") String pKey
     );
 
@@ -61,9 +61,9 @@ public interface PreferencesApi {
      * @param preference The content to update the preference with
      */
     @PutMapping(value = API_PREFERENCES + "/{pKey}")
-    <T extends PreferenceVO<T>> ResponseEntity<Void> update(
+    ResponseEntity<Void> update(
             @PathVariable("pKey") String pKey,
-            @RequestBody T preference
+            @RequestBody PreferenceVO preference
     );
 
     /**

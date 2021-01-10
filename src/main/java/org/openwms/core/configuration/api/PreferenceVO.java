@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author Heiko Scherrer
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
-public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
+public class PreferenceVO extends AbstractBase<PreferenceVO> {
 
     @JsonProperty("pKey")
     private String pKey;
@@ -101,7 +101,7 @@ public class PreferenceVO<T extends PreferenceVO<T>> extends AbstractBase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        PreferenceVO<?> that = (PreferenceVO<?>) o;
+        PreferenceVO that = (PreferenceVO) o;
         return Objects.equals(pKey, that.pKey) &&
                 Objects.equals(key, that.key) &&
                 Objects.equals(owner, that.owner) &&

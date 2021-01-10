@@ -170,6 +170,11 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         this.type = type;
     }
 
+    @Override
+    public void setPersistentKey(String pKey) {
+        super.setPersistentKey(pKey);
+    }
+
     /**
      * Return a {@link PreferenceKey} of this preference.
      *

@@ -43,3 +43,15 @@ include::{generated}/prefs-update/http-request.adoc[]
 The server responds with `204 NO-CONTENT`.
 
 include::{generated}/prefs-update/http-response.adoc[]
+
+=== Delete a Preference
+To delete an existing `Preference` one can call the URI to the resource with a HTTP `DELETE` request. The persistent key of the `Preference`
+is required to identify the resource to delete.
+
+include::{generated}/prefs-delete/http-request.adoc[]
+
+The server responds with `204 NO-CONTENT` is the resource has been deleted successfully.
+
+include::{generated}/prefs-delete/http-response.adoc[]
+
+If the resource doesn't exist and could not be deleted the server responds with a `404 NOT-FOUND`.
