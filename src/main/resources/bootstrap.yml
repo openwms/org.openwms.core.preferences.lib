@@ -14,17 +14,21 @@ spring:
       enabled: false
   security:
     user:
-      password: sa
       name: user
+      password: sa
   jpa:
-    show-sql: false
     open-in-view: false
+    show-sql: false
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
     serialization:
       fail_on_empty_beans: false
   main:
     allow-bean-definition-overriding: true
+  zipkin:
+    sender:
+      type: web
+
 feign:
   httpclient:
     connection-timeout: 30000
@@ -92,6 +96,18 @@ management:
 
 ---
 spring:
+  profiles: CLOUD
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
+
+---
+spring:
   profiles: DEMO
   jpa:
     hibernate:
@@ -105,6 +121,18 @@ openwms:
   core:
     config:
       initial-properties: classpath*:initial-preferences.xml
+
+---
+spring:
+  profiles: DISTRIBUTED
+  cloud:
+    config:
+      discovery:
+        enabled: true
+      enabled: true
+      fail-fast: true # true means retry
+    discovery:
+      enabled: true
 
 ---
 spring:
@@ -177,9 +205,11 @@ spring:
     database: postgresql
     generate-ddl: true
     properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQL9Dialect
-      hibernate.temp.use_jdbc_metadata_defaults: false
-      hibernate.default_schema: public
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        temp:
+          use_jdbc_metadata_defaults: false
+        default_schema: public
     hibernate:
       ddl-auto: create
   datasource:
