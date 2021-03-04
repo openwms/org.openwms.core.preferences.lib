@@ -27,6 +27,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -59,6 +60,29 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .configureClient()
                 .filter(documentationConfiguration(restDocumentation))
                 .build();
+    }
+
+    @Test
+    void shall_return_index() {
+        client
+                .get()
+                .uri(API_PREFERENCES + "/index")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-index",
+                                preprocessResponse(prettyPrint())
+                        )
+                )
+                .jsonPath("$._links.preferences-findall").exists()
+                .jsonPath("$._links.preferences-findbypkey").exists()
+                .jsonPath("$._links.preferences-update").exists()
+                .jsonPath("$._links.preferences-delete").exists()
+                .jsonPath("$._links.user-preferences-findbyuser").exists()
+                .jsonPath("$._links.user-preferences-findbyuserandkey").exists()
+                .jsonPath("$._links.length()", is(6))
+        ;
     }
 
     @Test

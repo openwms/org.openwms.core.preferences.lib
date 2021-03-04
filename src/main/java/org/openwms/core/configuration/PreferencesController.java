@@ -19,6 +19,7 @@ import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
+import org.openwms.core.http.Index;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,8 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * A PreferencesController.
@@ -46,6 +49,20 @@ public class PreferencesController {
     public PreferencesController(PreferencesService preferencesService, BeanMapper mapper) {
         this.preferencesService = preferencesService;
         this.mapper = mapper;
+    }
+
+    @GetMapping(API_PREFERENCES + "/index")
+    public ResponseEntity<Index> index() {
+        return ResponseEntity.ok(
+                new Index(
+                        linkTo(methodOn(PreferencesController.class).findAll()).withRel("preferences-findall"),
+                        linkTo(methodOn(PreferencesController.class).findByPKey("pKey")).withRel("preferences-findbypkey"),
+                        linkTo(methodOn(PreferencesController.class).update("pKey", new PreferenceVO())).withRel("preferences-update"),
+                        linkTo(methodOn(PreferencesController.class).delete("pKey")).withRel("preferences-delete"),
+                        linkTo(methodOn(UserPreferencesController.class).findByUser("user")).withRel("user-preferences-findbyuser"),
+                        linkTo(methodOn(UserPreferencesController.class).findByUserAndKey("user", "key")).withRel("user-preferences-findbyuserandkey")
+                )
+        );
     }
 
     @GetMapping(value = API_PREFERENCES)

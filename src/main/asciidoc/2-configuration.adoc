@@ -12,6 +12,15 @@ All kind of preferences share same data stored in a supertype called `Preference
 an owner of the `Preference`. This might be the name of the user, the role name or the Microservice name. A `Preference` is identified by
 `type`, `owner` and the `key` field.
 
+=== Preferences Index
+The Preferences Index with all possible operations can be retrieved with the following GET request:
+
+include::{generated}/prefs-index/http-request.adoc[]
+
+The response lists all the operations with a name and the corresponding href link:
+
+include::{generated}/prefs-index/http-response.adoc[]
+
 === Find all Preferences
 Send a HTTP GET request without any further query parameters to find and return all existing `Preferences`.
 
