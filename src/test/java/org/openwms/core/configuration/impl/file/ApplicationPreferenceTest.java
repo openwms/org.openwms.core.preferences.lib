@@ -23,8 +23,6 @@ import org.springframework.util.ResourceUtils;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.ValidationEvent;
-import javax.xml.bind.ValidationEventHandler;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.util.HashMap;
@@ -97,25 +95,24 @@ class ApplicationPreferenceTest {
         JAXBContext ctx = JAXBContext.newInstance("org.openwms.core.configuration.impl.file");
         Unmarshaller unmarshaller = ctx.createUnmarshaller();
         unmarshaller.setSchema(schema);
-        unmarshaller.setEventHandler(new ValidationEventHandler() {
-            @Override
-            public boolean handleEvent(ValidationEvent event) {
-                RuntimeException ex = new RuntimeException(event.getMessage(), event.getLinkedException());
-                LOGGER.error(ex.getMessage());
-                throw ex;
-            }
+        unmarshaller.setEventHandler(event -> {
+            RuntimeException ex = new RuntimeException(event.getMessage(), event.getLinkedException());
+            LOGGER.error(ex.getMessage());
+            throw ex;
         });
 
-        Preferences prefs = Preferences.class.cast(unmarshaller.unmarshal(ResourceUtils.getFile(
-                "classpath:org/openwms/core/configuration/file/preferences.xml")));
+        Preferences prefs = (Preferences) unmarshaller.unmarshal(ResourceUtils.getFile(
+                "classpath:org/openwms/core/configuration/file/preferences.xml"));
+        assertThat(prefs.getApplications()).hasSize(3);
+        assertThat(prefs.getModules()).hasSize(2);
         for (GenericPreference pref : prefs.getApplications()) {
-            LOGGER.info(pref.toString());
+            LOGGER.debug(pref.toString());
         }
         for (GenericPreference pref : prefs.getModules()) {
-            LOGGER.info(pref.toString());
+            LOGGER.debug(pref.toString());
         }
         for (GenericPreference pref : prefs.getUsers()) {
-            LOGGER.info(pref.toString());
+            LOGGER.debug(pref.toString());
         }
     }
 
