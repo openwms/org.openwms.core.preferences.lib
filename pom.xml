@@ -5,12 +5,13 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>19</version>
+        <version>19.1</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>OpenWMS.org CORE: Preferences</name>
+    <description>Manages preferences and application configuration parameters for microservices, users and roles</description>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
 
     <issueManagement>
@@ -53,8 +54,8 @@
     </contributors>
 
     <ciManagement>
-        <system>travis</system>
-        <url>https://travis-ci.org/openwms/${project.artifactId}</url>
+        <system>GitHub</system>
+        <url>https://github.com/openwms/${project.artifactId}/actions</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
@@ -131,6 +132,10 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                     <execution>
@@ -151,18 +156,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
                 <executions>
-                    <execution>
-                        <goals>
-                            <goal>build-info</goal>
-                        </goals>
-                    </execution>
                     <execution>
                         <id>repackage</id>
                         <goals>
+                            <goal>build-info</goal>
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
@@ -170,6 +168,9 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -279,6 +280,16 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-oxm</artifactId>
             <optional>true</optional>
@@ -296,6 +307,12 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -303,11 +320,6 @@
             <!-- Required by eureka-client -->
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jdk8</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -357,6 +369,17 @@
 
         <!-- Test dependencies -->
         <dependency>
+            <groupId>io.interface21</groupId>
+            <artifactId>ameba-lib</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
@@ -369,17 +392,6 @@
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-surefire-provider</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.interface21</groupId>
-            <artifactId>ameba-lib</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -434,6 +446,7 @@
             </snapshots>
         </repository>
     </repositories>
+
     <pluginRepositories>
         <pluginRepository>
             <id>spring-milestones</id>
