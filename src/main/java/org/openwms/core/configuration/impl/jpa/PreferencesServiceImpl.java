@@ -60,7 +60,8 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public Collection<PreferenceEO> findAll() {
-        return preferenceRepository.findAll();
+        List<PreferenceEO> all = preferenceRepository.findAll();
+        return all == null ? Collections.emptyList() : all;
     }
 
     /**
@@ -68,7 +69,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope) {
-        Collection<PreferenceEO> result = preferenceRepository.findAllByOwnerAndAndScope(owner, scope);
+        Collection<PreferenceEO> result = preferenceRepository.findByOwnerAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;
     }
 
@@ -85,7 +86,22 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
-        return preferenceRepository.findAllByOwnerAndAndScopeAndKey(owner, scope, key).orElseThrow(() -> new NotFoundException(format("Preference with owner [%s], scope [%s] and key [%s] does not exist", owner, scope, key)));
+        return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key).orElseThrow(() -> new NotFoundException(format("Preference with owner [%s], scope [%s] and key [%s] does not exist", owner, scope, key)));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PreferenceEO create(@NotNull PreferenceEO preference) {
+        if (preference.getPersistentKey() != null) {
+            throw new NotFoundException(format("Preference has a pKey [%s] and cannot be created", preference.getPersistentKey()));
+        }
+        Optional<PreferenceEO> eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(preference.getOwner(), preference.getScope(), preference.getKey());
+        if (eoOpt.isPresent()) {
+            throw new NotFoundException(format("Preference with key [%s] and owner [%s] of scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
+        }
+        return preferenceRepository.save(preference);
     }
 
     /**

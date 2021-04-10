@@ -30,7 +30,7 @@ interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, Prefer
 
     Optional<PreferenceEO> findBypKey(String pKey);
 
-    List<PreferenceEO> findAllByOwnerAndAndScope(String owner, PropertyScope scope);
+    List<PreferenceEO> findByOwnerAndScope(String owner, PropertyScope scope);
 
-    Optional<PreferenceEO> findAllByOwnerAndAndScopeAndKey(String owner, PropertyScope scope, String key);
+    Optional<PreferenceEO> findByOwnerAndScopeAndKey(String owner, PropertyScope scope, String key);
 }

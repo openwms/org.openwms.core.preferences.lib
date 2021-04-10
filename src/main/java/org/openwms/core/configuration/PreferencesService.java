@@ -67,11 +67,19 @@ public interface PreferencesService {
     PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key);
 
     /**
-     * Create or update the given {@code Preference}.
+     * Create a new non-existing {@code Preference}.
      *
-     * @param pKey The persistent identifier of the preference to update
-     * @param preference {@link PreferenceEO} entity to save
-     * @return Saved {@link PreferenceEO} entity instance
+     * @param preference The instance to create
+     * @return The created instance
+     */
+    PreferenceEO create(@NotNull PreferenceEO preference);
+
+    /**
+     * Save the given and existing {@code Preference}.
+     *
+     * @param pKey The persistent identifier of the preference to save
+     * @param preference {@link PreferenceEO} instance to save
+     * @return Saved {@link PreferenceEO} instance
      */
     PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference);
 

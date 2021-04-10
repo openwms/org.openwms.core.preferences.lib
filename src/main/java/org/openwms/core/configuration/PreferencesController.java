@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Flux;
@@ -75,6 +76,14 @@ public class PreferencesController {
             @PathVariable("pKey") String pKey
     ) {
         return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findBy(pKey), PreferenceVO.class)));
+    }
+
+    @PostMapping(value = API_PREFERENCES)
+    public ResponseEntity<Void> create(
+            @RequestBody PreferenceVO preference
+    ) {
+        PreferenceEO eo = preferencesService.create(mapper.map(preference, PreferenceEO.class));
+        return ResponseEntity.created(linkTo(methodOn(PreferencesController.class).findByPKey(eo.getPersistentKey())).toUri()).build();
     }
 
     @PutMapping(value = API_PREFERENCES + "/{pKey}")
