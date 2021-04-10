@@ -43,6 +43,16 @@ or responds with a `404 NOT-FOUND` if the `Preference` does not exist.
 
 include::{generated}/prefs-findbykey404/http-response.adoc[]
 
+=== Create a new Preference
+New `Preferences` can be created either with the definition in XML files or over the REST API. A client must send a `POST` request to the
+`Preferences` resource in order to create a new instance. The content is passed in the request body.
+
+include::{generated}/prefs-create/http-request.adoc[]
+
+The server responds with `201 CREATED` if the operation succeeds.
+
+include::{generated}/prefs-create/http-response.adoc[]
+
 === Update an existing Preference
 To modify an existing `Preference` an `PUT` request with the `Preference` as request body is expected. The `Preference` to update is
 identified by the persistent key as part of the path.
