@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -35,7 +36,7 @@ import java.io.Serializable;
  * @author Heiko Scherrer
  */
 @Entity
-@Table(name = "COR_PREF_PREFERENCE")
+@Table(name = "COR_PREF_PREFERENCE", uniqueConstraints = @UniqueConstraint(name = "UC_PREFERENCE", columnNames = {"C_KEY", "C_OWNER"}))
 public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     /** Suffix for the FIND_ALL named query. Default {@value} */
