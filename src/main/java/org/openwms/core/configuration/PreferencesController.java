@@ -58,6 +58,7 @@ public class PreferencesController {
                 new Index(
                         linkTo(methodOn(PreferencesController.class).findAll()).withRel("preferences-findall"),
                         linkTo(methodOn(PreferencesController.class).findByPKey("pKey")).withRel("preferences-findbypkey"),
+                        linkTo(methodOn(PreferencesController.class).create(new PreferenceVO())).withRel("preferences-create"),
                         linkTo(methodOn(PreferencesController.class).update("pKey", new PreferenceVO())).withRel("preferences-update"),
                         linkTo(methodOn(PreferencesController.class).delete("pKey")).withRel("preferences-delete"),
                         linkTo(methodOn(UserPreferencesController.class).findByUser("user")).withRel("user-preferences-findbyuser"),

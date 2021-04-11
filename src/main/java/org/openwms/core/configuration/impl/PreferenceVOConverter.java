@@ -15,10 +15,10 @@
  */
 package org.openwms.core.configuration.impl;
 
+import com.github.dozermapper.core.DozerConverter;
+import com.github.dozermapper.core.Mapper;
+import com.github.dozermapper.core.MapperAware;
 import org.ameba.exception.NotFoundException;
-import org.dozer.DozerConverter;
-import org.dozer.Mapper;
-import org.dozer.MapperAware;
 import org.openwms.core.configuration.PreferenceType;
 import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.api.ApplicationPreferenceVO;

@@ -21,7 +21,7 @@ The response lists all the operations with a name and the corresponding href lin
 
 include::{generated}/prefs-index/http-response.adoc[]
 
-=== Find all Preferences
+=== Find all Preferences (preferences-findall)
 Send a HTTP GET request without any further query parameters to find and return all existing `Preferences`.
 
 include::{generated}/prefs-findall/http-request.adoc[]
@@ -30,7 +30,7 @@ The server responds with an array of all `Preferences`, that might be empty if n
 
 include::{generated}/prefs-findall/http-response.adoc[]
 
-=== Find a Preference by Key
+=== Find a Preference by Key (preferences-findbypkey)
 Send a HTTP GET request with the persistent key as part of the path to find and return the `Preference`.
 
 include::{generated}/prefs-findbykey/http-request.adoc[]
@@ -43,7 +43,7 @@ or responds with a `404 NOT-FOUND` if the `Preference` does not exist.
 
 include::{generated}/prefs-findbykey404/http-response.adoc[]
 
-=== Create a new Preference
+=== Create a new Preference (preferences-create)
 New `Preferences` can be created either with the definition in XML files or over the REST API. A client must send a `POST` request to the
 `Preferences` resource in order to create a new instance. The content is passed in the request body.
 
@@ -57,7 +57,7 @@ If the `Preference` to create already exists, the server returns:
 
 include::{generated}/prefs-create-fails/http-response.adoc[]
 
-=== Update an existing Preference
+=== Update an existing Preference (preferences-update)
 To modify an existing `Preference` an `PUT` request with the `Preference` as request body is expected. The `Preference` to update is
 identified by the persistent key as part of the path.
 
@@ -67,7 +67,7 @@ The server responds with `204 NO-CONTENT`.
 
 include::{generated}/prefs-update/http-response.adoc[]
 
-=== Delete a Preference
+=== Delete a Preference (preferences-delete)
 To delete an existing `Preference` one can call the URI to the resource with a HTTP `DELETE` request. The persistent key of the `Preference`
 is required to identify the resource to delete.
 
