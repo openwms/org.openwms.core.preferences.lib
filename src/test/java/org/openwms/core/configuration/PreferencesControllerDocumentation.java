@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.jdbc.Sql;
@@ -33,6 +34,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestBody;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
@@ -223,18 +225,45 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .expectBody()
                 .consumeWith(
                         document("prefs-create",
-                                preprocessRequest(prettyPrint()),
-                                requestFields(
-                                        fieldWithPath("[]").description("An array of all existing preferences"),
-                                        fieldWithPath("[].type").description("Datatype of the preference"),
-                                        fieldWithPath("[].key").description("The business key, unique combined with the owner"),
-                                        fieldWithPath("[].value").description("The preference value"),
-                                        fieldWithPath("[].description").description("A descriptive text of the preference"),
-                                        fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
-                                        fieldWithPath("[].@class").description("Metadata used internally to clarify the preference type"),
-                                        fieldWithPath("[].links").ignored()
-                        )
+                                preprocessRequest(prettyPrint())
                 ))
+        ;
+    }
+
+    @Test
+    void shall_fail_to_create_existing_preference() throws Exception {
+        ObjectMapper om = new ObjectMapper();
+        UserPreferenceVO vo = new UserPreferenceVO();
+        vo.setKey("keyY");
+        vo.setOwner("owner2");
+        vo.setDescription("A Boolean");
+        vo.setType("BOOL");
+        vo.setVal(true);
+        this.client
+                .post()
+                .uri(u -> u.path(API_PREFERENCES)
+                        .build()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(om.writeValueAsString(vo))
+                .exchange()
+                .expectStatus().isCreated()
+        ;
+
+        this.client
+                .post()
+                .uri(u -> u.path(API_PREFERENCES)
+                        .build()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(om.writeValueAsString(vo))
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.CONFLICT)
+                .expectBody()
+                .consumeWith(
+                        document("prefs-create-fails",
+                                preprocessResponse(prettyPrint())
+                        ))
         ;
     }
 }

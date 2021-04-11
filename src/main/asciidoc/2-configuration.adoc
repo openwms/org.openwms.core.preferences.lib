@@ -53,6 +53,10 @@ The server responds with `201 CREATED` if the operation succeeds.
 
 include::{generated}/prefs-create/http-response.adoc[]
 
+If the `Preference` to create already exists, the server returns:
+
+include::{generated}/prefs-create-fails/http-response.adoc[]
+
 === Update an existing Preference
 To modify an existing `Preference` an `PUT` request with the `Preference` as request body is expected. The `Preference` to update is
 identified by the persistent key as part of the path.

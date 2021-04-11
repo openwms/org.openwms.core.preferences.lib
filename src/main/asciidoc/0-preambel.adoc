@@ -27,12 +27,12 @@ An example response looks like this:
 
 ```
 {
-    "timestamp": 1512400854941,
-    "status": 500,
-    "error": "Internal Server Error",
-    "exception": "org.ameba.oauth2.InvalidTokenException",
-    "message": "JWT expired at 2017-12-04T15:04:43Z. Current time: 2017-12-04T15:20:54Z, ...",
-    "path": "/v1/transport-units?bk=00000000000000004711"
+  "timestamp" : 1512400854941,
+  "path" : "/v1/preferences",
+  "status" : 409,
+  "error" : "Conflict",
+  "message" : "",
+  "requestId" : "7acb57f4"
 }
 ```
 
@@ -42,11 +42,11 @@ The JSON structure contains the following fields.
 | Property Name | Description
 
 | timestamp     | When the error occurred on server side
+| path          | The part of the URI for the REST resource that was queried
 | status        | The http status of the error
 | error         | A short error text
-| exception     | Internal class name of the Java exception type
 | message       | A more descriptive error text describing the error in detail
-| path          | The part of the URI for the REST resource that was queried
+| requestId     | Server assigned unique id of each request, used for tracing and profiling
 |===
 
 === API Declined Errors

@@ -17,6 +17,7 @@ package org.openwms.core.configuration.impl.jpa;
 
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
+import org.ameba.exception.ResourceExistsException;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.PreferencesService;
 import org.openwms.core.configuration.PropertyScope;
@@ -99,7 +100,7 @@ class PreferencesServiceImpl implements PreferencesService {
         }
         Optional<PreferenceEO> eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(preference.getOwner(), preference.getScope(), preference.getKey());
         if (eoOpt.isPresent()) {
-            throw new NotFoundException(format("Preference with key [%s] and owner [%s] of scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
+            throw new ResourceExistsException(format("Preference with key [%s] and owner [%s] of scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
         }
         return preferenceRepository.save(preference);
     }
