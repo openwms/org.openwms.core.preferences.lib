@@ -495,12 +495,12 @@ order to re-phrase and send the request again.</p>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight"><code>{
-    "timestamp": 1512400854941,
-    "status": 500,
-    "error": "Internal Server Error",
-    "exception": "org.ameba.oauth2.InvalidTokenException",
-    "message": "JWT expired at 2017-12-04T15:04:43Z. Current time: 2017-12-04T15:20:54Z, ...",
-    "path": "/v1/transport-units?bk=00000000000000004711"
+  "timestamp" : 1512400854941,
+  "path" : "/v1/preferences",
+  "status" : 409,
+  "error" : "Conflict",
+  "message" : "",
+  "requestId" : "7acb57f4"
 }</code></pre>
 </div>
 </div>
@@ -524,6 +524,10 @@ order to re-phrase and send the request again.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">When the error occurred on server side</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">path</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The part of the URI for the REST resource that was queried</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">status</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The http status of the error</p></td>
 </tr>
@@ -532,16 +536,12 @@ order to re-phrase and send the request again.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock">A short error text</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">exception</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Internal class name of the Java exception type</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">message</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">A more descriptive error text describing the error in detail</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">path</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The part of the URI for the REST resource that was queried</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">requestId</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Server assigned unique id of each request, used for tracing and profiling</p></td>
 </tr>
 </tbody>
 </table>
@@ -654,7 +654,7 @@ format or has produced an error on server side, the API will decline the request
 <div id="footer">
 <div id="footer-text">
 Version <br>
-Last updated 2021-03-04 23:03:41 UTC
+Last updated 2021-04-11 16:08:39 UTC
 </div>
 </div>
 </body>

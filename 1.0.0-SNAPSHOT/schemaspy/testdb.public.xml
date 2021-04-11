@@ -21,6 +21,10 @@
          <index name="cor_pref_preference_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
          </index>
+         <index name="uc_preference" unique="true">
+            <column ascending="true" name="c_key"/>
+            <column ascending="true" name="c_owner"/>
+         </index>
       </table>
    </tables>
 </database>

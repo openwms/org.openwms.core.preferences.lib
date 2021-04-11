@@ -1,4 +1,4 @@
-// dot 2.43.0 on Linux 5.4.0-1040-azure
+// dot 2.43.0 on Linux 5.4.0-1043-azure
 // SchemaSpy rev Unknown
 digraph "cor_pref_preference" {
   graph [
@@ -29,10 +29,10 @@ digraph "cor_pref_preference" {
       <TR><TD PORT="c_def_value" COLSPAN="3" ALIGN="LEFT">c_def_value</TD></TR>
       <TR><TD PORT="c_description" COLSPAN="3" ALIGN="LEFT">c_description</TD></TR>
       <TR><TD PORT="c_from_file" COLSPAN="3" ALIGN="LEFT">c_from_file</TD></TR>
-      <TR><TD PORT="c_key" COLSPAN="3" ALIGN="LEFT">c_key</TD></TR>
+      <TR><TD PORT="c_key" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_key</TD></TR>
       <TR><TD PORT="c_max_value" COLSPAN="3" ALIGN="LEFT">c_max_value</TD></TR>
       <TR><TD PORT="c_min_value" COLSPAN="3" ALIGN="LEFT">c_min_value</TD></TR>
-      <TR><TD PORT="c_owner" COLSPAN="3" ALIGN="LEFT">c_owner</TD></TR>
+      <TR><TD PORT="c_owner" COLSPAN="3" BGCOLOR="#f4f7da" ALIGN="LEFT">c_owner</TD></TR>
       <TR><TD PORT="c_scope" COLSPAN="3" ALIGN="LEFT">c_scope</TD></TR>
       <TR><TD PORT="c_type" COLSPAN="3" ALIGN="LEFT">c_type</TD></TR>
       <TR><TD PORT="c_current_value" COLSPAN="3" ALIGN="LEFT">c_current_value</TD></TR>
