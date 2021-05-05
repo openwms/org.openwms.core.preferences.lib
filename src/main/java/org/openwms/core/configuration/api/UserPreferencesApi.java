@@ -18,8 +18,8 @@ package org.openwms.core.configuration.api;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 
@@ -38,7 +38,7 @@ public interface UserPreferencesApi {
      * @return An infinite filtered stream of PreferenceVO
      */
     @GetMapping(value = API_PREFERENCES, params = {"user"})
-    Flux<PreferenceVO> findByUser(
+    List<PreferenceVO> findByUser(
             @RequestParam("user") String user
     );
 
@@ -50,7 +50,7 @@ public interface UserPreferencesApi {
      * @return One single instance
      */
     @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
-    Mono<PreferenceVO> findByUserAndKey(
+    PreferenceVO findByUserAndKey(
             @RequestParam("user") String user,
             @RequestParam("key") String key
     );

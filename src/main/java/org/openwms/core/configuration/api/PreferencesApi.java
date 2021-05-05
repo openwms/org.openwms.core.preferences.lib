@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 
@@ -41,7 +41,7 @@ public interface PreferencesApi {
      * @return An infinite stream of all PreferenceVO
      */
     @GetMapping(value = API_PREFERENCES)
-    Flux<PreferenceVO> findAll();
+    List<PreferenceVO> findAll();
 
     /**
      * Find and return an Preference identified by its persistent key.
@@ -50,7 +50,7 @@ public interface PreferencesApi {
      * @return The instance
      */
     @GetMapping(value = API_PREFERENCES + "/{pKey}")
-    Mono<PreferenceVO> findByPKey(
+    PreferenceVO findByPKey(
             @PathVariable("pKey") String pKey
     );
 
