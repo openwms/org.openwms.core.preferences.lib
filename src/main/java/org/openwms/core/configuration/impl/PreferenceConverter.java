@@ -36,13 +36,8 @@ import java.util.Arrays;
  *
  * @author Heiko Scherrer
  */
-public class PreferenceConverter extends DozerConverter<GenericPreference, PreferenceEO> implements MapperAware {
+public class PreferenceConverter extends DozerConverter<GenericPreference, PreferenceEO> {
 
-    private Mapper mapper;
-
-    /**
-     * {@inheritDoc}
-     */
     public PreferenceConverter() {
         super(GenericPreference.class, PreferenceEO.class);
     }
@@ -165,10 +160,5 @@ public class PreferenceConverter extends DozerConverter<GenericPreference, Prefe
             return p;
         }
         throw new IllegalArgumentException("Source entity preferences type is unknown: " + source.getScope());
-    }
-
-    @Override
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
     }
 }

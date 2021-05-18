@@ -39,9 +39,6 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
 
     private Mapper mapper;
 
-    /**
-     * {@inheritDoc}
-     */
     public PreferenceVOConverter() {
         super(PreferenceVO.class, PreferenceEO.class);
     }
