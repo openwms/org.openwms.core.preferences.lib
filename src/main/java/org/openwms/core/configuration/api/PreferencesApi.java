@@ -71,7 +71,7 @@ public interface PreferencesApi {
      * @param preference The content to update the preference with
      */
     @PutMapping(value = API_PREFERENCES + "/{pKey}")
-    void update(
+    PreferenceVO update(
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     );

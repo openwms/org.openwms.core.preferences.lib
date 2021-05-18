@@ -88,12 +88,12 @@ public class PreferencesController {
     }
 
     @PutMapping(value = API_PREFERENCES + "/{pKey}")
-    public ResponseEntity<Void> update(
+    public ResponseEntity<PreferenceVO> update(
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     ) {
-        preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));
-        return ResponseEntity.noContent().build();
+        PreferenceEO saved = preferencesService.save(pKey, mapper.map(preference, PreferenceEO.class));
+        return ResponseEntity.ok(mapper.map(saved, PreferenceVO.class));
     }
 
     @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
