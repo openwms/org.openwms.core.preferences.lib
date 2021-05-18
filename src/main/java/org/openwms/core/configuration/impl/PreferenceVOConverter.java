@@ -122,7 +122,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setKey(source.getKey());
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
-            p.setType(mapper.map(source.getType(), String.class));
+            p.setType(source.getType().name());
             return p;
         }
         if (source.getScope() == PropertyScope.MODULE) {
@@ -132,7 +132,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setOwner(source.getOwner());
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
-            p.setType(mapper.map(source.getType(), String.class));
+            p.setType(source.getType().name());
             return p;
         }
         if (source.getScope() == PropertyScope.ROLE) {
@@ -142,7 +142,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setOwner(source.getOwner());
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
-            p.setType(mapper.map(source.getType(), String.class));
+            p.setType(source.getType().name());
             return p;
         }
         if (source.getScope() == PropertyScope.USER) {
@@ -152,7 +152,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setOwner(source.getOwner());
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
-            p.setType(mapper.map(source.getType(), String.class));
+            p.setType(source.getType().name());
             return p;
         }
         throw new IllegalArgumentException("Source entity preferences type is unknown: " + source.getScope());

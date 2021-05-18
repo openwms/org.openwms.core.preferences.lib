@@ -182,7 +182,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
      * @return A {@link PreferenceKey}
      */
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(this.owner, this.key, this.scope);
+        return new PreferenceKey(this.owner == null ? ":APPLICATION:" : this.owner, this.key, this.scope);
     }
 
     public PreferenceEO() {

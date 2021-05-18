@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.impl.file;
 
+import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -104,7 +105,7 @@ public class UserPreference extends GenericPreference implements Serializable {
      */
     @Override
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getOwner(), getKey(), getType());
+        return new PreferenceKey(getOwner(), getKey(), PropertyScope.USER);
     }
 
     /**

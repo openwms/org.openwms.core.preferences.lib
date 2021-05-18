@@ -16,10 +16,10 @@
 package org.openwms.core.configuration.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -55,13 +55,23 @@ public interface PreferencesApi {
     );
 
     /**
+     * Create a new not-existing preference.
+     *
+     * @param preference The content to update the preference with
+     */
+    @PostMapping(value = API_PREFERENCES)
+    void create(
+            @RequestBody PreferenceVO preference
+    );
+
+    /**
      * Update the content of an existing preference identified by its persistent key.
      *
      * @param pKey The persistent key of the preference to update
      * @param preference The content to update the preference with
      */
     @PutMapping(value = API_PREFERENCES + "/{pKey}")
-    ResponseEntity<Void> update(
+    void update(
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     );
@@ -72,7 +82,7 @@ public interface PreferencesApi {
      * @param pKey The persistent key of the preference to update
      */
     @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
-    ResponseEntity<Void> delete(
+    void delete(
             @PathVariable("pKey") String pKey
     );
 }

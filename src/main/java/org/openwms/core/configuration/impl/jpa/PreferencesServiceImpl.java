@@ -24,6 +24,8 @@ import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.openwms.core.configuration.impl.file.PreferenceDao;
 import org.openwms.core.configuration.impl.file.PreferenceKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
@@ -46,6 +48,7 @@ import static java.lang.String.format;
 @TxService
 class PreferencesServiceImpl implements PreferencesService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesServiceImpl.class);
     private final PreferenceDao fileDao;
     private final PreferenceRepository preferenceRepository;
     private final BeanMapper mapper;
@@ -61,8 +64,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     public Collection<PreferenceEO> findAll() {
-        List<PreferenceEO> all = preferenceRepository.findAll();
-        return all == null ? Collections.emptyList() : all;
+        return preferenceRepository.findAll();
     }
 
     /**
@@ -102,7 +104,9 @@ class PreferencesServiceImpl implements PreferencesService {
         if (eoOpt.isPresent()) {
             throw new ResourceExistsException(format("Preference with key [%s] and owner [%s] of scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
         }
-        return preferenceRepository.save(preference);
+        PreferenceEO saved = preferenceRepository.save(preference);
+        LOGGER.debug("Created Preference [{}]", saved);
+        return saved;
     }
 
     /**
@@ -115,7 +119,9 @@ class PreferencesServiceImpl implements PreferencesService {
             throw new NotFoundException(format("Preference with key [%s] does not exist", pKey));
         }
         PreferenceEO eo = eoOpt.get();
-        return preferenceRepository.save(mapper.mapFromTo(preference, eo));
+        PreferenceEO saved = preferenceRepository.save(mapper.mapFromTo(preference, eo));
+        LOGGER.debug("Updated Preference [{}]", saved);
+        return saved;
     }
 
     /**
@@ -129,6 +135,7 @@ class PreferencesServiceImpl implements PreferencesService {
         }
         PreferenceEO eo = eoOpt.get();
         preferenceRepository.delete(eo);
+        LOGGER.debug("Deleted Preference [{}]", eo);
     }
 
     /**
@@ -145,7 +152,8 @@ class PreferencesServiceImpl implements PreferencesService {
                 .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -> p));
         for (GenericPreference pref : fromFile) {
             if (!persistedPrefs.containsKey(pref.getPrefKey())) {
-                preferenceRepository.save(mapper.map(pref, PreferenceEO.class));
+                PreferenceEO saved = preferenceRepository.save(mapper.map(pref, PreferenceEO.class));
+                LOGGER.debug("Merged and saved Preference [{}]", saved);
             }
         }
     }

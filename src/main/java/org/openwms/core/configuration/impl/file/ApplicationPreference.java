@@ -16,6 +16,7 @@
 package org.openwms.core.configuration.impl.file;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openwms.core.configuration.PropertyScope;
 import org.springframework.util.Assert;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -96,7 +97,7 @@ public class ApplicationPreference extends GenericPreference implements Serializ
     @Override
     @JsonIgnore
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getKey(), getType());
+        return new PreferenceKey(":APPLICATION:", getKey(), PropertyScope.APPLICATION);
     }
 
     @Override
