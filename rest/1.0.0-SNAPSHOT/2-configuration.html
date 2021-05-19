@@ -524,10 +524,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 440
+Content-Length: 506
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -536,6 +537,7 @@ Content-Length: 440
   "type" : "STRING"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : "current val",
   "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
@@ -564,10 +566,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 217
+Content-Length: 250
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -587,12 +590,12 @@ Content-Type: application/json
 Content-Length: 160
 
 {
-  "timestamp" : 1621379205723,
+  "timestamp" : 1621459011621,
   "path" : "/v1/preferences/UNKNOWN",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "6cdcfed4"
+  "requestId" : "7ced752b"
 }</code></pre>
 </div>
 </div>
@@ -607,11 +610,15 @@ Content-Length: 160
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/preferences HTTP/1.1
 Content-Type: application/json
-Content-Length: 195
+Content-Length: 262
 Host: localhost:8080
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : {
+    "empty" : false,
+    "present" : true
+  },
   "links" : [ ],
   "key" : "keyY",
   "owner" : "owner2",
@@ -627,7 +634,7 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/preferences/27900668-7250-4878-b2d8-f6719e218861</code></pre>
+Location: /v1/preferences/5c738a0a-8462-4281-a7de-e358e91b4ddf</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -640,12 +647,12 @@ Content-Type: application/json
 Content-Length: 151
 
 {
-  "timestamp" : 1621379205677,
+  "timestamp" : 1621459011587,
   "path" : "/v1/preferences",
   "status" : 409,
   "error" : "Conflict",
   "message" : "",
-  "requestId" : "1016d87b"
+  "requestId" : "4093ff84"
 }</code></pre>
 </div>
 </div>
@@ -695,7 +702,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-18 23:03:22 UTC
+Last updated 2021-05-19 21:08:48 UTC
 </div>
 </div>
 </body>

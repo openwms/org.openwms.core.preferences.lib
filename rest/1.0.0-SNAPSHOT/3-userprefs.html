@@ -464,10 +464,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 440
+Content-Length: 506
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -476,6 +477,7 @@ Content-Length: 440
   "type" : "STRING"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : "current val",
   "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
@@ -504,10 +506,11 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 217
+Content-Length: 250
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -527,12 +530,12 @@ Content-Type: application/json
 Content-Length: 152
 
 {
-  "timestamp" : 1621379205954,
+  "timestamp" : 1621459011116,
   "path" : "/v1/preferences",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "3161a001"
+  "requestId" : "2924e46a"
 }</code></pre>
 </div>
 </div>
@@ -542,7 +545,7 @@ Content-Length: 152
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-05-18 23:03:22 UTC
+Last updated 2021-05-19 21:08:48 UTC
 </div>
 </div>
 </body>
