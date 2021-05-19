@@ -56,7 +56,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             PreferenceEO eo = PreferenceEO.newBuilder()
                     .key(p.getKey())
                     .description(p.getDescription())
-                    .val(p.getVal().toString())
+                    .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.APPLICATION)
                     .build();
@@ -69,7 +69,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .key(p.getKey())
                     .owner(p.getOwner())
                     .description(p.getDescription())
-                    .val(p.getVal().toString())
+                    .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.MODULE)
                     .build();
@@ -82,7 +82,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .key(p.getKey())
                     .owner(p.getOwner())
                     .description(p.getDescription())
-                    .val(p.getVal().toString())
+                    .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.ROLE)
                     .build();
@@ -95,7 +95,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .key(p.getKey())
                     .owner(p.getOwner())
                     .description(p.getDescription())
-                    .val(p.getVal().toString())
+                    .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.USER)
                     .build();

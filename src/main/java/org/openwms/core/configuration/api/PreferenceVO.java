@@ -21,6 +21,7 @@ import org.ameba.http.AbstractBase;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A PreferenceVO.
@@ -82,6 +83,10 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
 
     public Serializable getVal() {
         return val;
+    }
+
+    public Optional<Serializable> getOptionalVal() {
+        return Optional.ofNullable(val);
     }
 
     public void setVal(Serializable val) {

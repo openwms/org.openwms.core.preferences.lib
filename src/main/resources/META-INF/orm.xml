@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+                 version="2.2">
+
+    <entity class="org.openwms.core.configuration.impl.jpa.PreferenceEO" name="PreferenceEO" access="FIELD">
+        <sequence-generator name="generator" sequence-name="cor_pref_seq" allocation-size="1" />
+    </entity>
+</entity-mappings>
