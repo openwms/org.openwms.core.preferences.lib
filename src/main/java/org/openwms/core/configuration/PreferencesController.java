@@ -18,6 +18,7 @@ package org.openwms.core.configuration;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.PreferenceVO;
+import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import org.openwms.core.http.Index;
 import org.springframework.http.ResponseEntity;
@@ -80,11 +81,18 @@ public class PreferencesController {
     }
 
     @PostMapping(value = API_PREFERENCES)
-    public ResponseEntity<Void> create(
+    public ResponseEntity<PreferenceVO> create(
             @RequestBody PreferenceVO preference
     ) {
-        PreferenceEO eo = preferencesService.create(mapper.map(preference, PreferenceEO.class));
-        return ResponseEntity.created(linkTo(methodOn(PreferencesController.class).findByPKey(eo.getPersistentKey())).toUri()).build();
+        PreferenceEO result;
+        if (preference.getpKey() != null && !preference.getpKey().isEmpty()) {
+            result = preferencesService.save(preference.getpKey(), mapper.map(preference, PreferenceEO.class));
+            return ResponseEntity.ok(mapper.map(result, PreferenceVO.class));
+        } else {
+            result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
+            return ResponseEntity.created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
+                    .body(mapper.map(result, UserPreferenceVO.class));
+        }
     }
 
     @PutMapping(value = API_PREFERENCES + "/{pKey}")

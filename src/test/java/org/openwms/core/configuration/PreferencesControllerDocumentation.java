@@ -104,6 +104,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                                         fieldWithPath("[].pKey").description("The persistent unique key"),
                                         fieldWithPath("[].key").description("The business key, unique combined with the owner"),
                                         fieldWithPath("[].value").description("The preference value"),
+                                        fieldWithPath("[].type").description("The preference type (FLOAT|STRING|INT|OBJECT|BOOL)"),
                                         fieldWithPath("[].description").description("The descriptive text of the preference"),
                                         fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
                                         fieldWithPath("[].@class").description("Metadata used internally to clarify the preference type")
@@ -176,10 +177,33 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(om.writeValueAsString(vo))
                 .exchange()
-                .expectStatus().isNoContent()
+                .expectStatus().isOk()
                 .expectBody()
                 .consumeWith(
                         document("prefs-update",
+                                preprocessRequest(prettyPrint())
+                        )
+                )
+        ;
+    }
+
+    @Test
+    void shall_update_preference_UNKNOWN() throws Exception {
+        ObjectMapper om = new ObjectMapper();
+        UserPreferenceVO vo = new UserPreferenceVO();
+        vo.setpKey("1000");
+        this.client
+                .put()
+                .uri(u -> u.path(API_PREFERENCES + "/UNKNOWN")
+                        .build()
+                )
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(om.writeValueAsString(vo))
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-update-404",
                                 preprocessRequest(prettyPrint())
                         )
                 )

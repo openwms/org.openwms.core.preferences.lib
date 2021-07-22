@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.ameba.http.AbstractBase;
@@ -85,6 +86,7 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
         return val;
     }
 
+    @JsonIgnore
     public Optional<Serializable> getOptionalVal() {
         return Optional.ofNullable(val);
     }

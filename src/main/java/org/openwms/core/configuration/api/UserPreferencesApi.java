@@ -17,6 +17,8 @@ package org.openwms.core.configuration.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -53,5 +55,16 @@ public interface UserPreferencesApi {
     PreferenceVO findByUserAndKey(
             @RequestParam("user") String user,
             @RequestParam("key") String key
+    );
+
+    /**
+     * Create or update an UserPreference.
+     *
+     * @param userPreference The user preference
+     * @return The saved instance
+     */
+    @PostMapping(value = API_PREFERENCES)
+    UserPreferenceVO createOrUpdate(
+            @RequestBody UserPreferenceVO userPreference
     );
 }

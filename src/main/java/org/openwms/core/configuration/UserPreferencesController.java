@@ -18,6 +18,7 @@ package org.openwms.core.configuration;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
+import org.openwms.core.http.AbstractWebController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
  * @author Heiko Scherrer
  */
 @MeasuredRestController
-public class UserPreferencesController {
+public class UserPreferencesController extends AbstractWebController {
 
     private final PreferencesService preferencesService;
     private final BeanMapper mapper;

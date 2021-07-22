@@ -17,6 +17,7 @@ package org.openwms.core.configuration;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -104,6 +105,28 @@ class UserPreferencesControllerDocumentation extends DefaultTestProfile {
                 .expectBody()
                 .consumeWith(
                         document("prefs-findforuserkey404", preprocessResponse(prettyPrint()))
+                )
+        ;
+    }
+
+    @Test
+    void shall_create_userpreference() {
+        UserPreferenceVO up = new UserPreferenceVO();
+        up.setOwner("owner1");
+        up.setDescription("test desc");
+        up.setKey("o1-u1");
+        up.setType("STRING");
+        up.setVal("TEST VAL");
+        this.client
+                .post()
+                .uri(u -> u.path(API_PREFERENCES)
+                        .build()
+                ).bodyValue(up)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody()
+                .consumeWith(
+                        document("prefs-createup", preprocessResponse(prettyPrint()))
                 )
         ;
     }
