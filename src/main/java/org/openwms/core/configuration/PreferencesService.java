@@ -21,6 +21,7 @@ import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * A PreferencesService is responsible to manage {@code Preferences}. Whereby {@code Preferences} have particular defined scopes, e.g. some
@@ -64,7 +65,7 @@ public interface PreferencesService {
      * @param key The preference key
      * @return A Collection of preferences of type T, never {@literal null}
      */
-    PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key);
+    Optional<PreferenceEO> findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key);
 
     /**
      * Create a new non-existing {@code Preference}.
@@ -75,13 +76,21 @@ public interface PreferencesService {
     PreferenceEO create(@NotNull PreferenceEO preference);
 
     /**
-     * Save the given and existing {@code Preference}.
+     * Update the given and existing {@code Preference}.
      *
      * @param pKey The persistent identifier of the preference to save
      * @param preference {@link PreferenceEO} instance to save
      * @return Saved {@link PreferenceEO} instance
      */
-    PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference);
+    PreferenceEO update(@NotEmpty String pKey, @NotNull PreferenceEO preference);
+
+    /**
+     * Save the given {@code Preference}.
+     *
+     * @param preference {@link PreferenceEO} instance to save
+     * @return Saved {@link PreferenceEO} instance
+     */
+    PreferenceEO save(@NotNull PreferenceEO preference);
 
     /**
      * Delete an existing {@code Preference}.

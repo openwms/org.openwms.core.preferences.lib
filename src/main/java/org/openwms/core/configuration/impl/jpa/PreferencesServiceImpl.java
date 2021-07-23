@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.impl.jpa;
 
+import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
@@ -63,6 +64,7 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public Collection<PreferenceEO> findAll() {
         return preferenceRepository.findAll();
     }
@@ -71,6 +73,7 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope) {
         Collection<PreferenceEO> result = preferenceRepository.findByOwnerAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;
@@ -80,6 +83,7 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public PreferenceEO findBy(@NotEmpty String pKey) {
         return preferenceRepository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("Preference with key [%s] does not exist", pKey)));
     }
@@ -88,14 +92,16 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
-    public PreferenceEO findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
-        return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key).orElseThrow(() -> new NotFoundException(format("Preference with owner [%s], scope [%s] and key [%s] does not exist", owner, scope, key)));
+    @Measured
+    public Optional<PreferenceEO> findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key) {
+        return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public PreferenceEO create(@NotNull PreferenceEO preference) {
         if (preference.getPersistentKey() != null) {
             throw new NotFoundException(format("Preference has a pKey [%s] and cannot be created", preference.getPersistentKey()));
@@ -113,7 +119,8 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
-    public PreferenceEO save(@NotEmpty String pKey, @NotNull PreferenceEO preference) {
+    @Measured
+    public PreferenceEO update(@NotEmpty String pKey, @NotNull PreferenceEO preference) {
         Optional<PreferenceEO> eoOpt = preferenceRepository.findBypKey(pKey);
         if (eoOpt.isEmpty()) {
             throw new NotFoundException(format("Preference with key [%s] does not exist", pKey));
@@ -128,6 +135,18 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
+    @Measured
+    public PreferenceEO save(@NotNull PreferenceEO preference) {
+        PreferenceEO saved = preferenceRepository.save(preference);
+        LOGGER.debug("Updated Preference [{}]", saved);
+        return saved;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
     public void delete(@NotEmpty String pKey) {
         Optional<PreferenceEO> eoOpt = preferenceRepository.findBypKey(pKey);
         if (eoOpt.isEmpty()) {
@@ -142,6 +161,7 @@ class PreferencesServiceImpl implements PreferencesService {
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public void reloadInitialPreferences() {
         mergeApplicationProperties();
     }

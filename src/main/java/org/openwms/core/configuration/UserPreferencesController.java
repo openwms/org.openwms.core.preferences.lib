@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration;
 
+import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
@@ -27,6 +28,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 
+import static java.lang.String.format;
 import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
 
 /**
@@ -57,6 +59,11 @@ public class UserPreferencesController extends AbstractWebController {
             @RequestParam("user") String user,
             @RequestParam("key") String key
     ) {
-        return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findBy(user, PropertyScope.USER, key), UserPreferenceVO.class)));
+        return ResponseEntity.ok(Mono.just(
+                mapper.map(
+                        preferencesService.findBy(user, PropertyScope.USER, key).orElseThrow(() -> new NotFoundException(format("Preference with owner [%s], USER scope and key [%s] does not exist", user, key))),
+                        UserPreferenceVO.class
+                )
+        ));
     }
 }
