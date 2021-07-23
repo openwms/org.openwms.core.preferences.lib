@@ -97,16 +97,11 @@ public class PreferencesController {
         } else {
             Optional<PreferenceEO> existingOpt = findByKey(preference);
             if (existingOpt.isPresent()) {
-                try {
-                    PreferenceEO preferenceEO = existingOpt.get();
-                    String pKey = preferenceEO.getPersistentKey();
-                    mapper.mapFromTo(mapper.map(preference, PreferenceEO.class), preferenceEO);
-                    preferenceEO.setPersistentKey(pKey);
-                    result = preferencesService.save(preferenceEO);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new IllegalArgumentException(e.getMessage());
-                }
+                PreferenceEO preferenceEO = existingOpt.get();
+                String pKey = preferenceEO.getPersistentKey();
+                mapper.mapFromTo(mapper.map(preference, PreferenceEO.class), preferenceEO);
+                preferenceEO.setPersistentKey(pKey);
+                result = preferencesService.save(preferenceEO);
             } else {
                 result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
             }
