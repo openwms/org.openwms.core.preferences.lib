@@ -587,12 +587,12 @@ Content-Type: application/json
 Content-Length: 160
 
 {
-  "timestamp" : 1627154412133,
+  "timestamp" : 1627155472669,
   "path" : "/v1/preferences/UNKNOWN",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "53210140"
+  "requestId" : "389355c3"
 }</code></pre>
 </div>
 </div>
@@ -627,13 +627,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/preferences/06194452-5268-4afc-87ba-6e8d2b14b276
+Location: /v1/preferences/d6d91481-5fff-4d9a-993a-b30d62476bf1
 Content-Type: application/hal+json
 Content-Length: 231
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "06194452-5268-4afc-87ba-6e8d2b14b276",
+  "pKey" : "d6d91481-5fff-4d9a-993a-b30d62476bf1",
   "key" : "keyY",
   "owner" : "owner2",
   "description" : "A Boolean",
@@ -645,21 +645,8 @@ Content-Length: 231
 <div class="paragraph">
 <p>If the <code>Preference</code> to create already exists, the server returns:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 409 Conflict
-Content-Type: application/json
-Content-Length: 151
-
-{
-  "timestamp" : 1627154412084,
-  "path" : "/v1/preferences",
-  "status" : 409,
-  "error" : "Conflict",
-  "message" : "",
-  "requestId" : "14e837df"
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create-fails/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
@@ -737,7 +724,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-07-24 19:15:23 UTC
+Last updated 2021-07-24 19:32:57 UTC
 </div>
 </div>
 </body>
