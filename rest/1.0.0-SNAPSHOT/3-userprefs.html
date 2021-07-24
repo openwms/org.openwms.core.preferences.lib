@@ -464,11 +464,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 506
+Content-Length: 440
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -477,7 +476,6 @@ Content-Length: 506
   "type" : "STRING"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
@@ -506,11 +504,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 250
+Content-Length: 217
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -526,16 +523,13 @@ Content-Length: 250
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
-Content-Type: application/json
-Content-Length: 152
+Content-Type: application/hal+json
+Content-Length: 151
 
 {
-  "timestamp" : 1624830505002,
-  "path" : "/v1/preferences",
-  "status" : 404,
-  "error" : "Not Found",
-  "message" : "",
-  "requestId" : "7dc3fee3"
+  "message" : "Preference with owner [owner1], scope [USER] and key [UNKNOWN] does not exist",
+  "messageKey" : "not.found",
+  "httpStatus" : "404"
 }</code></pre>
 </div>
 </div>
@@ -545,7 +539,7 @@ Content-Length: 152
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-06-27 21:35:22 UTC
+Last updated 2021-07-24 19:15:23 UTC
 </div>
 </div>
 </body>

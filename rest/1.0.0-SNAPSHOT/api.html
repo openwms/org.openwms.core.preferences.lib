@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-16)">
+<meta name="author" content="(1.0.0-SNAPSHOT-17)">
 <title>OpenWMS.org CORE: RESTful API (Preferences Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org CORE: RESTful API (Preferences Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-16)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-17)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -843,11 +843,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 506
+Content-Length: 440
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -856,7 +855,6 @@ Content-Length: 506
   "type" : "STRING"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
@@ -885,11 +883,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 250
+Content-Length: 217
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -909,12 +906,12 @@ Content-Type: application/json
 Content-Length: 160
 
 {
-  "timestamp" : 1624830504805,
+  "timestamp" : 1627154412133,
   "path" : "/v1/preferences/UNKNOWN",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "55511fcb"
+  "requestId" : "53210140"
 }</code></pre>
 </div>
 </div>
@@ -929,15 +926,11 @@ Content-Length: 160
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /v1/preferences HTTP/1.1
 Content-Type: application/json
-Content-Length: 262
+Content-Length: 195
 Host: localhost:8080
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : {
-    "empty" : false,
-    "present" : true
-  },
   "links" : [ ],
   "key" : "keyY",
   "owner" : "owner2",
@@ -953,7 +946,19 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: /v1/preferences/e6da7707-8606-49c1-8fbf-b3391e3dd583</code></pre>
+Location: /v1/preferences/06194452-5268-4afc-87ba-6e8d2b14b276
+Content-Type: application/hal+json
+Content-Length: 231
+
+{
+  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "06194452-5268-4afc-87ba-6e8d2b14b276",
+  "key" : "keyY",
+  "owner" : "owner2",
+  "description" : "A Boolean",
+  "value" : "true",
+  "type" : "BOOL"
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -966,12 +971,12 @@ Content-Type: application/json
 Content-Length: 151
 
 {
-  "timestamp" : 1624830504764,
+  "timestamp" : 1627154412084,
   "path" : "/v1/preferences",
   "status" : 409,
   "error" : "Conflict",
   "message" : "",
-  "requestId" : "36672f47"
+  "requestId" : "14e837df"
 }</code></pre>
 </div>
 </div>
@@ -982,14 +987,44 @@ Content-Length: 151
 <p>To modify an existing <code>Preference</code> an <code>PUT</code> request with the <code>Preference</code> as request body is expected. The <code>Preference</code> to update is
 identified by the persistent key as part of the path.</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-update/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /v1/preferences/1000 HTTP/1.1
+Content-Type: application/json
+Content-Length: 214
+Host: localhost:8080
+
+{
+  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "links" : [ ],
+  "pKey" : "1000",
+  "key" : "keyX",
+  "owner" : "owner2",
+  "description" : "A Boolean",
+  "value" : true,
+  "type" : "BOOL"
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The server responds with <code>204 NO-CONTENT</code>.</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-update/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/hal+json
+Content-Length: 199
+
+{
+  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
+  "pKey" : "1000",
+  "key" : "keyX",
+  "owner" : "owner2",
+  "description" : "A Boolean",
+  "value" : "true",
+  "type" : "BOOL"
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1042,11 +1077,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 506
+Content-Length: 440
 
 [ {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -1055,7 +1089,6 @@ Content-Length: 506
   "type" : "STRING"
 }, {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1001",
   "key" : "key2",
   "owner" : "owner1",
@@ -1084,11 +1117,10 @@ Host: localhost:8080</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 250
+Content-Length: 217
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "optionalVal" : "current val",
   "pKey" : "1000",
   "key" : "key1",
   "owner" : "owner1",
@@ -1104,16 +1136,13 @@ Content-Length: 250
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 404 Not Found
-Content-Type: application/json
-Content-Length: 152
+Content-Type: application/hal+json
+Content-Length: 151
 
 {
-  "timestamp" : 1624830505002,
-  "path" : "/v1/preferences",
-  "status" : 404,
-  "error" : "Not Found",
-  "message" : "",
-  "requestId" : "7dc3fee3"
+  "message" : "Preference with owner [owner1], scope [USER] and key [UNKNOWN] does not exist",
+  "messageKey" : "not.found",
+  "httpStatus" : "404"
 }</code></pre>
 </div>
 </div>
@@ -1123,7 +1152,7 @@ Content-Length: 152
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-06-27 21:35:22 UTC
+Last updated 2021-07-24 19:15:23 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
