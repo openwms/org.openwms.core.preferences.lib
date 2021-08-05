@@ -29,6 +29,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * An PreferenceEO is the persistent entity class that represents preferences in the database.
@@ -186,6 +187,36 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     }
 
     public PreferenceEO() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PreferenceEO)) return false;
+        if (!super.equals(o)) return false;
+        PreferenceEO that = (PreferenceEO) o;
+        return fromFile == that.fromFile && Objects.equals(key, that.key) && Objects.equals(owner, that.owner) && Objects.equals(description, that.description) && scope == that.scope && Objects.equals(val, that.val) && Objects.equals(defValue, that.defValue) && Objects.equals(minValue, that.minValue) && Objects.equals(maxValue, that.maxValue) && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), key, owner, description, fromFile, scope, val, defValue, minValue, maxValue, type);
+    }
+
+    @Override
+    public String toString() {
+        return "PreferenceEO{" +
+                "key='" + key + '\'' +
+                ", owner='" + owner + '\'' +
+                ", description='" + description + '\'' +
+                ", fromFile=" + fromFile +
+                ", scope=" + scope +
+                ", val='" + val + '\'' +
+                ", defValue='" + defValue + '\'' +
+                ", minValue='" + minValue + '\'' +
+                ", maxValue='" + maxValue + '\'' +
+                ", type=" + type +
+                '}';
     }
 
     private PreferenceEO(Builder builder) {
