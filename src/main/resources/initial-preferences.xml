@@ -2,12 +2,12 @@
 <p:preferences xmlns:p="http://www.openwms.org/schema/preferences" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.openwms.org/schema/preferences http://www.openwms.org/schema/preferences.xsd">
 
-    <application key="defaultLanguage" val="en_US" type="java.lang.String">Global language setting for all users. Value must be some of the localization keys, like en_US, de_DE, ...</application>
-    <application key="defaultCurrency" val="USD" type="java.lang.String">Global default currency</application>
+    <application key="defaultLanguage" val="en_US" type="STRING">Global language setting for all users. Value must be some of the localization keys, like en_US, de_DE, ...</application>
+    <application key="defaultCurrency" val="USD" type="STRING">Global default currency</application>
 
-    <user        key="language"        val="en_US" type="java.lang.String" owner="operator">Language</user>
-    <user        key="language"        val="de_DE" type="java.lang.String" owner="openwms" >Language</user>
+    <user        key="language"        val="en_US" type="STRING" owner="operator">Language</user>
+    <user        key="language"        val="de_DE" type="STRING" owner="openwms" >Language</user>
 
-    <role        key="language"        val="de_CH" type="java.lang.String" owner="keyuser" >Language</role>
+    <role        key="language"        val="de_CH" type="STRING" owner="keyuser" >Language</role>
 
 </p:preferences>
