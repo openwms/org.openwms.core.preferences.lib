@@ -20,7 +20,7 @@ spring:
     open-in-view: false
     show-sql: false
   jackson:
-    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+    date-format: "yyyy-MM-dd'T'HH:mm:ssXXX" # Only matches Dates no Instants!
     serialization:
       fail_on_empty_beans: false
   main:
@@ -62,6 +62,17 @@ eureka:
       password: ${spring.security.user.password}
       protocol: ${owms.srv.protocol}
       zone: ${owms.eureka.zone}
+      config-protocol: http # The protocol used to access the config server
+    prefer-ip-address: true
+    # Request a lease with a validity of 5 seconds. If until then the
+    # lease has not been renewed, it expires and the Eureka server can evict it.
+    # Default: 90s
+    lease-expiration-duration-in-seconds: 5
+
+    # The cadence of lease renewal, i.e. how often a heartbeat is sent to Eureka server.
+    # In this case every 2 seconds. Use this only for development / debugging. In production use the ...
+    # Default: 30s
+    lease-renewal-interval-in-seconds:    2
 
 management:
   endpoints:
@@ -71,6 +82,13 @@ management:
   health:
     rabbit:
       enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  info:
+    git:
+      mode: simple
 
 logging:
   file:
@@ -80,6 +98,11 @@ logging:
 ---
 spring:
   profiles: ASYNCHRONOUS
+  cloud:
+    bus:
+      enabled: true
+      refresh:
+        enabled: true
 
 management:
   health:
@@ -118,6 +141,10 @@ openwms:
 spring:
   profiles: DISTRIBUTED
   cloud:
+    bus:
+      enabled: true
+      refresh:
+        enabled: true
     config:
       discovery:
         enabled: true
