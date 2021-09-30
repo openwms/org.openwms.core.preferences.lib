@@ -7,10 +7,17 @@
     <include resource="logback-appenders.xml" />
     <include resource="logback-loggers.xml" />
 
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+
+    <appender name="ELK" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>elk:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
     <logger name="com.netflix.discovery" level="OFF" />
-    <logger name="org.dozer" level="ERROR"/>
+    <logger name="com.github.dozermapper" level="ERROR"/>
     <logger name="org.hibernate.SQL" level="OFF"/>
     <logger name="org.hibernate.type" level="OFF"/>
     <logger name="org.springframework" level="WARN"/>
@@ -20,23 +27,29 @@
     <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="LOGFILE"/>
+        <appender-ref ref="ELK"/>
     </logger>
     <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="LOGFILE"/>
+        <appender-ref ref="ELK"/>
     </logger>
     <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="LOGFILE"/>
+        <appender-ref ref="ELK"/>
     </logger>
     <logger name="MEASURED" level="INFO">
+      <appender-ref ref="STDOUT"/>
         <appender-ref ref="TSL"/>
+        <appender-ref ref="ELK"/>
     </logger>
     <logger name="CORE_INTEGRATION_MESSAGING" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="LOGFILE"/>
+        <appender-ref ref="ELK"/>
     </root>
 
 </configuration>
