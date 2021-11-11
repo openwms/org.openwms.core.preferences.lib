@@ -58,7 +58,7 @@ The structure of the response is aligned to the RFC7808. An example response loo
 ```
 {
     "message": "LocationGroup with name [NOT_EXISTS] not found",
-    "messageKey": "COMMON.LOCATION_GROUP_NOT_FOUND",
+    "messageKey": "owms.common.common.lg.notFoundByName",
     "obj" : [ "NOT_EXISTS" ],
     "httpStatus" : "404",
     "class" : "String"
@@ -83,9 +83,9 @@ Following message keys are currently used:
 |===
 | Message Key | Description | Action
 
-| not.found                            | The requested resource has not been found      | The resource does not exist anymore or has never existed. The resource identifier must be verified
-| COMMON.BARCODE_NOT_FOUND             | The TransportUnit does not exist               | Verify the identifying attribute passed to the API
-| COMMON.LOCATION_NOT_FOUND            | The requested Location does not exist          | Verify the identifying attribute passed to the API
-| COMMON.LOCATION_GROUP_NOT_FOUND      | The requested LocationGroup does not exist     | Verify the identifying attribute passed to the API
-| COMMON.TRANSPORT_UNIT_TYPE_NOT_FOUND | The requested TransportUnitType does not exist | Verify the identifying attribute passed to the API
+| not.found                             | The requested resource has not been found      | The resource does not exist anymore or has never existed. The resource identifier must be verified
+| owms.common.common.tu.notFoundByBK    | The TransportUnit does not exist               | Verify the identifying attribute passed to the API
+| owms.common.common.loc.notFoundByName | The requested Location does not exist          | Verify the identifying attribute passed to the API
+| owms.common.common.lg.notFoundByName  | The requested LocationGroup does not exist     | Verify the identifying attribute passed to the API
+| owms.common.common.tut.notFoundByName | The requested TransportUnitType does not exist | Verify the identifying attribute passed to the API
 |===
