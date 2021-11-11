@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="(1.0.0-SNAPSHOT-24)">
+<meta name="author" content="(1.0.0-SNAPSHOT-25)">
 <title>OpenWMS.org CORE: RESTful API (Preferences Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org CORE: RESTful API (Preferences Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-24)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-25)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -618,7 +618,7 @@ format or has produced an error on server side, the API will decline the request
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-none hljs">{
     "message": "LocationGroup with name [NOT_EXISTS] not found",
-    "messageKey": "COMMON.LOCATION_GROUP_NOT_FOUND",
+    "messageKey": "owms.common.common.lg.notFoundByName",
     "obj" : [ "NOT_EXISTS" ],
     "httpStatus" : "404",
     "class" : "String"
@@ -685,22 +685,22 @@ format or has produced an error on server side, the API will decline the request
 <td class="tableblock halign-left valign-top"><p class="tableblock">The resource does not exist anymore or has never existed. The resource identifier must be verified</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">COMMON.BARCODE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">owms.common.common.tu.notFoundByBK</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The TransportUnit does not exist</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Verify the identifying attribute passed to the API</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">COMMON.LOCATION_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">owms.common.common.loc.notFoundByName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The requested Location does not exist</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Verify the identifying attribute passed to the API</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">COMMON.LOCATION_GROUP_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">owms.common.common.lg.notFoundByName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The requested LocationGroup does not exist</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Verify the identifying attribute passed to the API</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">COMMON.TRANSPORT_UNIT_TYPE_NOT_FOUND</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">owms.common.common.tut.notFoundByName</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The requested TransportUnitType does not exist</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Verify the identifying attribute passed to the API</p></td>
 </tr>
@@ -906,12 +906,12 @@ Content-Type: application/json
 Content-Length: 160
 
 {
-  "timestamp" : 1633039187852,
+  "timestamp" : 1636670641799,
   "path" : "/v1/preferences/UNKNOWN",
   "status" : 404,
   "error" : "Not Found",
   "message" : "",
-  "requestId" : "77de8378"
+  "requestId" : "34b3345d"
 }</code></pre>
 </div>
 </div>
@@ -946,13 +946,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: /v1/preferences/a11e80c9-3a91-448f-b80e-3892fe06a80c
+Location: /v1/preferences/561e6931-585e-4375-807a-fff46f9051fa
 Content-Type: application/hal+json
 Content-Length: 231
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "a11e80c9-3a91-448f-b80e-3892fe06a80c",
+  "pKey" : "561e6931-585e-4375-807a-fff46f9051fa",
   "key" : "keyY",
   "owner" : "owner2",
   "description" : "A Boolean",
@@ -1139,7 +1139,7 @@ Content-Length: 149
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-30 21:54:48 UTC
+Last updated 2021-11-11 22:36:14 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
