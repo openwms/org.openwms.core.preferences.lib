@@ -22,10 +22,5 @@ package org.openwms.core.configuration;
  */
 public final class CoreConstants {
 
-    /** API version. */
-    public static final String API_VERSION = "v1";
-    /** API root to hit Preferences (plural). */
-    public static final String API_PREFERENCES = "/" + API_VERSION + "/preferences";
-
     private CoreConstants() { }
 }

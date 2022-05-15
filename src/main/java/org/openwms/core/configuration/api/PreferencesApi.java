@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
-
 /**
  * A PreferencesApi defines the public REST API to manage preferences.
  *
@@ -34,6 +32,11 @@ import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
  */
 @FeignClient(name = "preferences-service", qualifier = "preferencesApi")
 public interface PreferencesApi {
+
+    /** API version. */
+    String API_VERSION = "v1";
+    /** API root to hit Preferences (plural). */
+    String API_PREFERENCES = "/" + API_VERSION + "/preferences";
 
     /**
      * Find and return all existing preferences.

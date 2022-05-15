@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 
 import static java.lang.String.format;
-import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
+import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 
 /**
  * A PreferencesController.

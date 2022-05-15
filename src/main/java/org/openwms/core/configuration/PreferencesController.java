@@ -38,7 +38,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
+import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 

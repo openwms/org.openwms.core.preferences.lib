@@ -29,7 +29,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
+import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;

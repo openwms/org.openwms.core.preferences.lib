@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import static org.openwms.core.configuration.CoreConstants.API_PREFERENCES;
+import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 
 /**
  * A UserPreferencesApi defines the public REST API to manage UserPreferences.
