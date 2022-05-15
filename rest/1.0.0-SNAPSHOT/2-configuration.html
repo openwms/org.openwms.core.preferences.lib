@@ -583,14 +583,12 @@ Content-Length: 217
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/json
-Content-Length: 142
+Content-Length: 118
 
 {
-  "timestamp" : 1652641704276,
-  "path" : "/v1/preferences/UNKNOWN",
-  "status" : 404,
-  "error" : "Not Found",
-  "requestId" : "59e07f43"
+  "message" : "Preference with key [UNKNOWN] does not exist",
+  "messageKey" : "not.found",
+  "httpStatus" : "404"
 }</code></pre>
 </div>
 </div>
@@ -624,13 +622,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/preferences/39574098-df7b-4f4a-a9bd-6529dea8b38f
+Location: /v1/preferences/ceecad22-06f0-4707-aeff-22d665982147
 Content-Type: application/json
 Content-Length: 231
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "39574098-df7b-4f4a-a9bd-6529dea8b38f",
+  "pKey" : "ceecad22-06f0-4707-aeff-22d665982147",
   "key" : "keyY",
   "owner" : "owner2",
   "description" : "A Boolean",
@@ -720,7 +718,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-15 19:04:55 UTC
+Last updated 2022-05-15 19:31:48 UTC
 </div>
 </div>
 </body>

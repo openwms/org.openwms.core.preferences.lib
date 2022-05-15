@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.15">
-<meta name="author" content="(1.0.0-SNAPSHOT-27)">
+<meta name="author" content="(1.0.0-SNAPSHOT-28)">
 <title>OpenWMS.org CORE: RESTful API (Preferences Service)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -442,7 +442,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>OpenWMS.org CORE: RESTful API (Preferences Service)</h1>
 <div class="details">
-<span id="author" class="author">(1.0.0-SNAPSHOT-27)</span><br>
+<span id="author" class="author">(1.0.0-SNAPSHOT-28)</span><br>
 <span id="revdate">Heiko Scherrer;</span>
 </div>
 <div id="toc" class="toc">
@@ -903,14 +903,12 @@ Content-Length: 217
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/json
-Content-Length: 142
+Content-Length: 118
 
 {
-  "timestamp" : 1652641704276,
-  "path" : "/v1/preferences/UNKNOWN",
-  "status" : 404,
-  "error" : "Not Found",
-  "requestId" : "59e07f43"
+  "message" : "Preference with key [UNKNOWN] does not exist",
+  "messageKey" : "not.found",
+  "httpStatus" : "404"
 }</code></pre>
 </div>
 </div>
@@ -944,13 +942,13 @@ Host: localhost:8080
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /v1/preferences/39574098-df7b-4f4a-a9bd-6529dea8b38f
+Location: /v1/preferences/ceecad22-06f0-4707-aeff-22d665982147
 Content-Type: application/json
 Content-Length: 231
 
 {
   "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "39574098-df7b-4f4a-a9bd-6529dea8b38f",
+  "pKey" : "ceecad22-06f0-4707-aeff-22d665982147",
   "key" : "keyY",
   "owner" : "owner2",
   "description" : "A Boolean",
@@ -1136,7 +1134,7 @@ Content-Length: 149
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-15 19:04:55 UTC
+Last updated 2022-05-15 19:31:48 UTC
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
