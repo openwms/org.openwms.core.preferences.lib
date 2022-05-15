@@ -36,16 +36,16 @@ import java.util.Optional;
 public interface PreferencesService {
 
     /** Find and return all {@code Preferences}. */
-    Collection<PreferenceEO> findAll();
+    Collection<PreferenceEO> findForOwnerAndScope();
 
     /**
-     * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
+     * Find and return all {@code Preferences} of a specific {@code Preference} scope that belong to the given {@code owner}.
      *
      * @param owner The owner of the preference
      * @param scope What kind of preference it is
      * @return A Collection of preferences of type T, never {@literal null}
      */
-    @NotNull Collection<PreferenceEO> findAll(@NotBlank String owner, @NotNull PropertyScope scope);
+    @NotNull Collection<PreferenceEO> findForOwnerAndScope(@NotBlank String owner, @NotNull PropertyScope scope);
 
     /**
      * Find and return the {@code Preferences} identified by the {@code pKey}.
@@ -57,7 +57,8 @@ public interface PreferencesService {
     @NotNull PreferenceEO findBy(@NotBlank String pKey);
 
     /**
-     * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
+     * Find and return all {@code Preferences} of a specific {@code Preference} scope that belong to the given {@code owner} and the given
+     * {@code key}.
      *
      * @param owner The owner of the preference
      * @param scope What kind of preference it is

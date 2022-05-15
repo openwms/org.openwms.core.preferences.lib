@@ -30,6 +30,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * An PreferenceEO is the persistent entity class that represents preferences in the database.
@@ -189,6 +190,11 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     public PreferenceEO() {
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -198,25 +204,35 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         return fromFile == that.fromFile && Objects.equals(key, that.key) && Objects.equals(owner, that.owner) && Objects.equals(description, that.description) && scope == that.scope && Objects.equals(val, that.val) && Objects.equals(defValue, that.defValue) && Objects.equals(minValue, that.minValue) && Objects.equals(maxValue, that.maxValue) && type == that.type;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), key, owner, description, fromFile, scope, val, defValue, minValue, maxValue, type);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public String toString() {
-        return "PreferenceEO{" +
-                "key='" + key + '\'' +
-                ", owner='" + owner + '\'' +
-                ", description='" + description + '\'' +
-                ", fromFile=" + fromFile +
-                ", scope=" + scope +
-                ", val='" + val + '\'' +
-                ", defValue='" + defValue + '\'' +
-                ", minValue='" + minValue + '\'' +
-                ", maxValue='" + maxValue + '\'' +
-                ", type=" + type +
-                '}';
+        return new StringJoiner(", ", PreferenceEO.class.getSimpleName() + "[", "]")
+                .add("key='" + key + "'")
+                .add("owner='" + owner + "'")
+                .add("description='" + description + "'")
+                .add("fromFile=" + fromFile)
+                .add("scope=" + scope)
+                .add("val='" + val + "'")
+                .add("defValue='" + defValue + "'")
+                .add("minValue='" + minValue + "'")
+                .add("maxValue='" + maxValue + "'")
+                .add("type=" + type)
+                .toString();
     }
 
     private PreferenceEO(Builder builder) {

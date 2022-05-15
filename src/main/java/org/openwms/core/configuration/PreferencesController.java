@@ -76,7 +76,7 @@ public class PreferencesController extends AbstractWebController {
 
     @GetMapping(API_PREFERENCES)
     public Flux<PreferenceVO> findAll() {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), PreferenceVO.class)).log();
+        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findForOwnerAndScope()), PreferenceVO.class)).log();
     }
 
     @GetMapping(value = API_PREFERENCES + "/{pKey}")
