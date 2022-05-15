@@ -36,9 +36,9 @@ class PreferencesApplicationListener implements ApplicationListener<MergePropert
 
     /**
      * {@inheritDoc}
-     * <p>
-     * When an event arrives all <i>new</i> preferences received from the file provider are persisted. Already persisted preferences are
-     * ignored.
+     *
+     * When a {@link MergePropertiesEvent} is caught, <i>new</i> {@code Preferences} received from the file provider are persisted. Already
+     * existing {@code Preferences} are ignored.
      */
     @Override
     public void onApplicationEvent(MergePropertiesEvent event) {

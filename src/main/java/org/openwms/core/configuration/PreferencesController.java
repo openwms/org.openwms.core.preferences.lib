@@ -23,6 +23,7 @@ import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.api.RolePreferenceVO;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
+import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  * @author Heiko Scherrer
  */
 @MeasuredRestController
-public class PreferencesController {
+public class PreferencesController extends AbstractWebController {
 
     private final PreferencesService preferencesService;
     private final BeanMapper mapper;
@@ -73,7 +74,7 @@ public class PreferencesController {
         );
     }
 
-    @GetMapping(value = API_PREFERENCES)
+    @GetMapping(API_PREFERENCES)
     public Flux<PreferenceVO> findAll() {
         return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), PreferenceVO.class)).log();
     }
@@ -86,7 +87,7 @@ public class PreferencesController {
     }
 
     @Transactional
-    @PostMapping(value = API_PREFERENCES)
+    @PostMapping(API_PREFERENCES)
     public ResponseEntity<PreferenceVO> create(
             @RequestBody PreferenceVO preference
     ) {
@@ -97,8 +98,8 @@ public class PreferencesController {
         } else {
             Optional<PreferenceEO> existingOpt = findByKey(preference);
             if (existingOpt.isPresent()) {
-                PreferenceEO preferenceEO = existingOpt.get();
-                String pKey = preferenceEO.getPersistentKey();
+                var preferenceEO = existingOpt.get();
+                var pKey = preferenceEO.getPersistentKey();
                 mapper.mapFromTo(mapper.map(preference, PreferenceEO.class), preferenceEO);
                 preferenceEO.setPersistentKey(pKey);
                 result = preferencesService.save(preferenceEO);
@@ -126,16 +127,16 @@ public class PreferencesController {
         return preferencesService.findBy(preference.getOwner(), scope, preference.getKey());
     }
 
-    @PutMapping(value = API_PREFERENCES + "/{pKey}")
+    @PutMapping(API_PREFERENCES + "/{pKey}")
     public ResponseEntity<PreferenceVO> update(
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     ) {
-        PreferenceEO saved = preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class));
+        var saved = preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class));
         return ResponseEntity.ok(mapper.map(saved, PreferenceVO.class));
     }
 
-    @DeleteMapping(value = API_PREFERENCES + "/{pKey}")
+    @DeleteMapping(API_PREFERENCES + "/{pKey}")
     ResponseEntity<Void> delete(
             @PathVariable("pKey") String pKey
     ) {

@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "preferences-service", qualifier = "preferencesApi")
+@FeignClient(name = "preferences-service")
 public interface PreferencesApi {
 
     /** API version. */

@@ -84,8 +84,8 @@ public class Preferences implements Serializable {
         if (applications == null) {
             applications = new ArrayList<>();
             for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
-                if (pref instanceof ApplicationPreference) {
-                    applications.add((ApplicationPreference) pref);
+                if (pref instanceof ApplicationPreference p) {
+                    applications.add(p);
                 }
             }
         }
@@ -101,8 +101,8 @@ public class Preferences implements Serializable {
         if (modules == null) {
             modules = new ArrayList<>();
             for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
-                if (pref instanceof ModulePreference) {
-                    modules.add((ModulePreference) pref);
+                if (pref instanceof ModulePreference p) {
+                    modules.add(p);
                 }
             }
         }
@@ -118,8 +118,8 @@ public class Preferences implements Serializable {
         if (users == null) {
             users = new ArrayList<>();
             for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
-                if (pref instanceof UserPreference) {
-                    users.add((UserPreference) pref);
+                if (pref instanceof UserPreference p) {
+                    users.add(p);
                 }
             }
         }
@@ -135,36 +135,11 @@ public class Preferences implements Serializable {
         if (roles == null) {
             roles = new ArrayList<>();
             for (GenericPreference pref : applicationOrRoleOrUserOrModule) {
-                if (pref instanceof RolePreference) {
-                    roles.add((RolePreference) pref);
+                if (pref instanceof RolePreference p) {
+                    roles.add(p);
                 }
             }
         }
         return roles;
     }
-
-    /**
-     * Return a list of preferences filtered by a specific type, defined by the parameter clazz.
-     *
-     * @param <T> Expected types are {@code ApplicationPreference}, {@code ModulePreference}, {@code RolePreference}
-     * {@code UserPreference}
-     * @param clazz The class type of the preference to filter for
-     * @return a list of T.
-
-     @SuppressWarnings("unchecked") public <T extends AbstractPreference> List<T> getOfType(Class<T> clazz) {
-     if (ApplicationPreference.class.equals(clazz)) {
-     return (List<T>) getApplications();
-     }
-     if (ModulePreference.class.equals(clazz)) {
-     return (List<T>) getModules();
-     }
-     if (UserPreference.class.equals(clazz)) {
-     return (List<T>) getUsers();
-     }
-     if (RolePreference.class.equals(clazz)) {
-     return (List<T>) getRoles();
-     }
-     return Collections.<T>emptyList();
-     }
-     */
 }

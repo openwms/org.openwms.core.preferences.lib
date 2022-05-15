@@ -18,7 +18,7 @@ package org.openwms.core.configuration;
 import org.openwms.core.configuration.impl.file.GenericPreference;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Optional;
@@ -35,9 +35,7 @@ import java.util.Optional;
  */
 public interface PreferencesService {
 
-    /**
-     * Find and return all {@code Preferences}.
-     */
+    /** Find and return all {@code Preferences}. */
     Collection<PreferenceEO> findAll();
 
     /**
@@ -47,15 +45,16 @@ public interface PreferencesService {
      * @param scope What kind of preference it is
      * @return A Collection of preferences of type T, never {@literal null}
      */
-    Collection<PreferenceEO> findAll(@NotEmpty String owner, @NotNull PropertyScope scope);
+    @NotNull Collection<PreferenceEO> findAll(@NotBlank String owner, @NotNull PropertyScope scope);
 
     /**
      * Find and return the {@code Preferences} identified by the {@code pKey}.
      *
      * @param pKey The persistent identifier
-     * @return The instance, or {@literal null}
+     * @return The instance, never {@literal null}
+     * @throws org.ameba.exception.NotFoundException If the instance does not exist
      */
-    PreferenceEO findBy(@NotEmpty String pKey);
+    @NotNull PreferenceEO findBy(@NotBlank String pKey);
 
     /**
      * Find and return all {@code Preferences} in the scope of a specific type of {@code Preference} and owner.
@@ -65,7 +64,7 @@ public interface PreferencesService {
      * @param key The preference key
      * @return A Collection of preferences of type T, never {@literal null}
      */
-    Optional<PreferenceEO> findBy(@NotEmpty String owner, @NotNull PropertyScope scope, @NotEmpty String key);
+    Optional<PreferenceEO> findBy(@NotBlank String owner, @NotNull PropertyScope scope, @NotBlank String key);
 
     /**
      * Create a new non-existing {@code Preference}.
@@ -73,7 +72,7 @@ public interface PreferencesService {
      * @param preference The instance to create
      * @return The created instance
      */
-    PreferenceEO create(@NotNull PreferenceEO preference);
+    @NotNull PreferenceEO create(@NotNull PreferenceEO preference);
 
     /**
      * Update the given and existing {@code Preference}.
@@ -82,7 +81,7 @@ public interface PreferencesService {
      * @param preference {@link PreferenceEO} instance to save
      * @return Saved {@link PreferenceEO} instance
      */
-    PreferenceEO update(@NotEmpty String pKey, @NotNull PreferenceEO preference);
+    @NotNull PreferenceEO update(@NotBlank String pKey, @NotNull PreferenceEO preference);
 
     /**
      * Save the given {@code Preference}.
@@ -90,17 +89,15 @@ public interface PreferencesService {
      * @param preference {@link PreferenceEO} instance to save
      * @return Saved {@link PreferenceEO} instance
      */
-    PreferenceEO save(@NotNull PreferenceEO preference);
+    @NotNull PreferenceEO save(@NotNull PreferenceEO preference);
 
     /**
      * Delete an existing {@code Preference}.
      *
      * @param pKey The persistent identifier of the preference to delete.
      */
-    void delete(@NotEmpty String pKey);
+    void delete(@NotBlank String pKey);
 
-    /**
-     * Load properties from file and merge them with the ones in the database.
-     */
+    /** Load properties from file and merge them with the ones in the database. */
     void reloadInitialPreferences();
 }

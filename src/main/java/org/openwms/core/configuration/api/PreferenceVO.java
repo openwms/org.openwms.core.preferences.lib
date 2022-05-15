@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.ameba.http.AbstractBase;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,21 +33,28 @@ import java.util.Optional;
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class PreferenceVO extends AbstractBase<PreferenceVO> {
 
+    /** The persistent key of the resource. */
     @JsonProperty("pKey")
     private String pKey;
 
+    /** The unique business key of the resource, must not be {@literal null}. */
     @JsonProperty("key")
+    @NotBlank
     private String key;
 
+    /** The owner of the resource. */
     @JsonProperty("owner")
     private String owner;
 
+    /** A descriptive text of the {@code Preference}. */
     @JsonProperty("description")
     private String description;
 
+    /** The value of the {@code Preference}. */
     @JsonProperty("value")
     private Serializable val;
 
+    /** The type of the {@code Preference}. */
     @JsonProperty("type")
     private String type;
 
@@ -103,6 +111,11 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
         this.type = type;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -117,6 +130,11 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
                 Objects.equals(type, that.type);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), pKey, key, owner, description, val, type);

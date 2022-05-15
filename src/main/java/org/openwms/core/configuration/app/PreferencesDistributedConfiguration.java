@@ -21,8 +21,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * A PreferencesDistributedConfiguration shall be activated when the service is deployed as a microservice, not packaged within an
- * application, to enable service discovery.
+ * A PreferencesDistributedConfiguration is activated with the Spring Profile {@link SpringProfiles#DISTRIBUTED} that shall be activated
+ * when the service is deployed as a microservice, not packaged within a standalone application, to enable service discovery.
  *
  * @author Heiko Scherrer
  */

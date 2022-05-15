@@ -42,7 +42,7 @@ class PreferenceRepositoryImpl implements PreferenceRepositoryCustom {
      */
     @Override
     public <T extends PreferenceEO> List<T> findByType(Class<T> clazz) {
-        List<T> result = em.createNamedQuery(clazz.getSimpleName() + PreferenceEO.FIND_ALL, clazz).getResultList();
+        var result = em.createNamedQuery(clazz.getSimpleName() + PreferenceEO.FIND_ALL, clazz).getResultList();
         return result == null ? Collections.emptyList() : result;
     }
 }

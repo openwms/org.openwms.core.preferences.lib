@@ -15,10 +15,11 @@
  */
 package org.openwms.core.configuration;
 
+import org.ameba.http.MeasuredRestController;
+import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -28,8 +29,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  *
  * @author Heiko Scherrer
  */
-@RestController("commonIndexController")
-class IndexController {
+@MeasuredRestController
+class IndexController extends AbstractWebController {
 
     @GetMapping("/index")
     public ResponseEntity<Index> getIndex() {

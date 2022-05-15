@@ -90,7 +90,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
         if (initialPropertiesExist()) {
             try {
                 preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));
-                for (GenericPreference pref : preferences.getAll()) {
+                for (var pref : preferences.getAll()) {
                     if (prefs.containsKey(pref.getPrefKey())) {
                         throw new NoUniqueResultException("Preference with key " + pref.getPrefKey() + " already loaded.");
                     }

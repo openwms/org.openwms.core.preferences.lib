@@ -32,7 +32,7 @@ import static java.lang.String.format;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 
 /**
- * A PreferencesController.
+ * A UserPreferencesController.
  *
  * @author Heiko Scherrer
  */
