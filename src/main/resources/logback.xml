@@ -7,8 +7,6 @@
     <include resource="logback-appenders.xml" />
     <include resource="logback-loggers.xml" />
 
-    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
-
     <appender name="ELK" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <destination>elk:5000</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
@@ -16,40 +14,52 @@
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <logger name="com.netflix.discovery" level="OFF" />
     <logger name="com.github.dozermapper" level="ERROR"/>
+    <logger name="com.netflix.discovery" level="OFF" />
+    <logger name="org.hibernate.boot.internal.InFlightMetadataCollectorImpl" level="ERROR"/>
     <logger name="org.hibernate.SQL" level="OFF"/>
+    <logger name="org.hibernate.SQL_SLOW" level="OFF"/>
     <logger name="org.hibernate.type" level="OFF"/>
     <logger name="org.springframework" level="WARN"/>
     <logger name="org.openwms" level="DEBUG"/>
     <logger name="reactor" level="WARN"/>
 
+    <logger name="CORE_INTEGRATION_MESSAGING" level="INFO"/>
+
+    <springProfile name="PROD">
+        <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR"/>
+        <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR"/>
+        <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR"/>
+        <logger name="CALLCONTEXT" level="OFF"/>
+        <logger name="MEASURED" level="INFO"/>
+        <root level="INFO">
+            <appender-ref ref="ELK"/>
+        </root>
+    </springProfile>
+    <springProfile name="!PROD">
     <logger name="PRESENTATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="EXCFILE"/>
         <appender-ref ref="LOGFILE"/>
-        <appender-ref ref="ELK"/>
     </logger>
     <logger name="SERVICE_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="EXCFILE"/>
         <appender-ref ref="LOGFILE"/>
-        <appender-ref ref="ELK"/>
     </logger>
     <logger name="INTEGRATION_LAYER_EXCEPTION" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="EXCFILE"/>
         <appender-ref ref="LOGFILE"/>
-        <appender-ref ref="ELK"/>
     </logger>
+        <logger name="CALLCONTEXT" level="DEBUG"/>
     <logger name="MEASURED" level="INFO">
       <appender-ref ref="STDOUT"/>
         <appender-ref ref="TSL"/>
-        <appender-ref ref="ELK"/>
     </logger>
-    <logger name="CORE_INTEGRATION_MESSAGING" level="DEBUG"/>
-
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="LOGFILE"/>
-        <appender-ref ref="ELK"/>
     </root>
-
+    </springProfile>
 </configuration>

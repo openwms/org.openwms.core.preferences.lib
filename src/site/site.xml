@@ -34,8 +34,9 @@
             <item name="Home" href="index.html" />
             <item name="REST API Documentation" href="rest/${project.version}/api.html" />
             <item name="Javadoc" href="apidocs/index.html" />
-            <item name="Database Schema" href="${project.version}/schemaspy/utilities.html" />
+            <item name="Database Schema" href="${project.version}/schemaspy/relationships.html" />
             <item name="Sonarcloud" href="https://sonarcloud.io/dashboard?id=${project.groupId}:${project.artifactId}" />
+            <item name="Jacoco" href="jacoco-merged-test-coverage-report/index.html" />
         </menu>
 
         <menu name="Project" ref="reports" />

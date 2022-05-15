@@ -1,4 +1,8 @@
 # Directories #
+/.gradle/
+/docToolchain-master/
+doc/master.zip
+doc/src/*GitHubIssues.adoc
 /build/
 /bin/
 target/
@@ -10,7 +14,9 @@ libs/
 **/node_modules/
 **/typings/
 **/*.js.map
-
+/doc/build/
+/doc/.gradle/
+/doc/master/
 # OS Files #
 .DS_Store
 **/javadoc.sh

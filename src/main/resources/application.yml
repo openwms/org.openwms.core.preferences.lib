@@ -1,12 +1,9 @@
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+
 openwms:
   core:
     config:
       initial-properties: classpath:initial-preferences.xml
----
-spring:
-  profiles: TEST
-  cloud:
-    config:
-      fail-fast: false
-  main:
-    banner-mode: "off"

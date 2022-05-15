@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>19.1</version>
+        <version>20</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
@@ -65,11 +66,12 @@
 
     <properties>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <core.version>1.9.0-SNAPSHOT</core.version>
+        <core.version>2.0.0-SNAPSHOT</core.version>
         <guava.version>30.0-jre</guava.version>
-        <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
-        <spring-cloud-dependencies.version>Hoxton.SR10</spring-cloud-dependencies.version>
+        <objenesis.version>2.6</objenesis.version>
+        <servo-core.version>0.12.21</servo-core.version>
+        <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
         <skipTests>false</skipTests>
     </properties>
 
@@ -96,13 +98,6 @@
     <build>
         <finalName>openwms-core-preferences</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <configuration>
-                    <skip>${skipTests}</skip>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -150,6 +145,10 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
@@ -177,26 +176,21 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.openwms</groupId>
-                <artifactId>org.openwms.core.util</artifactId>
-                <version>${core.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <!-- Clash in org.springframework.cloud:spring-cloud-starter-stream-rabbit -->
+                <groupId>com.netflix.servo</groupId>
+                <artifactId>servo-core</artifactId>
+                <version>${servo-core.version}</version>
             </dependency>
             <dependency>
                 <!-- com.netflix.eureka:eureka has an internal clash -->
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
-            </dependency>
-            <dependency>
-                <!-- com.netflix.eureka:eureka has an internal clash -->
-                <groupId>org.hdrhistogram</groupId>
-                <artifactId>HdrHistogram</artifactId>
-                <version>${HdrHistogram.version}</version>
             </dependency>
             <dependency>
 				<groupId>org.mapstruct</groupId>
@@ -209,6 +203,16 @@
 				<version>${org.mapstruct.version}</version>
 				<scope>provided</scope>
 			</dependency>
+            <dependency>
+                <groupId>org.objenesis</groupId>
+                <artifactId>objenesis</artifactId>
+                <version>${objenesis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openwms</groupId>
+                <artifactId>org.openwms.core.util</artifactId>
+                <version>${core.version}</version>
+            </dependency>
 			<dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -270,6 +274,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
             <optional>true</optional>
         </dependency>
@@ -296,7 +305,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
+            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -469,6 +478,14 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Snapshot Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </pluginRepository>
     </pluginRepositories>
 </project>
