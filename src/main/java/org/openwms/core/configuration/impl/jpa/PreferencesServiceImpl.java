@@ -20,11 +20,13 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.mapping.BeanMapper;
+import org.openwms.core.configuration.PreferencesEvent;
 import org.openwms.core.configuration.PreferencesService;
 import org.openwms.core.configuration.PropertyScope;
 import org.openwms.core.configuration.impl.file.PreferenceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
@@ -49,11 +51,13 @@ class PreferencesServiceImpl implements PreferencesService {
     private final PreferenceDao fileDao;
     private final PreferenceRepository preferenceRepository;
     private final BeanMapper mapper;
+    private final ApplicationContext ctx;
 
-    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper) {
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper, ApplicationContext ctx) {
         this.fileDao = fileDao;
         this.preferenceRepository = preferenceRepository;
         this.mapper = mapper;
+        this.ctx = ctx;
     }
 
     /**
@@ -61,7 +65,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public Collection<PreferenceEO> findAll() {
+    public Collection<PreferenceEO> findForOwnerAndScope() {
         return preferenceRepository.findAll();
     }
 
@@ -70,7 +74,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull Collection<PreferenceEO> findAll(@NotBlank String owner, @NotNull PropertyScope scope) {
+    public @NotNull Collection<PreferenceEO> findForOwnerAndScope(@NotBlank String owner, @NotNull PropertyScope scope) {
         var result = preferenceRepository.findByOwnerAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;
     }
@@ -81,7 +85,9 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull PreferenceEO findBy(@NotBlank String pKey) {
-        return preferenceRepository.findBypKey(pKey).orElseThrow(() -> new NotFoundException(format("Preference with key [%s] does not exist", pKey)));
+        return preferenceRepository.findBypKey(pKey).orElseThrow(
+                () -> new NotFoundException(format("Preference with key [%s] does not exist", pKey))
+        );
     }
 
     /**
@@ -107,7 +113,7 @@ class PreferencesServiceImpl implements PreferencesService {
             throw new ResourceExistsException(format("Preference with key [%s] and owner [%s] of scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
         }
         var saved = preferenceRepository.save(preference);
-        LOGGER.debug("Created Preference [{}]", saved);
+        ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.CREATED));
         return saved;
     }
 
@@ -123,7 +129,7 @@ class PreferencesServiceImpl implements PreferencesService {
         }
         var eo = eoOpt.get();
         var saved = preferenceRepository.save(mapper.mapFromTo(preference, eo));
-        LOGGER.debug("Updated Preference [{}]", saved);
+        ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.UPDATED));
         return saved;
     }
 
@@ -134,7 +140,7 @@ class PreferencesServiceImpl implements PreferencesService {
     @Measured
     public @NotNull PreferenceEO save(@NotNull PreferenceEO preference) {
         var saved = preferenceRepository.save(preference);
-        LOGGER.debug("Updated Preference [{}]", saved);
+        ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.UPDATED));
         return saved;
     }
 
@@ -150,7 +156,7 @@ class PreferencesServiceImpl implements PreferencesService {
         }
         var eo = eoOpt.get();
         preferenceRepository.delete(eo);
-        LOGGER.debug("Deleted Preference [{}]", eo);
+        ctx.publishEvent(new PreferencesEvent(eo, PreferencesEvent.Type.DELETED));
     }
 
     /**
@@ -169,7 +175,7 @@ class PreferencesServiceImpl implements PreferencesService {
         for (var pref : fromFile) {
             if (!persistedPrefs.containsKey(pref.getPrefKey())) {
                 var saved = preferenceRepository.save(mapper.map(pref, PreferenceEO.class));
-                LOGGER.debug("Merged and saved Preference [{}]", saved);
+                ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.CREATED));
             }
         }
     }

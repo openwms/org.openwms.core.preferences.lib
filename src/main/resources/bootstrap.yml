@@ -118,6 +118,11 @@ spring:
           initial-interval: 1s
           max-interval: 1s
 
+owms:
+  events:
+    core:
+      preferences:
+        exchange: preferences
 management:
   health:
     rabbit:
