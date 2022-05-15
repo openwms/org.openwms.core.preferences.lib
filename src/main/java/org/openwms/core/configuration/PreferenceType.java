@@ -37,7 +37,10 @@ public enum PreferenceType {
     OBJECT(Object.class.getName()),
 
     /** Boolean type. */
-    BOOL(Boolean.class.getName());
+    BOOL(Boolean.class.getName()),
+
+    /** Boolean type. */
+    JSON("JSON");
 
     private final String clazz;
 
