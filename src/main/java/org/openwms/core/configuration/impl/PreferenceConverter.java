@@ -16,8 +16,6 @@
 package org.openwms.core.configuration.impl;
 
 import com.github.dozermapper.core.DozerConverter;
-import com.github.dozermapper.core.Mapper;
-import com.github.dozermapper.core.MapperAware;
 import org.ameba.exception.NotFoundException;
 import org.openwms.core.configuration.PreferenceType;
 import org.openwms.core.configuration.PropertyScope;
@@ -42,6 +40,16 @@ public class PreferenceConverter extends DozerConverter<GenericPreference, Prefe
         super(GenericPreference.class, PreferenceEO.class);
     }
 
+    private PreferenceEO.Builder createBuilder(GenericPreference p) {
+        return PreferenceEO.newBuilder()
+                .description(p.getDescription())
+                .val(p.getValue())
+                .fromFile(true)
+                .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
+                .scope(PropertyScope.APPLICATION)
+                .minValue(p.getMinimum())
+                .maxValue(p.getMaximum());
+    }
     /**
      * {@inheritDoc}
      */
@@ -50,62 +58,28 @@ public class PreferenceConverter extends DozerConverter<GenericPreference, Prefe
         if (source == null) {
             return null;
         }
-        if (source.getClass().equals(ApplicationPreference.class)) {
-            ApplicationPreference p = (ApplicationPreference) source;
-            return PreferenceEO.newBuilder()
+        return switch(source) {
+            case ApplicationPreference p -> createBuilder(p)
                     .key(p.getKey())
-                    .description(p.getDescription())
-                    .val(p.getValue())
-                    .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.APPLICATION)
-                    .minValue(p.getMinimum())
-                    .maxValue(p.getMaximum())
                     .build();
-        }
-        if (source.getClass().equals(ModulePreference.class)) {
-            ModulePreference p = (ModulePreference) source;
-            return PreferenceEO.newBuilder()
+            case ModulePreference p -> createBuilder(p)
                     .key(p.getKey())
                     .owner(p.getOwner())
-                    .description(p.getDescription())
-                    .val(p.getValue())
-                    .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.MODULE)
-                    .minValue(p.getMinimum())
-                    .maxValue(p.getMaximum())
                     .build();
-        }
-        if (source.getClass().equals(RolePreference.class)) {
-            RolePreference p = (RolePreference) source;
-            return PreferenceEO.newBuilder()
+            case RolePreference p -> createBuilder(p)
                     .key(p.getKey())
                     .owner(p.getOwner())
-                    .description(p.getDescription())
-                    .val(p.getValue())
-                    .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.ROLE)
-                    .minValue(p.getMinimum())
-                    .maxValue(p.getMaximum())
                     .build();
-        }
-        if (source.getClass().equals(UserPreference.class)) {
-            UserPreference p = (UserPreference) source;
-            return PreferenceEO.newBuilder()
+            case UserPreference p -> createBuilder(p)
                     .key(p.getKey())
                     .owner(p.getOwner())
-                    .description(p.getDescription())
-                    .val(p.getValue())
-                    .fromFile(true)
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.USER)
-                    .minValue(p.getMinimum())
-                    .maxValue(p.getMaximum())
                     .build();
-        }
-        throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
+            default -> throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
+        };
     }
 
     /**

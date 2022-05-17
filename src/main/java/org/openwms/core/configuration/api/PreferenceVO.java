@@ -62,6 +62,11 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
         return pKey;
     }
 
+    @JsonIgnore
+    public boolean hasPKey() {
+        return this.pKey != null && !this.pKey.isEmpty();
+    }
+
     public void setpKey(String pKey) {
         this.pKey = pKey;
     }

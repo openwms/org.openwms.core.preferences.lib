@@ -92,17 +92,17 @@ public class PreferencesController extends AbstractWebController {
             @RequestBody PreferenceVO preference
     ) {
         PreferenceEO result;
-        if (preference.getpKey() != null && !preference.getpKey().isEmpty()) {
+        if (preference.hasPKey()) {
             result = preferencesService.update(preference.getpKey(), mapper.map(preference, PreferenceEO.class));
             return ResponseEntity.ok(mapper.map(result, PreferenceVO.class));
         } else {
-            Optional<PreferenceEO> existingOpt = findByKey(preference);
+            var existingOpt = findByKey(preference);
             if (existingOpt.isPresent()) {
-                var preferenceEO = existingOpt.get();
-                var pKey = preferenceEO.getPersistentKey();
-                mapper.mapFromTo(mapper.map(preference, PreferenceEO.class), preferenceEO);
-                preferenceEO.setPersistentKey(pKey);
-                result = preferencesService.save(preferenceEO);
+                var existingPreference = existingOpt.get();
+                var preservedPKey = existingPreference.getPersistentKey();
+                mapper.mapFromTo(mapper.map(preference, PreferenceEO.class), existingPreference);
+                existingPreference.setPersistentKey(preservedPKey);
+                result = preferencesService.save(existingPreference);
             } else {
                 result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
             }
@@ -112,18 +112,13 @@ public class PreferencesController extends AbstractWebController {
     }
 
     private Optional<PreferenceEO> findByKey(PreferenceVO preference) {
-        PropertyScope scope;
-        if (preference instanceof UserPreferenceVO) {
-            scope = PropertyScope.USER;
-        } else if (preference instanceof RolePreferenceVO) {
-            scope = PropertyScope.ROLE;
-        } else if (preference instanceof ModulePreferenceVO) {
-            scope = PropertyScope.MODULE;
-        } else if (preference instanceof ApplicationPreferenceVO) {
-            scope = PropertyScope.APPLICATION;
-        } else {
-            throw new IllegalArgumentException("Not implemented Preference type");
-        }
+        var scope = switch (preference) {
+            case UserPreferenceVO ignored -> PropertyScope.USER;
+            case RolePreferenceVO ignored -> PropertyScope.ROLE;
+            case ModulePreferenceVO ignored -> PropertyScope.MODULE;
+            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
+            case null, default -> throw new IllegalArgumentException("Not implemented Preference type");
+        };
         return preferencesService.findBy(preference.getOwner(), scope, preference.getKey());
     }
 

@@ -105,12 +105,12 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull PreferenceEO create(@NotNull PreferenceEO preference) {
-        if (preference.getPersistentKey() != null) {
-            throw new NotFoundException(format("Preference has a pKey [%s] and cannot be created", preference.getPersistentKey()));
+        if (preference.hasPersistentKey()) {
+            throw new ResourceExistsException(format("Preference has already a pKey [%s] assigned and cannot be created", preference.getPersistentKey()));
         }
         var eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(preference.getOwner(), preference.getScope(), preference.getKey());
         if (eoOpt.isPresent()) {
-            throw new ResourceExistsException(format("Preference with key [%s] and owner [%s] of scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
+            throw new ResourceExistsException(format("Preference with key [%s] and owner [%s] and scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
         }
         var saved = preferenceRepository.save(preference);
         ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.CREATED));
