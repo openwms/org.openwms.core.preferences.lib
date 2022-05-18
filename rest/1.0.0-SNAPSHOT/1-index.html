@@ -446,15 +446,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>The initial HTTP request to retrieve information about all available resources looks like the following. The Index page is a public
 available resource and does not need any authentication.</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in 1-index.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/get-index/http-request.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /index HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The Index resource is returned in the response body with the response status of 200-OK. This main Index lists all primary resource entities
 to follow next.</p>
 </div>
-<div class="paragraph">
-<p>Unresolved directive in 1-index.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/get-index/http-response.adoc[]</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 95
+
+{
+  "_links" : {
+    "preferences-index" : {
+      "href" : "/v1/preferences/index"
+    }
+  }
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>A client application must only know about the agreed link names and follow the corresponding <code>href</code> link to navigate further.</p>
@@ -464,7 +479,7 @@ to follow next.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-15 22:17:17 UTC
+Last updated 2022-05-18 15:24:18 UTC
 </div>
 </div>
 </body>
