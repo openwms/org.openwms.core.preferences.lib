@@ -133,7 +133,6 @@ class PreferencesServiceImpl implements PreferencesService {
     private void verifyDoesNotExist(String owner, PropertyScope scope, String key) {
         var eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
         if (eoOpt.isPresent()) {
-            var eo = eoOpt.get();
             throw new ResourceExistsException(translator, ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,
                     new Serializable[]{key, owner, scope},
                     key, owner, scope);

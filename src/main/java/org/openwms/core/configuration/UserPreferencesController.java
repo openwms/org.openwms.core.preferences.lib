@@ -55,9 +55,11 @@ public class UserPreferencesController extends AbstractWebController {
     public Flux<UserPreferenceVO> findByUser(
             @RequestParam("user") String user
     ) {
-        return Flux.fromIterable(mapper.map(
-                new ArrayList(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)), UserPreferenceVO.class))
-                .log();
+        return Flux.fromIterable(
+                mapper.map(
+                        new ArrayList<>(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)),
+                        UserPreferenceVO.class)
+                ).log();
     }
 
     @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
