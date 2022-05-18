@@ -109,10 +109,6 @@ spring:
   config:
     activate:
       on-profile: ASYNCHRONOUS
-  events:
-    core:
-      preferences:
-        exchange-name: preferences
   rabbitmq:
     listener:
       simple:
@@ -126,7 +122,8 @@ owms:
   events:
     core:
       preferences:
-        exchange: preferences
+        exchange-name: preferences
+
 management:
   health:
     rabbit:

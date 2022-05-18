@@ -15,7 +15,9 @@
  */
 package org.openwms.core.configuration;
 
+import org.ameba.exception.ResourceExistsException;
 import org.ameba.http.MeasuredRestController;
+import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.ApplicationPreferenceVO;
 import org.openwms.core.configuration.api.ModulePreferenceVO;
@@ -36,9 +38,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Optional;
 
+import static org.openwms.core.configuration.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
+import static org.openwms.core.configuration.PreferencesConstants.NOT_ALLOWED_PKEY;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -52,10 +56,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class PreferencesController extends AbstractWebController {
 
     private final PreferencesService preferencesService;
+    private final Translator translator;
     private final BeanMapper mapper;
 
-    public PreferencesController(PreferencesService preferencesService, BeanMapper mapper) {
+    public PreferencesController(PreferencesService preferencesService, Translator translator, BeanMapper mapper) {
         this.preferencesService = preferencesService;
+        this.translator = translator;
         this.mapper = mapper;
     }
 
@@ -76,14 +82,14 @@ public class PreferencesController extends AbstractWebController {
 
     @GetMapping(API_PREFERENCES)
     public Flux<PreferenceVO> findAll() {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findForOwnerAndScope()), PreferenceVO.class)).log();
+        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), PreferenceVO.class)).log();
     }
 
     @GetMapping(value = API_PREFERENCES + "/{pKey}")
     public ResponseEntity<Mono<PreferenceVO>> findByPKey(
             @PathVariable("pKey") String pKey
     ) {
-        return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findBy(pKey), PreferenceVO.class)));
+        return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class)));
     }
 
     @Transactional
@@ -91,27 +97,16 @@ public class PreferencesController extends AbstractWebController {
     public ResponseEntity<PreferenceVO> create(
             @RequestBody PreferenceVO preference
     ) {
-        PreferenceEO result;
         if (preference.hasPKey()) {
-            result = preferencesService.update(preference.getpKey(), mapper.map(preference, PreferenceEO.class));
-            return ResponseEntity.ok(mapper.map(result, PreferenceVO.class));
-        } else {
-            var existingOpt = findByKey(preference);
-            if (existingOpt.isPresent()) {
-                var existingPreference = existingOpt.get();
-                var preservedPKey = existingPreference.getPersistentKey();
-                mapper.mapFromTo(mapper.map(preference, PreferenceEO.class), existingPreference);
-                existingPreference.setPersistentKey(preservedPKey);
-                result = preferencesService.save(existingPreference);
-            } else {
-                result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
-            }
-            return ResponseEntity.created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
-                    .body(mapper.map(result, UserPreferenceVO.class));
+            throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));
         }
+        ensurePreferenceNotExists(preference);
+        var result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
+        return ResponseEntity.created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
+                .body(mapper.map(result, UserPreferenceVO.class));
     }
 
-    private Optional<PreferenceEO> findByKey(PreferenceVO preference) {
+    private void ensurePreferenceNotExists(PreferenceVO preference) {
         var scope = switch (preference) {
             case UserPreferenceVO ignored -> PropertyScope.USER;
             case RolePreferenceVO ignored -> PropertyScope.ROLE;
@@ -119,7 +114,16 @@ public class PreferencesController extends AbstractWebController {
             case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
             case null, default -> throw new IllegalArgumentException("Not implemented Preference type");
         };
-        return preferencesService.findBy(preference.getOwner(), scope, preference.getKey());
+        var existingOpt = preferencesService.findForOwnerAndScopeAndKey(preference.getOwner(), scope, preference.getKey());
+        if (existingOpt.isPresent()) {
+            var existing = existingOpt.get();
+            throw new ResourceExistsException(
+                    translator,
+                    ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,
+                    new Serializable[]{existing.getKey(), existing.getOwner(), existing.getScope()},
+                    existing.getKey(), existing.getOwner(), existing.getScope()
+            );
+        }
     }
 
     @PutMapping(API_PREFERENCES + "/{pKey}")
@@ -127,8 +131,10 @@ public class PreferencesController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     ) {
-        var saved = preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class));
-        return ResponseEntity.ok(mapper.map(saved, PreferenceVO.class));
+        return ResponseEntity.ok(mapper.map(
+                preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class)),
+                PreferenceVO.class
+        ));
     }
 
     @DeleteMapping(API_PREFERENCES + "/{pKey}")

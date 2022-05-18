@@ -17,6 +17,8 @@ package org.openwms.core.configuration.impl.jpa;
 
 import org.openwms.core.configuration.PropertyScope;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,5 +34,18 @@ interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, Prefer
 
     List<PreferenceEO> findByOwnerAndScope(String owner, PropertyScope scope);
 
-    Optional<PreferenceEO> findByOwnerAndScopeAndKey(String owner, PropertyScope scope, String key);
+    @Query(
+            """
+        select p
+         from PreferenceEO p
+        where (:owner is null or p.owner = :owner)
+          and p.scope = :scope
+          and p.key = :key
+            """
+    )
+    Optional<PreferenceEO> findByOwnerAndScopeAndKey(
+            @Param("owner") String owner,
+            @Param("scope") PropertyScope scope,
+            @Param("key") String key
+    );
 }

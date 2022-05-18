@@ -19,6 +19,7 @@ import org.ameba.annotation.Measured;
 import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
+import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.PreferencesEvent;
 import org.openwms.core.configuration.PreferencesService;
@@ -31,15 +32,18 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
+import static org.openwms.core.configuration.PreferencesConstants.ALREADY_EXISTS;
+import static org.openwms.core.configuration.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
+import static org.openwms.core.configuration.PreferencesConstants.NOT_FOUND_BY_PKEY;
 
 /**
- * A PreferencesServiceImpl is a transactional Spring powered service implementation to manage {@code Preferences}.
+ * A PreferencesServiceImpl is a transactional Spring managed service implementation to manage {@code Preferences}.
  *
  * @author Heiko Scherrer
  */
@@ -51,12 +55,14 @@ class PreferencesServiceImpl implements PreferencesService {
     private final PreferenceDao fileDao;
     private final PreferenceRepository preferenceRepository;
     private final BeanMapper mapper;
+    private final Translator translator;
     private final ApplicationContext ctx;
 
-    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper, ApplicationContext ctx) {
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper, Translator translator, ApplicationContext ctx) {
         this.fileDao = fileDao;
         this.preferenceRepository = preferenceRepository;
         this.mapper = mapper;
+        this.translator = translator;
         this.ctx = ctx;
     }
 
@@ -65,7 +71,22 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public Collection<PreferenceEO> findForOwnerAndScope() {
+    public @NotNull PreferenceEO findByPKey(@NotBlank String pKey) {
+        return findByPKeyInternal(pKey);
+    }
+
+    private PreferenceEO findByPKeyInternal(String pKey) {
+        return preferenceRepository.findBypKey(pKey).orElseThrow(
+                () -> new NotFoundException(translator, NOT_FOUND_BY_PKEY, new String[]{pKey}, pKey)
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public @NotNull Collection<PreferenceEO> findAll() {
         return preferenceRepository.findAll();
     }
 
@@ -84,18 +105,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull PreferenceEO findBy(@NotBlank String pKey) {
-        return preferenceRepository.findBypKey(pKey).orElseThrow(
-                () -> new NotFoundException(format("Preference with key [%s] does not exist", pKey))
-        );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public Optional<PreferenceEO> findBy(@NotBlank String owner, @NotNull PropertyScope scope, @NotBlank String key) {
+    public Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
         return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
     }
 
@@ -106,15 +116,28 @@ class PreferencesServiceImpl implements PreferencesService {
     @Measured
     public @NotNull PreferenceEO create(@NotNull PreferenceEO preference) {
         if (preference.hasPersistentKey()) {
-            throw new ResourceExistsException(format("Preference has already a pKey [%s] assigned and cannot be created", preference.getPersistentKey()));
+            throw new ResourceExistsException(translator, ALREADY_EXISTS,
+                    new String[]{preference.getPersistentKey()},
+                    preference.getPersistentKey());
         }
-        var eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(preference.getOwner(), preference.getScope(), preference.getKey());
-        if (eoOpt.isPresent()) {
-            throw new ResourceExistsException(format("Preference with key [%s] and owner [%s] and scope [%s] already exists and cannot be created", preference.getKey(), preference.getOwner(), preference.getScope()));
-        }
+        verifyDoesNotExist(preference.getOwner(), preference.getScope(), preference.getKey());
+        return saveInternal(preference, PreferencesEvent.Type.CREATED);
+    }
+
+    private PreferenceEO saveInternal(PreferenceEO preference, PreferencesEvent.Type type) {
         var saved = preferenceRepository.save(preference);
-        ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.CREATED));
+        ctx.publishEvent(new PreferencesEvent(saved, type));
         return saved;
+    }
+
+    private void verifyDoesNotExist(String owner, PropertyScope scope, String key) {
+        var eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
+        if (eoOpt.isPresent()) {
+            var eo = eoOpt.get();
+            throw new ResourceExistsException(translator, ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,
+                    new Serializable[]{key, owner, scope},
+                    key, owner, scope);
+        }
     }
 
     /**
@@ -123,25 +146,9 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull PreferenceEO update(@NotBlank String pKey, @NotNull PreferenceEO preference) {
-        var eoOpt = preferenceRepository.findBypKey(pKey);
-        if (eoOpt.isEmpty()) {
-            throw new NotFoundException(format("Preference with key [%s] does not exist", pKey));
-        }
-        var eo = eoOpt.get();
-        var saved = preferenceRepository.save(mapper.mapFromTo(preference, eo));
-        ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.UPDATED));
-        return saved;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Measured
-    public @NotNull PreferenceEO save(@NotNull PreferenceEO preference) {
-        var saved = preferenceRepository.save(preference);
-        ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.UPDATED));
-        return saved;
+        var eo = findByPKeyInternal(pKey);
+        LOGGER.debug("Overriding existing Preference [{}] with [{}]", eo, preference);
+        return saveInternal(mapper.mapFromTo(preference, eo), PreferencesEvent.Type.UPDATED);
     }
 
     /**
@@ -150,11 +157,7 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public void delete(@NotBlank String pKey) {
-        var eoOpt = preferenceRepository.findBypKey(pKey);
-        if (eoOpt.isEmpty()) {
-            throw new NotFoundException(format("Preference with key [%s] does not exist", pKey));
-        }
-        var eo = eoOpt.get();
+        var eo = findByPKeyInternal(pKey);
         preferenceRepository.delete(eo);
         ctx.publishEvent(new PreferencesEvent(eo, PreferencesEvent.Type.DELETED));
     }
@@ -165,17 +168,12 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public void reloadInitialPreferences() {
-        mergeApplicationProperties();
-    }
-
-    private void mergeApplicationProperties() {
         var fromFile = fileDao.findAll();
         var persistedPrefs = preferenceRepository.findAll().stream()
                 .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -> p));
         for (var pref : fromFile) {
             if (!persistedPrefs.containsKey(pref.getPrefKey())) {
-                var saved = preferenceRepository.save(mapper.map(pref, PreferenceEO.class));
-                ctx.publishEvent(new PreferencesEvent(saved, PreferencesEvent.Type.CREATED));
+                saveInternal(mapper.map(pref, PreferenceEO.class), PreferencesEvent.Type.CREATED);
             }
         }
     }

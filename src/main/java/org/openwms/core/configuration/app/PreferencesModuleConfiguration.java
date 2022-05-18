@@ -18,8 +18,11 @@ package org.openwms.core.configuration.app;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.app.SpringProfiles;
+import org.ameba.i18n.AbstractSpringTranslator;
+import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.ameba.mapping.DozerMapperImpl;
+import org.ameba.system.NestedReloadableResourceBundleMessageSource;
 import org.openwms.core.configuration.config.ModuleProperties;
 import org.openwms.core.configuration.impl.file.FilePackage;
 import org.openwms.core.startup.LocalServiceInitializer;
@@ -27,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -39,6 +43,8 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import javax.validation.Validator;
+
+import java.util.Properties;
 
 import static java.util.Arrays.asList;
 import static org.ameba.Constants.HEADER_VALUE_X_IDENTITY;
@@ -57,7 +63,7 @@ import static org.ameba.Constants.HEADER_VALUE_X_TENANT;
  */
 @Configuration
 @EnableWebFlux
-@EnableAspects
+@EnableAspects(propagateRootCause = true)
 @EnableConfigurationProperties(ModuleProperties.class)
 public class PreferencesModuleConfiguration {
 
@@ -83,6 +89,25 @@ public class PreferencesModuleConfiguration {
     @Bean
     MeterRegistryCustomizer<MeterRegistry> metricsCommonTags(@Value("${spring.application.name}") String applicationName) {
         return registry -> registry.config().commonTags("application", applicationName);
+    }
+
+    public @Bean Translator translator() {
+        return new AbstractSpringTranslator() {
+            @Override
+            protected MessageSource getMessageSource() {
+                return messageSource();
+            }
+        };
+    }
+
+    public @Bean MessageSource messageSource() {
+        NestedReloadableResourceBundleMessageSource nrrbm = new NestedReloadableResourceBundleMessageSource();
+        nrrbm.setBasenames(
+                "classpath:META-INF/i18n/preferences"
+        );
+        nrrbm.setDefaultEncoding("UTF-8");
+        nrrbm.setCommonMessages(new Properties());
+        return nrrbm;
     }
 
     @Bean

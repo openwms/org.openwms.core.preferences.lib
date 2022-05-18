@@ -21,9 +21,15 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.ameba.http.AbstractBase;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
+
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_KEY;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_OWNER;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_TYPE;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_VALUE;
 
 /**
  * A PreferenceVO.
@@ -40,22 +46,27 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
     /** The unique business key (along other identifying properties) of the resource, must not be {@literal null}. */
     @JsonProperty("key")
     @NotBlank
+    @Size(min = 1, max = LENGTH_KEY)
     private String key;
 
     /** The owner of the resource. */
     @JsonProperty("owner")
+    @Size(max = LENGTH_OWNER)
     private String owner;
 
     /** A descriptive text of the {@code Preference}. */
     @JsonProperty("description")
+    @Size(max = LENGTH_DESCRIPTION)
     private String description;
 
     /** The value of the {@code Preference}. */
     @JsonProperty("value")
+    @Size(max = LENGTH_VALUE)
     private Serializable val;
 
     /** The type of the {@code Preference}. */
     @JsonProperty("type")
+    @Size(max = LENGTH_TYPE)
     private String type;
 
     public String getpKey() {
@@ -97,11 +108,6 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
 
     public Serializable getVal() {
         return val;
-    }
-
-    @JsonIgnore
-    public Optional<Serializable> getOptionalVal() {
-        return Optional.ofNullable(val);
     }
 
     public void setVal(Serializable val) {

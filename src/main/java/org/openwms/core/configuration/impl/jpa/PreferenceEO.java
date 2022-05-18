@@ -27,10 +27,18 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
+
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_KEY;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_OWNER;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_TYPE;
+import static org.openwms.core.configuration.PreferencesConstants.LENGTH_VALUE;
 
 /**
  * An PreferenceEO is the persistent entity class that represents preferences in the database.
@@ -44,21 +52,19 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     /** Suffix for the FIND_ALL named query. Default {@value} */
     public static final String FIND_ALL = ".findAll";
 
-    /** Suffix for the FIND_BY_OWNER named query. Default {@value} */
-    public static final String FIND_BY_OWNER = ".findByOwner";
-
-    /** Parameter name for the owner. Default {@value} */
-    public static final String NQ_PARAM_OWNER = ":owner";
-
     /** Key field of the {@link PreferenceEO}. */
-    @Column(name = "C_KEY")
+    @Column(name = "C_KEY", length = LENGTH_KEY)
+    @NotBlank
+    @Size(min = 1, max = LENGTH_KEY)
     private String key;
 
-    @Column(name = "C_OWNER")
+    @Column(name = "C_OWNER", length = LENGTH_OWNER)
+    @Size(max = LENGTH_OWNER)
     protected String owner;
 
     /** Description text of the {@link PreferenceEO}. */
-    @Column(name = "C_DESCRIPTION")
+    @Column(name = "C_DESCRIPTION", length = LENGTH_DESCRIPTION)
+    @Size(max = LENGTH_DESCRIPTION)
     protected String description;
 
     /** Flag to remember if the preference was originally imported from a file. */
@@ -72,25 +78,29 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     protected PropertyScope scope;
 
     /** A current value of the {@link PreferenceEO}. */
-    @Column(name = "C_CURRENT_VALUE")
+    @Column(name = "C_CURRENT_VALUE", length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
     private String val;
 
     /** The default value of the {@link PreferenceEO}. */
-    @Column(name = "C_DEF_VALUE")
+    @Column(name = "C_DEF_VALUE", length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
     private String defValue;
 
     /** The minimum value of the {@link PreferenceEO}. */
-    @Column(name = "C_MIN_VALUE")
+    @Column(name = "C_MIN_VALUE", length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
     private String minValue;
 
     /** The maximum value of the {@link PreferenceEO}. */
-    @Column(name = "C_MAX_VALUE")
+    @Column(name = "C_MAX_VALUE", length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
     private String maxValue;
 
     /** Type of this preference. */
     @Convert(converter = PreferenceTypeConverter.class)
+    @Column(name = "C_TYPE", nullable = false, length = LENGTH_TYPE)
     @NotNull
-    @Column(name = "C_TYPE", nullable = false)
     protected PreferenceType type;
 
     public String getKey() {

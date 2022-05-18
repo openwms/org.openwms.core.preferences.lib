@@ -17,6 +17,7 @@ package org.openwms.core.configuration;
 
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
+import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.http.AbstractWebController;
@@ -26,9 +27,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import static java.lang.String.format;
+import static org.openwms.core.configuration.PreferencesConstants.NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 
 /**
@@ -40,10 +42,12 @@ import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 public class UserPreferencesController extends AbstractWebController {
 
     private final PreferencesService preferencesService;
+    private final Translator translator;
     private final BeanMapper mapper;
 
-    public UserPreferencesController(PreferencesService preferencesService, BeanMapper mapper) {
+    public UserPreferencesController(PreferencesService preferencesService, Translator translator, BeanMapper mapper) {
         this.preferencesService = preferencesService;
+        this.translator = translator;
         this.mapper = mapper;
     }
 
@@ -51,7 +55,9 @@ public class UserPreferencesController extends AbstractWebController {
     public Flux<UserPreferenceVO> findByUser(
             @RequestParam("user") String user
     ) {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)), UserPreferenceVO.class)).log();
+        return Flux.fromIterable(mapper.map(
+                new ArrayList(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)), UserPreferenceVO.class))
+                .log();
     }
 
     @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
@@ -61,7 +67,14 @@ public class UserPreferencesController extends AbstractWebController {
     ) {
         return ResponseEntity.ok(Mono.just(
                 mapper.map(
-                        preferencesService.findBy(user, PropertyScope.USER, key).orElseThrow(() -> new NotFoundException(format("Preference with owner [%s], USER scope and key [%s] does not exist", user, key))),
+                        preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)
+                                .orElseThrow(() ->
+                                        new NotFoundException(
+                                                translator,
+                                                NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY,
+                                                new Serializable[]{key, user, PropertyScope.USER}, key, user, PropertyScope.USER
+                                        )
+                                ),
                         UserPreferenceVO.class
                 )
         ));

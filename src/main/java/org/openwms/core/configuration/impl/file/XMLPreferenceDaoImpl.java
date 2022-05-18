@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.impl.file;
 
+import org.ameba.annotation.Measured;
 import org.ameba.exception.IntegrationLayerException;
 import org.openwms.core.event.ReloadFilePreferencesEvent;
 import org.openwms.core.exception.NoUniqueResultException;
@@ -39,9 +40,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.String.format;
+
 /**
- * A XMLPreferenceDaoImpl reads a XML file of preferences and keeps them in-memory in a Map. An initial preferences file can be configured
- * with a property {@code openwms.core.config.initial-properties} in the application.properties file.
+ * A XMLPreferenceDaoImpl reads an XML file of {@code Preferences} and keeps them in-memory in a Map. An initial preferences file can be
+ * configured with a property {@literal openwms.core.config.initial-properties} in the {@literal application.properties} file.
  *
  * <p>On a {@link ReloadFilePreferencesEvent} the internal Map is cleared and reloaded.</p>
  *
@@ -78,12 +81,13 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
      * {@inheritDoc}
      */
     @Override
+    @Measured
     public void onApplicationEvent(ReloadFilePreferencesEvent event) {
         reloadResources();
     }
 
     /**
-     * On bean initialization load all preferences into a Map.
+     * On bean initialization load all {@code Preferences} into a Map.
      */
     @PostConstruct
     private void loadResources() {
@@ -92,15 +96,15 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
                 preferences = (Preferences) unmarshaller.unmarshal(new StreamSource(fileResource.getInputStream()));
                 for (var pref : preferences.getAll()) {
                     if (prefs.containsKey(pref.getPrefKey())) {
-                        throw new NoUniqueResultException("Preference with key " + pref.getPrefKey() + " already loaded.");
+                        throw new NoUniqueResultException(format("Preference with key [%s] already loaded", pref.getPrefKey()));
                     }
                     prefs.put(pref.getPrefKey(), pref);
                 }
-                LOGGER.debug("Loaded {} properties into cache", preferences.getAll().size());
+                LOGGER.debug("Loaded [{}] properties into cache", preferences.getAll().size());
             } catch (XmlMappingException xme) {
-                throw new IntegrationLayerException("Exception while unmarshalling from " + fileName, xme);
+                throw new IntegrationLayerException(format("Exception while unmarshalling from [%s]", fileName), xme);
             } catch (IOException ioe) {
-                throw new ResourceNotFoundException("Exception while accessing the resource with name " + fileName, ioe);
+                throw new ResourceNotFoundException(format("Exception while accessing the resource with name [%s]", fileName), ioe);
             }
         }
     }
