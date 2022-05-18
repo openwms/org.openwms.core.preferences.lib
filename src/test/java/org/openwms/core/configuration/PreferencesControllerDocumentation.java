@@ -18,6 +18,7 @@ package org.openwms.core.configuration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -28,6 +29,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -230,8 +232,8 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_create_preference() throws Exception {
-        ObjectMapper om = new ObjectMapper();
-        UserPreferenceVO vo = new UserPreferenceVO();
+        var om = new ObjectMapper();
+        var vo = new UserPreferenceVO();
         vo.setKey("keyY");
         vo.setOwner("owner2");
         vo.setDescription("A Boolean");
@@ -256,14 +258,14 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_fail_to_create_existing_preference() throws Exception {
-        ObjectMapper om = new ObjectMapper();
-        UserPreferenceVO vo = new UserPreferenceVO();
+        var om = new ObjectMapper();
+        var vo = new UserPreferenceVO();
         vo.setKey("keyY");
         vo.setOwner("owner2");
         vo.setDescription("A Boolean");
         vo.setType("BOOL");
         vo.setVal(true);
-        this.client
+        WebTestClient.ResponseSpec spec = this.client
                 .post()
                 .uri(u -> u.path(API_PREFERENCES)
                         .build()
@@ -271,8 +273,11 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(om.writeValueAsString(vo))
                 .exchange()
-                .expectStatus().isCreated()
-        ;
+                .expectStatus().isCreated();
+
+        // Take the pKey of the former created Preference and try to create the same one again
+        var result = spec.expectBody(PreferenceVO.class).returnResult().getResponseBody();
+        assertThat(result.getpKey()).isNotBlank();
 
         this.client
                 .post()

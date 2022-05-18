@@ -16,8 +16,6 @@
 package org.openwms.core.configuration.impl;
 
 import com.github.dozermapper.core.DozerConverter;
-import com.github.dozermapper.core.Mapper;
-import com.github.dozermapper.core.MapperAware;
 import org.ameba.exception.NotFoundException;
 import org.openwms.core.configuration.PreferenceType;
 import org.openwms.core.configuration.PropertyScope;
@@ -35,9 +33,7 @@ import java.util.Arrays;
  *
  * @author Heiko Scherrer
  */
-public class PreferenceVOConverter extends DozerConverter<PreferenceVO, PreferenceEO> implements MapperAware {
-
-    private Mapper mapper;
+public class PreferenceVOConverter extends DozerConverter<PreferenceVO, PreferenceEO> {
 
     public PreferenceVOConverter() {
         super(PreferenceVO.class, PreferenceEO.class);
@@ -153,10 +149,5 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             return p;
         }
         throw new IllegalArgumentException("Source entity preferences type is unknown: " + source.getScope());
-    }
-
-    @Override
-    public void setMapper(Mapper mapper) {
-        this.mapper = mapper;
     }
 }
