@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -43,8 +44,19 @@ public interface PreferencesApi {
      *
      * @return An infinite stream of all PreferenceVO
      */
-    @GetMapping(value = API_PREFERENCES)
+    @GetMapping(API_PREFERENCES)
     List<PreferenceVO> findAll();
+
+    /**
+     * Find and return all existing preferences with the given {@code scope}.
+     *
+     * @param scope The scope to search for
+     * @return An infinite stream of all PreferenceVO
+     */
+    @GetMapping(value = API_PREFERENCES, params = "scope")
+    List<PreferenceVO> findAllOfScope(
+            @RequestParam("scope") String scope
+    );
 
     /**
      * Find and return an Preference identified by its persistent key.

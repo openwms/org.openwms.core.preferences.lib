@@ -27,6 +27,7 @@ import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,14 +36,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.openwms.core.configuration.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
-import static org.openwms.core.configuration.PreferencesConstants.NOT_ALLOWED_PKEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.NOT_ALLOWED_PKEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.PROPERTY_SCOPE_NOT_DEFINED;
+import static org.openwms.core.configuration.api.PreferenceVO.MEDIA_TYPE;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -71,6 +74,7 @@ public class PreferencesController extends AbstractWebController {
                 new Index(
                         linkTo(methodOn(PreferencesController.class).findAll()).withRel("preferences-findall"),
                         linkTo(methodOn(PreferencesController.class).findByPKey("pKey")).withRel("preferences-findbypkey"),
+                        linkTo(methodOn(PreferencesController.class).findAllOfScope("{scope}")).withRel("preferences-findallofscope"),
                         linkTo(methodOn(PreferencesController.class).create(new PreferenceVO())).withRel("preferences-create"),
                         linkTo(methodOn(PreferencesController.class).update("pKey", new PreferenceVO())).withRel("preferences-update"),
                         linkTo(methodOn(PreferencesController.class).delete("pKey")).withRel("preferences-delete"),
@@ -80,20 +84,37 @@ public class PreferencesController extends AbstractWebController {
         );
     }
 
-    @GetMapping(API_PREFERENCES)
-    public Flux<PreferenceVO> findAll() {
-        return Flux.fromIterable(mapper.map(new ArrayList(preferencesService.findAll()), PreferenceVO.class)).log();
+    @GetMapping(value = API_PREFERENCES, produces = MEDIA_TYPE)
+    public ResponseEntity<List<PreferenceVO>> findAll() {
+        return ResponseEntity.ok(
+                mapper.map(new ArrayList<>(preferencesService.findAll()), PreferenceVO.class)
+        );
     }
 
-    @GetMapping(value = API_PREFERENCES + "/{pKey}")
-    public ResponseEntity<Mono<PreferenceVO>> findByPKey(
+    @GetMapping(value = API_PREFERENCES, params = "scope", produces = MEDIA_TYPE)
+    public ResponseEntity<List<PreferenceVO>> findAllOfScope(
+            @RequestParam("scope") String scope
+    ) {
+        try {
+            var propertyScope = PropertyScope.valueOf(scope);
+            return ResponseEntity.ok(mapper.map(
+                    new ArrayList<>(preferencesService.findForOwnerAndScope(null, propertyScope)),
+                    PreferenceVO.class
+            ));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(translator.translate(PROPERTY_SCOPE_NOT_DEFINED, new String[]{scope}, scope));
+        }
+    }
+
+    @GetMapping(value = API_PREFERENCES + "/{pKey}", produces = MEDIA_TYPE)
+    public ResponseEntity<PreferenceVO> findByPKey(
             @PathVariable("pKey") String pKey
     ) {
-        return ResponseEntity.ok(Mono.just(mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class)));
+        return ResponseEntity.ok(mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class));
     }
 
     @Transactional
-    @PostMapping(API_PREFERENCES)
+    @PostMapping(value = API_PREFERENCES)
     public ResponseEntity<PreferenceVO> create(
             @RequestBody PreferenceVO preference
     ) {
@@ -102,8 +123,11 @@ public class PreferencesController extends AbstractWebController {
         }
         ensurePreferenceNotExists(preference);
         var result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
-        return ResponseEntity.created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
-                .body(mapper.map(result, UserPreferenceVO.class));
+        var vo = mapper.map(result, PreferenceVO.class);
+        return ResponseEntity
+                .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
+                .header(HttpHeaders.CONTENT_TYPE, vo.getContentType())
+                .body(vo);
     }
 
     private void ensurePreferenceNotExists(PreferenceVO preference) {
@@ -114,14 +138,12 @@ public class PreferencesController extends AbstractWebController {
             case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
             case null, default -> throw new IllegalArgumentException("Not implemented Preference type");
         };
-        var existingOpt = preferencesService.findForOwnerAndScopeAndKey(preference.getOwner(), scope, preference.getKey());
-        if (existingOpt.isPresent()) {
-            var existing = existingOpt.get();
+        if (preferencesService.existsForOwnerAndScopeAndKey(preference.getOwner(), scope, preference.getKey())) {
             throw new ResourceExistsException(
                     translator,
                     ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,
-                    new Serializable[]{existing.getKey(), existing.getOwner(), existing.getScope()},
-                    existing.getKey(), existing.getOwner(), existing.getScope()
+                    new Serializable[]{preference.getKey(), preference.getOwner(), scope},
+                    preference.getKey(), preference.getOwner(), scope
             );
         }
     }
@@ -131,10 +153,11 @@ public class PreferencesController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     ) {
-        return ResponseEntity.ok(mapper.map(
-                preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class)),
-                PreferenceVO.class
-        ));
+        var vo = mapper.map(preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class)), PreferenceVO.class);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, vo.getContentType())
+                .body(vo);
     }
 
     @DeleteMapping(API_PREFERENCES + "/{pKey}")

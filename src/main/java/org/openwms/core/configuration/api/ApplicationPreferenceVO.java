@@ -15,10 +15,26 @@
  */
 package org.openwms.core.configuration.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A ApplicationPreferenceVO.
  *
  * @author Heiko Scherrer
  */
 public class ApplicationPreferenceVO extends PreferenceVO {
+
+    public static final String TYPE = "application";
+    public static final String SUB_TYPE = "vnd.openwms.core.application-preference-v1+json";
+    /** HTTP media type representation. */
+    public static final String MEDIA_TYPE = TYPE + "/" + SUB_TYPE;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @JsonIgnore
+    public String getContentType() {
+        return MEDIA_TYPE;
+    }
 }

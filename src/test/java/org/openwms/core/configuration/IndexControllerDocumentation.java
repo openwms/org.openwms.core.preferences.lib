@@ -18,15 +18,19 @@ package org.openwms.core.configuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * A IndexControllerDocumentation.
@@ -37,33 +41,24 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 class IndexControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
-    private ApplicationContext context;
-    private WebTestClient client;
+    private WebApplicationContext context;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
-        this.client = WebTestClient
-                .bindToApplicationContext(this.context)
-                .configureClient()
-                .filter(documentationConfiguration(restDocumentation))
-                .build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(documentationConfiguration(restDocumentation)).build();
     }
 
     @Test
-    void shall_return_index() {
-        client
-                .get()
-                .uri("/index")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("get-index",
-                                preprocessResponse(prettyPrint())
-                        )
+    void shall_return_index() throws Exception {
+        mockMvc.perform(
+                        get("/index")
                 )
-                .jsonPath("$._links.preferences-index").exists()
-                .jsonPath("$._links.length()", is(1))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._links.preferences-index").exists())
+                .andExpect(jsonPath("$._links.length()", is(1)))
+                .andDo(document("get-index", preprocessResponse(prettyPrint())))
         ;
     }
 }

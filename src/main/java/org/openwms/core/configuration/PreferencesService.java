@@ -55,7 +55,7 @@ public interface PreferencesService {
      * @param scope What kind of Preference it is
      * @return A Collection of Preferences, never {@literal null}
      */
-    @NotNull Collection<PreferenceEO> findForOwnerAndScope(@NotBlank String owner, @NotNull PropertyScope scope);
+    @NotNull Collection<PreferenceEO> findForOwnerAndScope(String owner, @NotNull PropertyScope scope);
 
     /**
      * Find and return the {@code Preference} of a specific {@code scope} that belongs to the given {@code owner} and has the given
@@ -67,6 +67,17 @@ public interface PreferencesService {
      * @return A Collection of Preferences, never {@literal null}
      */
     Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key);
+
+    /**
+     * Checks whether a {@code Preference} of a specific {@code scope} that belongs to the given {@code owner} and has the given {@code key}
+     * exists.
+     *
+     * @param owner The owner of the Preference
+     * @param scope What kind of Preference it is
+     * @param key The Preference key
+     * @return {@literal true} if it does exist, otherwise {@literal false}
+     */
+    boolean existsForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key);
 
     /**
      * Create a new non-existing {@code Preference}.

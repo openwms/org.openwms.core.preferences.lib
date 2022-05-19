@@ -32,7 +32,18 @@ interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, Prefer
 
     Optional<PreferenceEO> findBypKey(String pKey);
 
-    List<PreferenceEO> findByOwnerAndScope(String owner, PropertyScope scope);
+    @Query(
+            """
+        select p
+         from PreferenceEO p
+        where (:owner is null or p.owner = :owner)
+          and p.scope = :scope
+            """
+    )
+    List<PreferenceEO> findByOwnerAndScope(
+            @Param("owner") String owner,
+            @Param("scope") PropertyScope scope
+    );
 
     @Query(
             """

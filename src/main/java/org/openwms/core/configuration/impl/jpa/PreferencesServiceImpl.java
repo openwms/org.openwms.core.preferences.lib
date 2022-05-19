@@ -21,6 +21,7 @@ import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
 import org.ameba.mapping.BeanMapper;
+import org.openwms.core.configuration.NotAuthorizedException;
 import org.openwms.core.configuration.PreferencesEvent;
 import org.openwms.core.configuration.PreferencesService;
 import org.openwms.core.configuration.PropertyScope;
@@ -38,9 +39,10 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.openwms.core.configuration.PreferencesConstants.ALREADY_EXISTS;
-import static org.openwms.core.configuration.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
-import static org.openwms.core.configuration.PreferencesConstants.NOT_FOUND_BY_PKEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.ALREADY_EXISTS;
+import static org.openwms.core.configuration.api.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.NOT_ALLOWED_FETCH_USER_PREFS;
+import static org.openwms.core.configuration.api.PreferencesConstants.NOT_FOUND_BY_PKEY;
 
 /**
  * A PreferencesServiceImpl is a transactional Spring managed service implementation to manage {@code Preferences}.
@@ -95,9 +97,16 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull Collection<PreferenceEO> findForOwnerAndScope(@NotBlank String owner, @NotNull PropertyScope scope) {
+    public @NotNull Collection<PreferenceEO> findForOwnerAndScope(String owner, @NotNull PropertyScope scope) {
+        ensureUserPreferenceAccess(owner, scope);
         var result = preferenceRepository.findByOwnerAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;
+    }
+
+    private void ensureUserPreferenceAccess(String owner, PropertyScope scope) {
+        if ((owner == null || owner.isEmpty()) && scope == PropertyScope.USER) {
+            throw new NotAuthorizedException(translator, NOT_ALLOWED_FETCH_USER_PREFS, new String[0]);
+        }
     }
 
     /**
@@ -106,7 +115,17 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
+        ensureUserPreferenceAccess(owner, scope);
         return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public boolean existsForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
+        return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key).isPresent();
     }
 
     /**

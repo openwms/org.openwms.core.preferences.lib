@@ -39,7 +39,6 @@ import java.lang.annotation.Target;
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @SpringTestSupport
 @SpringBootTest(classes = {Starter.class, PreferencesModuleConfiguration.class}, properties = {
-        "spring.main.web-application-type=reactive",
         "spring.jpa.show-sql=false",
         "spring.main.banner-mode=OFF",
         "spring.jackson.serialization.INDENT_OUTPUT=true"

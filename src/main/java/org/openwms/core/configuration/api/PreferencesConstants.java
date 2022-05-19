@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration;
+package org.openwms.core.configuration.api;
 
 /**
  * A PreferencesConstants.
@@ -30,6 +30,8 @@ public final class PreferencesConstants {
     public static final String ALREADY_EXISTS = "owms.core.preferences.alreadyExists";
     public static final String ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY = "owms.core.preferences.alreadyExistsWithOwnerAndScopeAndKey";
     public static final String NOT_ALLOWED_PKEY = "owms.core.preferences.notAllowedPKey";
+    public static final String PROPERTY_SCOPE_NOT_DEFINED = "owms.core.preferences.propertyScopeNotDefined";
+    public static final String NOT_ALLOWED_FETCH_USER_PREFS = "owms.core.preferences.notAllowedToFetchUserPrefs";
 
     /*~ --- Length --- */
     public static final int LENGTH_KEY = 60;

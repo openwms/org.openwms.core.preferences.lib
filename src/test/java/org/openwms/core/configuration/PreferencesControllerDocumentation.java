@@ -21,26 +21,30 @@ import org.junit.jupiter.api.Test;
 import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestBody;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * A PreferencesControllerDocumentation.
@@ -55,178 +59,151 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
-    private ApplicationContext context;
-    private WebTestClient client;
+    private WebApplicationContext context;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
-        this.client = WebTestClient
-                .bindToApplicationContext(this.context)
-                .configureClient()
-                .filter(documentationConfiguration(restDocumentation))
-                .build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(documentationConfiguration(restDocumentation)).build();
     }
 
     @Test
-    void shall_return_index() {
-        client
-                .get()
-                .uri(API_PREFERENCES + "/index")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-index",
-                                preprocessResponse(prettyPrint())
-                        )
+    void shall_return_index() throws Exception {
+        mockMvc.perform(
+                    get(API_PREFERENCES + "/index")
                 )
-                .jsonPath("$._links.preferences-findall").exists()
-                .jsonPath("$._links.preferences-findbypkey").exists()
-                .jsonPath("$._links.preferences-update").exists()
-                .jsonPath("$._links.preferences-delete").exists()
-                .jsonPath("$._links.user-preferences-findbyuser").exists()
-                .jsonPath("$._links.user-preferences-findbyuserandkey").exists()
-                .jsonPath("$._links.length()", is(6))
+                .andExpect(status().isOk())
+                .andDo(document("prefs-index", preprocessResponse(prettyPrint())))
+                .andExpect(jsonPath("$._links.preferences-findall").exists())
+                .andExpect(jsonPath("$._links.preferences-findbypkey").exists())
+                .andExpect(jsonPath("$._links.preferences-findallofscope").exists())
+                .andExpect(jsonPath("$._links.preferences-update").exists())
+                .andExpect(jsonPath("$._links.preferences-delete").exists())
+                .andExpect(jsonPath("$._links.user-preferences-findbyuser").exists())
+                .andExpect(jsonPath("$._links.user-preferences-findbyuserandkey").exists())
+                .andExpect(jsonPath("$._links.length()", is(7)))
         ;
     }
 
     @Test
-    void shall_return_all_preferences() {
-        this.client
-                .get()
-                .uri(API_PREFERENCES)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findall",
-                                preprocessResponse(prettyPrint()),
-                                responseFields(
-                                        fieldWithPath("[]").description("An array of all existing preferences"),
-                                        fieldWithPath("[].pKey").description("The persistent unique key"),
-                                        fieldWithPath("[].key").description("The business key, unique combined with the owner"),
-                                        fieldWithPath("[].value").description("The preference value"),
-                                        fieldWithPath("[].type").description("The preference type (FLOAT|STRING|INT|OBJECT|BOOL)"),
-                                        fieldWithPath("[].description").description("The descriptive text of the preference"),
-                                        fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
-                                        fieldWithPath("[].@class").description("Metadata used internally to clarify the preference type")
-                                )
-                        )
+    void shall_return_all_preferences() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES)
                 )
-                .jsonPath("$[0].pKey").exists()
-                .jsonPath("$[0].key").exists()
-                .jsonPath("$[0].value").exists()
-                .jsonPath("$[0].description").exists()
-                .jsonPath("$[0].@class").exists()
+                .andExpect(status().isOk())
+                .andDo(document("prefs-findall",
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[]").description("An array of all existing preferences"),
+                                fieldWithPath("[].pKey").description("The persistent unique key"),
+                                fieldWithPath("[].key").description("The business key, unique combined with the owner"),
+                                fieldWithPath("[].value").description("The preference value"),
+                                fieldWithPath("[].type").description("The preference type (FLOAT|STRING|INT|OBJECT|BOOL)"),
+                                fieldWithPath("[].description").description("The descriptive text of the preference"),
+                                fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
+                                fieldWithPath("[].@class").description("Metadata used internally to clarify the preference type")
+                        )
+                        ))
+                .andExpect(jsonPath("$[0].pKey").exists())
+                .andExpect(jsonPath("$[0].key").exists())
+                .andExpect(jsonPath("$[0].value").exists())
+                .andExpect(jsonPath("$[0].description").exists())
+                .andExpect(jsonPath("$[0].@class").exists())
         ;
     }
 
     @Test
-    void shall_return_preference_by_key() {
-        this.client
-                .get()
-                .uri(u -> u.path(API_PREFERENCES + "/1000")
-                        .build()
+    void shall_return_all_of_scope() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES).queryParam("scope", "APPLICATION")
                 )
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findbykey",
-                                preprocessResponse(prettyPrint())
-                        )
-                )
-                .jsonPath("$.key").isEqualTo("key1")
-                .jsonPath("$.value").isEqualTo("current val")
-                .jsonPath("$.description").isEqualTo("String description")
-                .jsonPath("$.@class").isEqualTo("org.openwms.core.configuration.api.UserPreferenceVO")
+                .andExpect(status().isOk())
+                .andDo(document("prefs-findallofscope", preprocessResponse(prettyPrint())))
+                .andExpect(jsonPath("$[0].pKey").exists())
+                .andExpect(jsonPath("$[0].key").exists())
+                .andExpect(jsonPath("$[0].value").exists())
+                .andExpect(jsonPath("$[0].description").exists())
+                .andExpect(jsonPath("$[0].@class").exists())
         ;
     }
 
     @Test
-    void shall_return_preference_by_key_404() {
-        this.client
-                .get()
-                .uri(u -> u.path(API_PREFERENCES + "/UNKNOWN")
-                        .build()
+    void shall_return_all_of_scope_403() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES).queryParam("scope", "USER")
                 )
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findbykey404",
-                                preprocessResponse(prettyPrint())
-                        )
+                .andExpect(status().isUnauthorized())
+                .andDo(document("prefs-findallofscope-403", preprocessResponse(prettyPrint())))
+        ;
+    }
+
+    @Test
+    void shall_return_preference_by_key() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES + "/1000")
                 )
+                .andExpect(status().isOk())
+                .andDo(document("prefs-findbykey", preprocessResponse(prettyPrint())))
+                .andExpect(jsonPath("$.key", is("key1")))
+                .andExpect(jsonPath("$.value", is("current val")))
+                .andExpect(jsonPath("$.description", is("String description")))
+                .andExpect(jsonPath("$.@class", is("org.openwms.core.configuration.api.UserPreferenceVO")))
+        ;
+    }
+
+    @Test
+    void shall_return_preference_by_key_404() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES + "/UNKNOWN")
+                )
+                .andExpect(status().isNotFound())
+                .andDo(document("prefs-findbykey404", preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
     void shall_update_preference_by_key() throws Exception {
-        ObjectMapper om = new ObjectMapper();
-        UserPreferenceVO vo = new UserPreferenceVO();
+        var om = new ObjectMapper();
+        var vo = new UserPreferenceVO();
         vo.setpKey("1000");
         vo.setKey("keyX");
         vo.setOwner("owner2");
         vo.setDescription("A Boolean");
         vo.setType("BOOL");
         vo.setVal(true);
-        this.client
-                .put()
-                .uri(u -> u.path(API_PREFERENCES + "/1000")
-                        .build()
+        mockMvc.perform(
+                        put(API_PREFERENCES + "/1000")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
                 )
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(om.writeValueAsString(vo))
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-update",
-                                preprocessRequest(prettyPrint())
-                        )
-                )
+                .andExpect(status().isOk())
+                .andDo(document("prefs-update", preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
     void shall_update_preference_UNKNOWN() throws Exception {
-        ObjectMapper om = new ObjectMapper();
-        UserPreferenceVO vo = new UserPreferenceVO();
+        var om = new ObjectMapper();
+        var vo = new UserPreferenceVO();
         vo.setpKey("1000");
-        this.client
-                .put()
-                .uri(u -> u.path(API_PREFERENCES + "/UNKNOWN")
-                        .build()
+        mockMvc.perform(
+                        put(API_PREFERENCES + "/UNKNOWN")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
                 )
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(om.writeValueAsString(vo))
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-update-404",
-                                preprocessRequest(prettyPrint())
-                        )
-                )
+                .andExpect(status().isNotFound())
+                .andDo(document("prefs-update-404", preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
     void shall_delete_preference() throws Exception {
-        this.client
-                .delete()
-                .uri(u -> u.path(API_PREFERENCES + "/1000")
-                        .build()
+        mockMvc.perform(
+                        delete(API_PREFERENCES + "/1000")
                 )
-                .exchange()
-                .expectStatus().isNoContent()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-delete",
-                                preprocessRequest(prettyPrint())
-                        )
-                )
+                .andExpect(status().isNoContent())
+                .andDo(document("prefs-delete", preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -239,20 +216,13 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
         vo.setDescription("A Boolean");
         vo.setType("BOOL");
         vo.setVal(true);
-        this.client
-                .post()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .build()
+        mockMvc.perform(
+                        post(API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
                 )
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(om.writeValueAsString(vo))
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-create",
-                                preprocessRequest(prettyPrint())
-                ))
+                .andExpect(status().isCreated())
+                .andDo(document("prefs-create", preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -265,34 +235,24 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
         vo.setDescription("A Boolean");
         vo.setType("BOOL");
         vo.setVal(true);
-        WebTestClient.ResponseSpec spec = this.client
-                .post()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .build()
+        ResultActions resultActions = mockMvc.perform(
+                        post(API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
                 )
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(om.writeValueAsString(vo))
-                .exchange()
-                .expectStatus().isCreated();
+                .andExpect(status().isCreated());
 
         // Take the pKey of the former created Preference and try to create the same one again
-        var result = spec.expectBody(PreferenceVO.class).returnResult().getResponseBody();
+        var result = om.readValue(resultActions.andReturn().getResponse().getContentAsString(), PreferenceVO.class);
         assertThat(result.getpKey()).isNotBlank();
 
-        this.client
-                .post()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .build()
+        mockMvc.perform(
+                        post(API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
                 )
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(om.writeValueAsString(vo))
-                .exchange()
-                .expectStatus().isEqualTo(HttpStatus.CONFLICT)
-                .expectBody()
-                .consumeWith(
-                        document("prefs-create-fails",
-                                preprocessResponse(prettyPrint())
-                        ))
+                .andExpect(status().isConflict())
+                .andDo(document("prefs-create-fails", preprocessResponse(prettyPrint())))
         ;
     }
 }

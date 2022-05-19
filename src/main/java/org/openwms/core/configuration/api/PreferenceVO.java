@@ -25,11 +25,11 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_DESCRIPTION;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_KEY;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_OWNER;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_TYPE;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_VALUE;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_KEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_OWNER;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_TYPE;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_VALUE;
 
 /**
  * A PreferenceVO.
@@ -38,6 +38,11 @@ import static org.openwms.core.configuration.PreferencesConstants.LENGTH_VALUE;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class PreferenceVO extends AbstractBase<PreferenceVO> {
+
+    public static final String TYPE = "application";
+    public static final String SUB_TYPE = "vnd.openwms.core.preference-v1+json";
+    /** HTTP media type representation. */
+    public static final String MEDIA_TYPE = TYPE + "/" + SUB_TYPE;
 
     /** The persistent key of the resource. */
     @JsonProperty("pKey")
@@ -149,5 +154,15 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), pKey, key, owner, description, val, type);
+    }
+
+    /**
+     * Returns the representation type of the Preference.
+     *
+     * @return Conforms to the HTTP {@literal Content-Type} convention
+     */
+    @JsonIgnore
+    public String getContentType() {
+        return MEDIA_TYPE;
     }
 }

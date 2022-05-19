@@ -22,15 +22,16 @@ import org.ameba.mapping.BeanMapper;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.openwms.core.http.AbstractWebController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-import static org.openwms.core.configuration.PreferencesConstants.NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 
 /**
@@ -38,6 +39,7 @@ import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
  *
  * @author Heiko Scherrer
  */
+@Validated
 @MeasuredRestController
 public class UserPreferencesController extends AbstractWebController {
 
@@ -52,22 +54,21 @@ public class UserPreferencesController extends AbstractWebController {
     }
 
     @GetMapping(value = API_PREFERENCES, params = "user")
-    public Flux<UserPreferenceVO> findByUser(
-            @RequestParam("user") String user
+    public ResponseEntity<List<UserPreferenceVO>> findByUser(
+            @RequestParam("user") @NotBlank String user
     ) {
-        return Flux.fromIterable(
-                mapper.map(
+        return ResponseEntity.ok(mapper.map(
                         new ArrayList<>(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)),
                         UserPreferenceVO.class)
-                ).log();
+                );
     }
 
     @GetMapping(value = API_PREFERENCES, params = {"user", "key"})
-    public ResponseEntity<Mono<UserPreferenceVO>> findByUserAndKey(
-            @RequestParam("user") String user,
-            @RequestParam("key") String key
+    public ResponseEntity<UserPreferenceVO> findByUserAndKey(
+            @RequestParam("user") @NotBlank String user,
+            @RequestParam("key") @NotBlank String key
     ) {
-        return ResponseEntity.ok(Mono.just(
+        return ResponseEntity.ok(
                 mapper.map(
                         preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)
                                 .orElseThrow(() ->
@@ -79,6 +80,6 @@ public class UserPreferencesController extends AbstractWebController {
                                 ),
                         UserPreferenceVO.class
                 )
-        ));
+        );
     }
 }

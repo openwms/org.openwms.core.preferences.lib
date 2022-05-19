@@ -40,7 +40,6 @@ public class Starter {
      */
     public static void main(String[] args) {
         final SpringApplication application = new SpringApplication(Starter.class);
-        application.setWebApplicationType(WebApplicationType.REACTIVE);
         application.run(args);
     }
 }

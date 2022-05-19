@@ -15,10 +15,24 @@
  */
 package org.openwms.core.configuration.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * A RolePreferenceVO.
  *
  * @author Heiko Scherrer
  */
 public class RolePreferenceVO extends PreferenceVO {
+
+    /** HTTP media type representation. */
+    public static final String MEDIA_TYPE = "application/vnd.openwms.core.role-preference-v1+json";
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @JsonIgnore
+    public String getContentType() {
+        return MEDIA_TYPE;
+    }
 }

@@ -34,11 +34,11 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_DESCRIPTION;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_KEY;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_OWNER;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_TYPE;
-import static org.openwms.core.configuration.PreferencesConstants.LENGTH_VALUE;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_KEY;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_OWNER;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_TYPE;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_VALUE;
 
 /**
  * An PreferenceEO is the persistent entity class that represents preferences in the database.

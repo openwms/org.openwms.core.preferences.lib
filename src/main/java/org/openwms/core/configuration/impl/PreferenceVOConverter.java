@@ -110,7 +110,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             return null;
         }
         if (source.getScope() == PropertyScope.APPLICATION) {
-            ApplicationPreferenceVO p = new ApplicationPreferenceVO();
+            var p = new ApplicationPreferenceVO();
             p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setVal(source.getVal());
@@ -119,7 +119,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             return p;
         }
         if (source.getScope() == PropertyScope.MODULE) {
-            ModulePreferenceVO p = new ModulePreferenceVO();
+            var p = new ModulePreferenceVO();
             p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setOwner(source.getOwner());
@@ -129,7 +129,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             return p;
         }
         if (source.getScope() == PropertyScope.ROLE) {
-            RolePreferenceVO p = new RolePreferenceVO();
+            var p = new RolePreferenceVO();
             p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setOwner(source.getOwner());
@@ -139,7 +139,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             return p;
         }
         if (source.getScope() == PropertyScope.USER) {
-            UserPreferenceVO p = new UserPreferenceVO();
+            var p = new UserPreferenceVO();
             p.setpKey(source.getPersistentKey());
             p.setKey(source.getKey());
             p.setOwner(source.getOwner());

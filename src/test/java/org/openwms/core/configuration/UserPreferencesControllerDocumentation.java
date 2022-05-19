@@ -15,21 +15,26 @@
  */
 package org.openwms.core.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.configuration.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.document;
-import static org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation.documentationConfiguration;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * A UserPreferencesControllerDocumentation.
@@ -44,90 +49,67 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 class UserPreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Autowired
-    private ApplicationContext context;
-    private WebTestClient client;
+    private WebApplicationContext context;
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp(RestDocumentationContextProvider restDocumentation) {
-        this.client = WebTestClient
-                .bindToApplicationContext(this.context)
-                .configureClient()
-                .filter(documentationConfiguration(restDocumentation))
-                .build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(MockMvcRestDocumentation.documentationConfiguration(restDocumentation)).build();
     }
 
     @Test
-    void shall_return_all_for_user() {
-        this.client
-                .get()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .queryParam("user", "owner1")
-                        .build()
+    void shall_return_all_for_user() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES)
+                                .queryParam("user", "owner1")
                 )
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findforuser", preprocessResponse(prettyPrint()))
-                )
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("prefs-findforuser", preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
-    void shall_return_all_for_user_and_key() {
-        this.client
-                .get()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .queryParam("user", "owner1")
-                        .queryParam("key", "key1")
-                        .build()
+    void shall_return_all_for_user_and_key() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES)
+                                .queryParam("user", "owner1")
+                                .queryParam("key", "key1")
                 )
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findforuserkey", preprocessResponse(prettyPrint()))
-                )
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("prefs-findforuserkey", preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
-    void shall_fail_with_unknown_key() {
-        this.client
-                .get()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .queryParam("user", "owner1")
-                        .queryParam("key", "UNKNOWN")
-                        .build()
+    void shall_fail_with_unknown_key() throws Exception {
+        mockMvc.perform(
+                        get(API_PREFERENCES)
+                                .queryParam("user", "owner1")
+                                .queryParam("key", "UNKNOWN")
                 )
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-findforuserkey404", preprocessResponse(prettyPrint()))
-                )
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("prefs-findforuserkey404", preprocessResponse(prettyPrint())))
         ;
     }
 
     @Test
-    void shall_create_userpreference() {
-        UserPreferenceVO up = new UserPreferenceVO();
+    void shall_create_userpreference() throws Exception {
+        var om = new ObjectMapper();
+        var up = new UserPreferenceVO();
         up.setOwner("owner1");
         up.setDescription("test desc");
         up.setKey("o1-u1");
         up.setType("STRING");
         up.setVal("TEST VAL");
-        this.client
-                .post()
-                .uri(u -> u.path(API_PREFERENCES)
-                        .build()
-                ).bodyValue(up)
-                .exchange()
-                .expectStatus().isCreated()
-                .expectBody()
-                .consumeWith(
-                        document("prefs-createup", preprocessResponse(prettyPrint()))
+        mockMvc.perform(
+                        post(API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(up))
+
                 )
+                .andExpect(status().isCreated())
+                .andDo(MockMvcRestDocumentation.document("prefs-createup", preprocessResponse(prettyPrint())))
         ;
     }
 }

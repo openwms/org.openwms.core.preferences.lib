@@ -13,26 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration.api;
+package org.openwms.core.configuration;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.ameba.exception.BusinessRuntimeException;
+import org.ameba.i18n.Translator;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import java.io.Serializable;
 
 /**
- * A ModulePreferenceVO.
+ * A NotAuthorizedException.
  *
  * @author Heiko Scherrer
  */
-public class ModulePreferenceVO extends PreferenceVO {
+@ResponseStatus(HttpStatus.UNAUTHORIZED)
+public class NotAuthorizedException extends BusinessRuntimeException {
 
-    /** HTTP media type representation. */
-    public static final String MEDIA_TYPE = "application/vnd.openwms.core.module-preference-v1+json";
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @JsonIgnore
-    public String getContentType() {
-        return MEDIA_TYPE;
+    public NotAuthorizedException(Translator translator, String messageKey, Serializable[] data, Object... param) {
+        super(translator, messageKey, data, param);
     }
 }

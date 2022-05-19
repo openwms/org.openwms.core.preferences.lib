@@ -1,3 +1,4 @@
+[[preferences]]
 == Preference
 
 A `Preference` represents a configuration value in a particular scope. So a `Preference` could only be visible and editable by one
@@ -9,72 +10,76 @@ example. This is of type `ModulePreference`. The whole application consists of s
 that are valid for all modules, those are stores of type `ApplicationPreference`.
 
 All kind of preferences share same data stored in a supertype called `Preference`. Each subtype defines the scope as a property and
-an owner of the `Preference`. This might be the name of the user, the role name or the Microservice name. A `Preference` is identified by
+an owner of the `Preference`. This might be the name of the user, the role name or the microservice name. A `Preference` is identified by
 `type`, `owner` and the `key` field.
 
+[[preferences-index]]
 === Preferences Index
-The Preferences Index with all possible operations can be retrieved with the following GET request:
-
+The Preferences Index with all possible operations can be retrieved with the following `GET` request:
 include::{generated}/prefs-index/http-request.adoc[]
 
 The response lists all the operations with a name and the corresponding href link:
-
 include::{generated}/prefs-index/http-response.adoc[]
 
+[[preferences-findall]]
 === Find all Preferences (preferences-findall)
-Send a HTTP GET request without any further query parameters to find and return all existing `Preferences`.
-
+Send a HTTP `GET` request without any further query parameters to find and return all existing `Preferences`
 include::{generated}/prefs-findall/http-request.adoc[]
 
-The server responds with an array of all `Preferences`, that might be empty if no `Preferences` exist.
-
+The server responds with an array of all `Preferences`, that might be empty if no `Preferences` exist
 include::{generated}/prefs-findall/http-response.adoc[]
 
+[[preferences-findbypkey]]
 === Find a Preference by Key (preferences-findbypkey)
-Send a HTTP GET request with the persistent key as part of the path to find and return the `Preference`.
-
+Send a HTTP `GET` request with the persistent key as part of the path to find and return the `Preference`
 include::{generated}/prefs-findbykey/http-request.adoc[]
 
-The server returns the `Preference` if exists.
-
+The server returns the `Preference` resource in case it exists
 include::{generated}/prefs-findbykey/http-response.adoc[]
 
-or responds with a `404 NOT-FOUND` if the `Preference` does not exist.
-
+or responds with a `404 NOT-FOUND` if the `Preference` does not exist
 include::{generated}/prefs-findbykey404/http-response.adoc[]
 
+[[preferences-findallofscope]]
+=== Find all Preferences of particular Scope (preferences-findallofscope)
+Send a HTTP `GET` request with the desired `scope` as request parameter to find and return all `Preferences` that belong to the given scope
+include::{generated}/prefs-findallofscope/http-request.adoc[]
+
+The server responds with an array of `Preferences`, or an empty array if no `Preferences` exist
+include::{generated}/prefs-findallofscope/http-response.adoc[]
+
+**Notice:** It is not allowed to query `UserPreferences` without a particular `user` parameter to prohibit spoofing of private user
+settings. The attempt to do so is blocked by the server with:
+include::{generated}/prefs-findallofscope-403/http-response.adoc[]
+
+[[preferences-create]]
 === Create a new Preference (preferences-create)
 New `Preferences` can be created either with the definition in XML files or over the REST API. A client must send a `POST` request to the
 `Preferences` resource in order to create a new instance. The content is passed in the request body.
-
 include::{generated}/prefs-create/http-request.adoc[]
 
 The server responds with `201 CREATED` if the operation succeeds.
-
 include::{generated}/prefs-create/http-response.adoc[]
 
 If the `Preference` to create already exists, the server returns:
-
 include::{generated}/prefs-create-fails/http-response.adoc[]
 
+[[preferences-update]]
 === Update an existing Preference (preferences-update)
 To modify an existing `Preference` an `PUT` request with the `Preference` as request body is expected. The `Preference` to update is
 identified by the persistent key as part of the path.
-
 include::{generated}/prefs-update/http-request.adoc[]
 
 The server responds with `204 NO-CONTENT`.
-
 include::{generated}/prefs-update/http-response.adoc[]
 
+[[preferences-delete]]
 === Delete a Preference (preferences-delete)
 To delete an existing `Preference` one can call the URI to the resource with a HTTP `DELETE` request. The persistent key of the `Preference`
 is required to identify the resource to delete.
-
 include::{generated}/prefs-delete/http-request.adoc[]
 
 The server responds with `204 NO-CONTENT` is the resource has been deleted successfully.
-
 include::{generated}/prefs-delete/http-response.adoc[]
 
 If the resource doesn't exist and could not be deleted the server responds with a `404 NOT-FOUND`.
