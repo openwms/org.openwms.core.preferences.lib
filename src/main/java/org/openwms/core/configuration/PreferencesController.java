@@ -126,7 +126,7 @@ public class PreferencesController extends AbstractWebController {
         var vo = mapper.map(result, PreferenceVO.class);
         return ResponseEntity
                 .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
-                .header(HttpHeaders.CONTENT_TYPE, vo.getContentType())
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .body(vo);
     }
 
