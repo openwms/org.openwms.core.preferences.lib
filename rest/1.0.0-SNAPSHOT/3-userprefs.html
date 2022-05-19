@@ -502,7 +502,7 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
+Content-Type: application/hal+json
 Content-Length: 217
 
 {
@@ -519,20 +519,8 @@ Content-Length: 217
 <div class="paragraph">
 <p>or responds with a <code>404 NOT-FOUND</code> if the <code>UserPreference</code> does not exist.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
-Content-Type: application/json
-Content-Length: 256
-
-{
-  "message" : "Preference key [UNKNOWN] and owner [owner1] and scope [USER] does not exist",
-  "messageKey" : "owms.core.preferences.notFoundByOwnerAndScopeAndKey",
-  "obj" : [ "UNKNOWN", "owner1", "USER" ],
-  "httpStatus" : "404",
-  "class" : "String"
-}</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in 3-userprefs.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findforuserkey404/http-response.adoc[]</p>
 </div>
 </div>
 </div>
@@ -540,7 +528,7 @@ Content-Length: 256
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-05-18 18:51:41 UTC
+Last updated 2022-05-19 12:21:00 UTC
 </div>
 </div>
 </body>
