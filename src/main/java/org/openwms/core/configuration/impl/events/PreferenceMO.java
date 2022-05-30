@@ -43,6 +43,12 @@ public class PreferenceMO implements Serializable {
     /** The type of the {@code Preference}. */
     private String type;
 
+    PreferenceMO() { }
+
+    public PreferenceMO(String key) {
+        this.key = key;
+    }
+
     public String getpKey() {
         return pKey;
     }

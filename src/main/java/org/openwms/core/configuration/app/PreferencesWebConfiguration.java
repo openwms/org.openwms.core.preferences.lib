@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.openwms.core.configuration.api.ApplicationPreferenceVO;
-import org.openwms.core.configuration.api.PreferenceVO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -42,18 +41,17 @@ public class PreferencesWebConfiguration {
 
     @Bean
     public HttpMessageConverter customTypeHttpMessageConverter(ObjectMapper objectMapper) {
-        return new AbstractJackson2HttpMessageConverter(objectMapper,
-                new MediaType(ApplicationPreferenceVO.TYPE, ApplicationPreferenceVO.SUB_TYPE),
-                //new MediaType(ModulePreferenceVO.MEDIA_TYPE),
-                //new MediaType(RolePreferenceVO.MEDIA_TYPE),
-                //new MediaType(UserPreferenceVO.MEDIA_TYPE),
-                new MediaType(PreferenceVO.TYPE, PreferenceVO.SUB_TYPE)
-        ){};
+        return new My(objectMapper);
     }
 
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
     @Bean
     Filter corsFiler() {
         return new CorsFilter(new PermitAllCorsConfigurationSource());
+    }
+    static class My extends AbstractJackson2HttpMessageConverter {
+        public My(ObjectMapper objectMapper) {
+            super(objectMapper, new MediaType(ApplicationPreferenceVO.TYPE, ApplicationPreferenceVO.SUB_TYPE));
+        }
     }
 }

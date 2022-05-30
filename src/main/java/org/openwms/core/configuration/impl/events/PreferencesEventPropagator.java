@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Validator;
 
 import static org.ameba.system.ValidationUtil.validate;
@@ -56,6 +57,15 @@ class PreferencesEventPropagator {
         this.validator = validator;
         this.mapper = mapper;
         this.exchangeName = exchangeName;
+    }
+
+    @PostConstruct
+    void onStartup() {
+        try {
+            amqpTemplate.convertAndSend(exchangeName, "preference.event.boot", new PreferenceMO("BOOT"));
+        } catch (Exception e) {
+            // Its fine if the event broker is not available on startup
+        }
     }
 
     @TransactionalEventListener(fallbackExecution = true)
