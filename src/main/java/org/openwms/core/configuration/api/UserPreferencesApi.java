@@ -30,7 +30,7 @@ import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "preferences-service")
+@FeignClient(name = "preferences-service", qualifiers = "preferencesApi")
 public interface UserPreferencesApi {
 
     /**

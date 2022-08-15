@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author Heiko Scherrer
  */
-@FeignClient(name = "preferences-service")
+@FeignClient(name = "preferences-service", qualifiers = "preferencesApi")
 public interface PreferencesApi {
 
     /** API version. */
