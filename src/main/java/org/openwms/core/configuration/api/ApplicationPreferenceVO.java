@@ -17,12 +17,14 @@ package org.openwms.core.configuration.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 /**
  * A ApplicationPreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public class ApplicationPreferenceVO extends PreferenceVO {
+public class ApplicationPreferenceVO extends PreferenceVO implements Serializable {
 
     public static final String TYPE = "application";
     public static final String SUB_TYPE = "vnd.openwms.core.application-preference-v1+json";

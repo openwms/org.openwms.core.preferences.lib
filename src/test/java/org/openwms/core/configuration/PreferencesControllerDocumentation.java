@@ -78,11 +78,12 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .andExpect(jsonPath("$._links.preferences-findall").exists())
                 .andExpect(jsonPath("$._links.preferences-findbypkey").exists())
                 .andExpect(jsonPath("$._links.preferences-findallofscope").exists())
+                .andExpect(jsonPath("$._links.preferences-create").exists())
                 .andExpect(jsonPath("$._links.preferences-update").exists())
                 .andExpect(jsonPath("$._links.preferences-delete").exists())
                 .andExpect(jsonPath("$._links.user-preferences-findbyuser").exists())
                 .andExpect(jsonPath("$._links.user-preferences-findbyuserandkey").exists())
-                .andExpect(jsonPath("$._links.length()", is(7)))
+                .andExpect(jsonPath("$._links.length()", is(8)))
         ;
     }
 

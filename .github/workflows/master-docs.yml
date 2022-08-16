@@ -81,7 +81,7 @@ jobs:
           PUSHKEY: ${{ secrets.PUSHKEY }}
       - name: Sonar
         run: >
-          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
+          ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
           -DsurefireArgs="-Dspring.profiles.active=ASYNCHRONOUS,TEST"
           -Dspring.rabbitmq.host=localhost
           -Dsonar.login=$SONAR_TOKEN

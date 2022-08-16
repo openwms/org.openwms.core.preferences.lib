@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>20</version>
+        <version>21</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
@@ -71,8 +71,7 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <objenesis.version>2.6</objenesis.version>
         <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.0</spring-cloud-dependencies.version>
-        <skipTests>false</skipTests>
+        <spring-cloud-dependencies.version>2021.0.3</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -214,6 +213,7 @@
 				<scope>provided</scope>
 			</dependency>
             <dependency>
+                <!-- Clash between Dozer and spring-boot-starter-test -->
                 <groupId>org.objenesis</groupId>
                 <artifactId>objenesis</artifactId>
                 <version>${objenesis.version}</version>
@@ -340,12 +340,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jdk8</artifactId>
             <optional>true</optional>
@@ -412,11 +406,6 @@
             <groupId>io.interface21</groupId>
             <artifactId>ameba-lib</artifactId>
             <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -88,7 +88,7 @@ class UserPreferencesControllerDocumentation extends DefaultTestProfile {
                                 .queryParam("user", "owner1")
                                 .queryParam("key", "UNKNOWN")
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isNotFound())
                 .andDo(MockMvcRestDocumentation.document("prefs-findforuserkey404", preprocessResponse(prettyPrint())))
         ;
     }

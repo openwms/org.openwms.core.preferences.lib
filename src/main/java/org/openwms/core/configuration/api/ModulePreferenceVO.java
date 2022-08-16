@@ -17,15 +17,19 @@ package org.openwms.core.configuration.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
+
 /**
  * A ModulePreferenceVO.
  *
  * @author Heiko Scherrer
  */
-public class ModulePreferenceVO extends PreferenceVO {
+public class ModulePreferenceVO extends PreferenceVO implements Serializable {
 
+    /** HTTP media sub type representation. */
+    public static final String SUB_TYPE = "vnd.openwms.core.module-preference-v1+json";
     /** HTTP media type representation. */
-    public static final String MEDIA_TYPE = "application/vnd.openwms.core.module-preference-v1+json";
+    public static final String MEDIA_TYPE = TYPE + "/" + SUB_TYPE;
 
     /**
      * {@inheritDoc}

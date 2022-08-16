@@ -42,11 +42,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.openwms.core.configuration.api.PreferenceVO.MEDIA_TYPE;
+import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.openwms.core.configuration.api.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
 import static org.openwms.core.configuration.api.PreferencesConstants.NOT_ALLOWED_PKEY;
 import static org.openwms.core.configuration.api.PreferencesConstants.PROPERTY_SCOPE_NOT_DEFINED;
-import static org.openwms.core.configuration.api.PreferenceVO.MEDIA_TYPE;
-import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -91,26 +91,29 @@ public class PreferencesController extends AbstractWebController {
         );
     }
 
-    @GetMapping(value = API_PREFERENCES, params = "scope", produces = MEDIA_TYPE)
+    @GetMapping(value = API_PREFERENCES, params = "scope")
     public ResponseEntity<List<PreferenceVO>> findAllOfScope(
             @RequestParam("scope") String scope
     ) {
+        PropertyScope propertyScope;
         try {
-            var propertyScope = PropertyScope.valueOf(scope);
-            return ResponseEntity.ok(mapper.map(
-                    new ArrayList<>(preferencesService.findForOwnerAndScope(null, propertyScope)),
-                    PreferenceVO.class
-            ));
+            propertyScope = PropertyScope.valueOf(scope);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(translator.translate(PROPERTY_SCOPE_NOT_DEFINED, new String[]{scope}, scope));
         }
+        List<PreferenceVO> result = mapper.map(
+                new ArrayList<>(preferencesService.findForOwnerAndScope(null, propertyScope)),
+                PreferenceVO.class
+        );
+        return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping(value = API_PREFERENCES + "/{pKey}", produces = MEDIA_TYPE)
+    @GetMapping(value = API_PREFERENCES + "/{pKey}")
     public ResponseEntity<PreferenceVO> findByPKey(
             @PathVariable("pKey") String pKey
     ) {
-        return ResponseEntity.ok(mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class));
+        var result = mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
     }
 
     @Transactional

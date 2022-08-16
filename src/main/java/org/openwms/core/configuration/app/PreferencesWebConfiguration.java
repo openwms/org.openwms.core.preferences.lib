@@ -15,18 +15,12 @@
  */
 package org.openwms.core.configuration.app;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ameba.app.SpringProfiles;
 import org.ameba.http.PermitAllCorsConfigurationSource;
-import org.openwms.core.configuration.api.ApplicationPreferenceVO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.Filter;
 
@@ -36,22 +30,11 @@ import javax.servlet.Filter;
  * @author Heiko Scherrer
  */
 @Configuration
-@EnableWebMvc
 public class PreferencesWebConfiguration {
-
-    @Bean
-    public HttpMessageConverter customTypeHttpMessageConverter(ObjectMapper objectMapper) {
-        return new My(objectMapper);
-    }
 
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
     @Bean
     Filter corsFiler() {
         return new CorsFilter(new PermitAllCorsConfigurationSource());
-    }
-    static class My extends AbstractJackson2HttpMessageConverter {
-        public My(ObjectMapper objectMapper) {
-            super(objectMapper, new MediaType(ApplicationPreferenceVO.TYPE, ApplicationPreferenceVO.SUB_TYPE));
-        }
     }
 }
