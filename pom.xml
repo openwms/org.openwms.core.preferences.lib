@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>21</version>
+        <version>23</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
@@ -68,10 +68,9 @@
         <commons-configuration.version>1.10</commons-configuration.version>
         <core.version>2.0.0-SNAPSHOT</core.version>
         <guava.version>30.0-jre</guava.version>
-        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <objenesis.version>2.6</objenesis.version>
         <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.3</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2021.0.6</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -190,7 +189,7 @@
                 <version>${guava.version}</version>
             </dependency>
             <dependency>
-                <!-- Clash in org.springframework.cloud:spring-cloud-starter-stream-rabbit -->
+                <!-- Clash in org.springframework.cloud:spring-cloud-starter-netflix-eureka-client -->
                 <groupId>com.netflix.servo</groupId>
                 <artifactId>servo-core</artifactId>
                 <version>${servo-core.version}</version>
@@ -201,17 +200,6 @@
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
             </dependency>
-            <dependency>
-				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct</artifactId>
-				<version>${org.mapstruct.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.mapstruct</groupId>
-				<artifactId>mapstruct-processor</artifactId>
-				<version>${org.mapstruct.version}</version>
-				<scope>provided</scope>
-			</dependency>
             <dependency>
                 <!-- Clash between Dozer and spring-boot-starter-test -->
                 <groupId>org.objenesis</groupId>
@@ -455,6 +443,9 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>spring-milestones</id>
@@ -463,6 +454,9 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </repository>
     </repositories>
     <pluginRepositories>
@@ -473,11 +467,17 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
         </pluginRepository>
         <pluginRepository>
             <id>sonatype-nexus-snapshots</id>
             <name>Snapshot Repository</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
             <releases>
                 <enabled>false</enabled>
             </releases>
