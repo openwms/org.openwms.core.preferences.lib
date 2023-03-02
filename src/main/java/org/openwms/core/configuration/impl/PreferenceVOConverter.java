@@ -55,6 +55,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.APPLICATION)
+                    .groupName(p.getGroupName())
                     .build();
             eo.setPersistentKey(p.getpKey());
             return eo;
@@ -68,6 +69,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.MODULE)
+                    .groupName(p.getGroupName())
                     .build();
             eo.setPersistentKey(p.getpKey());
             return eo;
@@ -81,6 +83,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.ROLE)
+                    .groupName(p.getGroupName())
                     .build();
             eo.setPersistentKey(p.getpKey());
             return eo;
@@ -94,6 +97,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
                     .val(p.getVal() == null ? null : p.getVal().toString())
                     .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
                     .scope(PropertyScope.USER)
+                    .groupName(p.getGroupName())
                     .build();
             eo.setPersistentKey(p.getpKey());
             return eo;
@@ -116,6 +120,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
             p.setType(source.getType().name());
+            p.setGroupName(source.getGroupName());
             return p;
         }
         if (source.getScope() == PropertyScope.MODULE) {
@@ -126,6 +131,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
             p.setType(source.getType().name());
+            p.setGroupName(source.getGroupName());
             return p;
         }
         if (source.getScope() == PropertyScope.ROLE) {
@@ -136,6 +142,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
             p.setType(source.getType().name());
+            p.setGroupName(source.getGroupName());
             return p;
         }
         if (source.getScope() == PropertyScope.USER) {
@@ -146,6 +153,7 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
             p.setVal(source.getVal());
             p.setDescription(source.getDescription());
             p.setType(source.getType().name());
+            p.setGroupName(source.getGroupName());
             return p;
         }
         throw new IllegalArgumentException("Source entity preferences type is unknown: " + source.getScope());

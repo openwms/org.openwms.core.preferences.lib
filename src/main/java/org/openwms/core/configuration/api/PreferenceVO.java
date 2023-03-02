@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_GROUP;
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_KEY;
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_OWNER;
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_TYPE;
@@ -68,6 +69,11 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
     @JsonProperty("value")
     @Size(max = LENGTH_VALUE)
     private Serializable val;
+
+    /** The groupName of the {@code Preference}. */
+    @JsonProperty("groupName")
+    @Size(max = LENGTH_GROUP)
+    private String groupName;
 
     /** The type of the {@code Preference}. */
     @JsonProperty("type")
@@ -119,6 +125,14 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
         this.val = val;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public String getType() {
         return type;
     }
@@ -143,6 +157,7 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(val, that.val) &&
+                Objects.equals(groupName, that.groupName) &&
                 Objects.equals(type, that.type);
     }
 
@@ -153,7 +168,7 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, type);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);
     }
 
     /**

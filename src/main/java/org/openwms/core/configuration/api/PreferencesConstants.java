@@ -39,4 +39,5 @@ public final class PreferencesConstants {
     public static final int LENGTH_DESCRIPTION = 255;
     public static final int LENGTH_VALUE = 4096;
     public static final int LENGTH_TYPE = 36;
+    public static final int LENGTH_GROUP = 36;
 }

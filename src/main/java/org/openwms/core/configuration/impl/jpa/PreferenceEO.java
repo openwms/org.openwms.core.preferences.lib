@@ -35,6 +35,7 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_GROUP;
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_KEY;
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_OWNER;
 import static org.openwms.core.configuration.api.PreferencesConstants.LENGTH_TYPE;
@@ -96,6 +97,11 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     @Column(name = "C_MAX_VALUE", length = LENGTH_VALUE)
     @Size(max = LENGTH_VALUE)
     private String maxValue;
+
+    /** The name of the group the {@link PreferenceEO} is assigned to. */
+    @Column(name = "C_GROUP_NAME", length = LENGTH_GROUP)
+    @Size(max = LENGTH_GROUP)
+    private String groupName = "GLOBAL";
 
     /** Type of this preference. */
     @Convert(converter = PreferenceTypeConverter.class)
@@ -175,6 +181,14 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         this.maxValue = maxValue;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public PreferenceType getType() {
         return type;
     }
@@ -208,10 +222,9 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PreferenceEO)) return false;
+        if (!(o instanceof PreferenceEO that)) return false;
         if (!super.equals(o)) return false;
-        PreferenceEO that = (PreferenceEO) o;
-        return fromFile == that.fromFile && Objects.equals(key, that.key) && Objects.equals(owner, that.owner) && Objects.equals(description, that.description) && scope == that.scope && Objects.equals(val, that.val) && Objects.equals(defValue, that.defValue) && Objects.equals(minValue, that.minValue) && Objects.equals(maxValue, that.maxValue) && type == that.type;
+        return fromFile == that.fromFile && Objects.equals(key, that.key) && Objects.equals(owner, that.owner) && Objects.equals(description, that.description) && scope == that.scope && Objects.equals(val, that.val) && Objects.equals(defValue, that.defValue) && Objects.equals(minValue, that.minValue) && Objects.equals(maxValue, that.maxValue) && Objects.equals(groupName, that.groupName) && type == that.type;
     }
 
     /**
@@ -221,7 +234,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), key, owner, description, fromFile, scope, val, defValue, minValue, maxValue, type);
+        return Objects.hash(super.hashCode(), key, owner, description, fromFile, scope, val, defValue, minValue, maxValue, groupName, type);
     }
 
     /**
@@ -241,6 +254,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
                 .add("defValue='" + defValue + "'")
                 .add("minValue='" + minValue + "'")
                 .add("maxValue='" + maxValue + "'")
+                .add("groupName='" + groupName + "'")
                 .add("type=" + type)
                 .toString();
     }
@@ -255,6 +269,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         defValue = builder.defValue;
         minValue = builder.minValue;
         maxValue = builder.maxValue;
+        groupName = builder.groupName;
         type = builder.type;
     }
 
@@ -272,6 +287,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         private String defValue;
         private String minValue;
         private String maxValue;
+        private String groupName;
         private @NotNull PreferenceType type;
 
         private Builder() {
@@ -319,6 +335,11 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 
         public Builder maxValue(String val) {
             maxValue = val;
+            return this;
+        }
+
+        public Builder groupName(String val) {
+            groupName = val;
             return this;
         }
 
