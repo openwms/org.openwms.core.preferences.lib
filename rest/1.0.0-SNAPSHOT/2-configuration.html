@@ -461,311 +461,94 @@ an owner of the <code>Preference</code>. This might be the name of the user, the
 <div class="sect2">
 <h3 id="preferences-index">Preferences Index</h3>
 <div class="paragraph">
-<p>The Preferences Index with all possible operations can be retrieved with the following <code>GET</code> request:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences/index HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<p>The Preferences Index with all possible operations can be retrieved with the following <code>GET</code> request:
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-index/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The response lists all the operations with a name and the corresponding href link:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/hal+json
-Content-Length: 839
-
-{
-  "_links" : {
-    "preferences-findall" : {
-      "href" : "http://localhost:8080/v1/preferences"
-    },
-    "preferences-findbypkey" : {
-      "href" : "http://localhost:8080/v1/preferences/pKey"
-    },
-    "preferences-findallofscope" : {
-      "href" : "http://localhost:8080/v1/preferences?scope=%7Bscope%7D"
-    },
-    "preferences-create" : {
-      "href" : "http://localhost:8080/v1/preferences"
-    },
-    "preferences-update" : {
-      "href" : "http://localhost:8080/v1/preferences/pKey"
-    },
-    "preferences-delete" : {
-      "href" : "http://localhost:8080/v1/preferences/pKey"
-    },
-    "user-preferences-findbyuser" : {
-      "href" : "http://localhost:8080/v1/preferences?user=user"
-    },
-    "user-preferences-findbyuserandkey" : {
-      "href" : "http://localhost:8080/v1/preferences?user=user&amp;key=key"
-    }
-  }
-}</code></pre>
-</div>
+<p>The response lists all the operations with a name and the corresponding href link:
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-index/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-findall">Find all Preferences (preferences-findall)</h3>
 <div class="paragraph">
-<p>Send a HTTP <code>GET</code> request without any further query parameters to find and return all existing <code>Preferences</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<p>Send a HTTP <code>GET</code> request without any further query parameters to find and return all existing <code>Preferences</code>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findall/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The server responds with an array of all <code>Preferences</code>, that might be empty if no <code>Preferences</code> exist</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/vnd.openwms.core.preference-v1+json
-Content-Length: 637
-
-[ {
-  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "1000",
-  "key" : "key1",
-  "owner" : "owner1",
-  "description" : "String description",
-  "value" : "current val",
-  "type" : "STRING"
-}, {
-  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "1001",
-  "key" : "key2",
-  "owner" : "owner1",
-  "description" : "String description",
-  "value" : "current val",
-  "type" : "STRING"
-}, {
-  "@class" : "org.openwms.core.configuration.api.ApplicationPreferenceVO",
-  "pKey" : "1002",
-  "key" : "key3",
-  "description" : "Application",
-  "value" : "current val",
-  "type" : "STRING"
-} ]</code></pre>
-</div>
+<p>The server responds with an array of all <code>Preferences</code>, that might be empty if no <code>Preferences</code> exist
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findall/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-findbypkey">Find a Preference by Key (preferences-findbypkey)</h3>
 <div class="paragraph">
-<p>Send a HTTP <code>GET</code> request with the persistent key as part of the path to find and return the <code>Preference</code></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences/1000 HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<p>Send a HTTP <code>GET</code> request with the persistent key as part of the path to find and return the <code>Preference</code>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findbykey/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The server returns the <code>Preference</code> resource in case it exists</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/vnd.openwms.core.user-preference-v1+json
-Content-Length: 217
-
-{
-  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "1000",
-  "key" : "key1",
-  "owner" : "owner1",
-  "description" : "String description",
-  "value" : "current val",
-  "type" : "STRING"
-}</code></pre>
-</div>
+<p>The server returns the <code>Preference</code> resource in case it exists
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findbykey/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>or responds with a <code>404 NOT-FOUND</code> if the <code>Preference</code> does not exist</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
-Content-Type: application/hal+json
-Content-Length: 203
-
-{
-  "message" : "Preference with persistent key [UNKNOWN] does not exist",
-  "messageKey" : "owms.core.preferences.notFoundByPKey",
-  "obj" : [ "UNKNOWN" ],
-  "httpStatus" : "404",
-  "class" : "String"
-}</code></pre>
-</div>
+<p>or responds with a <code>404 NOT-FOUND</code> if the <code>Preference</code> does not exist
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findbykey404/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-findallofscope">Find all Preferences of particular Scope (preferences-findallofscope)</h3>
 <div class="paragraph">
-<p>Send a HTTP <code>GET</code> request with the desired <code>scope</code> as request parameter to find and return all <code>Preferences</code> that belong to the given scope</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?scope=APPLICATION HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+<p>Send a HTTP <code>GET</code> request with the desired <code>scope</code> as request parameter to find and return all <code>Preferences</code> that belong to the given scope
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findallofscope/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The server responds with an array of <code>Preferences</code>, or an empty array if no <code>Preferences</code> exist</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 199
-
-[ {
-  "@class" : "org.openwms.core.configuration.api.ApplicationPreferenceVO",
-  "pKey" : "1002",
-  "key" : "key3",
-  "description" : "Application",
-  "value" : "current val",
-  "type" : "STRING"
-} ]</code></pre>
-</div>
+<p>The server responds with an array of <code>Preferences</code>, or an empty array if no <code>Preferences</code> exist
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findallofscope/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p><strong>Notice:</strong> It is not allowed to query <code>UserPreferences</code> without a particular <code>user</code> parameter to prohibit spoofing of private user
-settings. The attempt to do so is blocked by the server with:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 401 Unauthorized
-Content-Type: application/hal+json
-Content-Length: 150
-
-{
-  "message" : "Not allowed to fetch User preferences",
-  "messageKey" : "owms.core.preferences.notAllowedToFetchUserPrefs",
-  "httpStatus" : "401"
-}</code></pre>
-</div>
+settings. The attempt to do so is blocked by the server with:
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findallofscope-403/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-create">Create a new Preference (preferences-create)</h3>
 <div class="paragraph">
 <p>New <code>Preferences</code> can be created either with the definition in XML files or over the REST API. A client must send a <code>POST</code> request to the
-<code>Preferences</code> resource in order to create a new instance. The content is passed in the request body.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /v1/preferences HTTP/1.1
-Content-Type: application/json
-Content-Length: 147
-Host: localhost:8080
-
-{"@class":"org.openwms.core.configuration.api.UserPreferenceVO","key":"keyY","owner":"owner2","description":"A Boolean","value":true,"type":"BOOL"}</code></pre>
-</div>
+<code>Preferences</code> resource in order to create a new instance. The content is passed in the request body.
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The server responds with <code>201 CREATED</code> if the operation succeeds.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Location: http://localhost:8080/v1/preferences/58fcc06a-f713-488d-81d0-b544e7701413
-Content-Type: application/json
-Content-Length: 231
-
-{
-  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "58fcc06a-f713-488d-81d0-b544e7701413",
-  "key" : "keyY",
-  "owner" : "owner2",
-  "description" : "A Boolean",
-  "value" : "true",
-  "type" : "BOOL"
-}</code></pre>
-</div>
+<p>The server responds with <code>201 CREATED</code> if the operation succeeds.
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>If the <code>Preference</code> to create already exists, the server returns:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 409 Conflict
-Content-Type: application/hal+json
-Content-Length: 262
-
-{
-  "message" : "Preference with key [keyY] and owner [owner2] and scope [USER] already exists",
-  "messageKey" : "owms.core.preferences.alreadyExistsWithOwnerAndScopeAndKey",
-  "obj" : [ "keyY", "owner2", "USER" ],
-  "httpStatus" : "409",
-  "class" : "String"
-}</code></pre>
-</div>
+<p>If the <code>Preference</code> to create already exists, the server returns:
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create-fails/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-update">Update an existing Preference (preferences-update)</h3>
 <div class="paragraph">
 <p>To modify an existing <code>Preference</code> an <code>PUT</code> request with the <code>Preference</code> as request body is expected. The <code>Preference</code> to update is
-identified by the persistent key as part of the path.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /v1/preferences/1000 HTTP/1.1
-Content-Type: application/json
-Content-Length: 161
-Host: localhost:8080
-
-{"@class":"org.openwms.core.configuration.api.UserPreferenceVO","pKey":"1000","key":"keyX","owner":"owner2","description":"A Boolean","value":true,"type":"BOOL"}</code></pre>
-</div>
+identified by the persistent key as part of the path.
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-update/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The server responds with <code>204 NO-CONTENT</code>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/vnd.openwms.core.user-preference-v1+json
-Content-Length: 199
-
-{
-  "@class" : "org.openwms.core.configuration.api.UserPreferenceVO",
-  "pKey" : "1000",
-  "key" : "keyX",
-  "owner" : "owner2",
-  "description" : "A Boolean",
-  "value" : "true",
-  "type" : "BOOL"
-}</code></pre>
-</div>
+<p>The server responds with <code>204 NO-CONTENT</code>.
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-update/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-delete">Delete a Preference (preferences-delete)</h3>
 <div class="paragraph">
 <p>To delete an existing <code>Preference</code> one can call the URI to the resource with a HTTP <code>DELETE</code> request. The persistent key of the <code>Preference</code>
-is required to identify the resource to delete.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /v1/preferences/1000 HTTP/1.1
-Host: localhost:8080</code></pre>
-</div>
+is required to identify the resource to delete.
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-delete/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
-<p>The server responds with <code>204 NO-CONTENT</code> is the resource has been deleted successfully.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
-</div>
+<p>The server responds with <code>204 NO-CONTENT</code> is the resource has been deleted successfully.
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-delete/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the resource doesn&#8217;t exist and could not be deleted the server responds with a <code>404 NOT-FOUND</code>.</p>
@@ -776,7 +559,7 @@ Host: localhost:8080</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-03-01 23:28:01 UTC
+Last updated 2023-03-02 22:06:43 UTC
 </div>
 </div>
 </body>

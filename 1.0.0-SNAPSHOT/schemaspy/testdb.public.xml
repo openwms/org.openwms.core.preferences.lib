@@ -12,13 +12,14 @@
          <column autoUpdated="false" digits="0" id="7" name="c_def_value" nullable="true" remarks="" size="4096" type="varchar"/>
          <column autoUpdated="false" digits="0" id="8" name="c_description" nullable="true" remarks="" size="255" type="varchar"/>
          <column autoUpdated="false" digits="0" id="9" name="c_from_file" nullable="true" remarks="" size="1" type="bool"/>
-         <column autoUpdated="false" digits="0" id="10" name="c_key" nullable="true" remarks="" size="60" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="11" name="c_max_value" nullable="true" remarks="" size="4096" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="12" name="c_min_value" nullable="true" remarks="" size="4096" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="13" name="c_owner" nullable="true" remarks="" size="60" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="14" name="c_scope" nullable="false" remarks="" size="255" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="15" name="c_type" nullable="false" remarks="" size="36" type="varchar"/>
-         <column autoUpdated="false" digits="0" id="16" name="c_current_value" nullable="true" remarks="" size="4096" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="10" name="c_group_name" nullable="true" remarks="" size="36" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="11" name="c_key" nullable="true" remarks="" size="60" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="12" name="c_max_value" nullable="true" remarks="" size="4096" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="13" name="c_min_value" nullable="true" remarks="" size="4096" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="14" name="c_owner" nullable="true" remarks="" size="60" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="15" name="c_scope" nullable="false" remarks="" size="255" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="16" name="c_type" nullable="false" remarks="" size="36" type="varchar"/>
+         <column autoUpdated="false" digits="0" id="17" name="c_current_value" nullable="true" remarks="" size="4096" type="varchar"/>
          <primaryKey column="c_pk" sequenceNumberInPK="1"/>
          <index name="cor_pref_preference_pkey" unique="true">
             <column ascending="true" name="c_pk"/>
