@@ -64,7 +64,7 @@ class PreferencesEventPropagator {
         try {
             amqpTemplate.convertAndSend(exchangeName, "preference.event.boot", new PreferenceMO("BOOT"));
         } catch (Exception e) {
-            // Its fine if the event broker is not available on startup
+            // It's fine if the event broker is not available on startup
         }
     }
 

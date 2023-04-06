@@ -26,15 +26,22 @@ import java.util.Arrays;
  */
 public class PreferenceKey implements Serializable {
 
-    private Serializable[] fields;
+    private String[] fields;
+
+    public String[] getFields() {
+        return fields;
+    }
+
+    public void setFields(String[] fields) {
+        this.fields = fields;
+    }
 
     /**
      * Create a new {@code PreferenceKey} with a variable array of fields.
      * 
-     * @param fields
-     *            The array of fields to store as keys
+     * @param fields The array of fields to store as keys
      */
-    public PreferenceKey(Serializable... fields) {
+    public PreferenceKey(String... fields) {
         this.fields = fields;
     }
 

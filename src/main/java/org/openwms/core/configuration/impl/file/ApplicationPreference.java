@@ -97,7 +97,7 @@ public class ApplicationPreference extends GenericPreference implements Serializ
     @Override
     @JsonIgnore
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(":APPLICATION:", getKey(), PropertyScope.APPLICATION);
+        return new PreferenceKey(":APPLICATION:", getKey(), PropertyScope.APPLICATION.name());
     }
 
     @Override

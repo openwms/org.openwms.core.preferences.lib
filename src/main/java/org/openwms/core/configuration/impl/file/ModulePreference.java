@@ -108,7 +108,7 @@ public class ModulePreference extends GenericPreference implements Serializable 
      */
     @Override
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getOwner(), getKey(), PropertyScope.MODULE);
+        return new PreferenceKey(getOwner(), getKey(), PropertyScope.MODULE.name());
     }
 
     /**

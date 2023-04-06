@@ -105,7 +105,7 @@ public class UserPreference extends GenericPreference implements Serializable {
      */
     @Override
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getOwner(), getKey(), PropertyScope.USER);
+        return new PreferenceKey(getOwner(), getKey(), PropertyScope.USER.name());
     }
 
     /**

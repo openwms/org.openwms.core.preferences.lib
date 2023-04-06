@@ -112,7 +112,7 @@ public class RolePreference extends GenericPreference implements Serializable {
      */
     @Override
     public PreferenceKey getPrefKey() {
-        return new PreferenceKey(getOwner(), getKey(), PropertyScope.ROLE);
+        return new PreferenceKey(getOwner(), getKey(), PropertyScope.ROLE.name());
     }
 
     /**
