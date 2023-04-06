@@ -68,7 +68,7 @@
         <commons-configuration.version>1.10</commons-configuration.version>
         <core.version>2.0.0-SNAPSHOT</core.version>
         <guava.version>30.0-jre</guava.version>
-        <objenesis.version>2.6</objenesis.version>
+        <objenesis.version>3.2</objenesis.version>
         <servo-core.version>0.12.21</servo-core.version>
         <spring-cloud-dependencies.version>2021.0.6</spring-cloud-dependencies.version>
     </properties>
