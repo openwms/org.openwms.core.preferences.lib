@@ -109,9 +109,7 @@
                     </annotationProcessorPaths>
                     <showWarnings>true</showWarnings>
                     <compilerArgs>
-                        <arg>
-                            --enable-preview
-                        </arg>
+                        <arg>--enable-preview</arg>
                         <arg>
                             -Amapstruct.defaultComponentModel=spring
                         </arg>
