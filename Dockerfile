@@ -11,4 +11,4 @@ COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/spring-boot-loader/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
 COPY --from=builder application/application/ ./
-ENTRYPOINT exec java $JAVA_OPTS org.springframework.boot.loader.JarLauncher
+ENTRYPOINT exec java --enable-preview $JAVA_OPTS org.springframework.boot.loader.JarLauncher
