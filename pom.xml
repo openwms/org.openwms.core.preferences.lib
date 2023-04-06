@@ -107,9 +107,9 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <enablePreview>true</enablePreview>
                     <showWarnings>true</showWarnings>
                     <compilerArgs>
-                        <arg>--enable-preview</arg>
                         <arg>
                             -Amapstruct.defaultComponentModel=spring
                         </arg>
