@@ -69,6 +69,7 @@
         <core.version>2.0.0-SNAPSHOT</core.version>
         <guava.version>30.0-jre</guava.version>
         <objenesis.version>3.2</objenesis.version>
+        <org.openwms.core.preferences.ui.version>1.0.0-SNAPSHOT</org.openwms.core.preferences.ui.version>
         <servo-core.version>0.12.21</servo-core.version>
         <spring-cloud-dependencies.version>2021.0.6</spring-cloud-dependencies.version>
     </properties>
@@ -108,11 +109,7 @@
                         </path>
                     </annotationProcessorPaths>
                     <enablePreview>true</enablePreview>
-                    <showWarnings>true</showWarnings>
-                    <compilerArgs>
-                        <arg>
-                            -Amapstruct.defaultComponentModel=spring
-                        </arg>
+                    <compilerArgs>--enable-preview
                         <arg>
                             -Amapstruct.suppressGeneratorTimestamp=true
                         </arg>
@@ -126,6 +123,9 @@
                             -Amapstruct.verbose=true
                         </arg>
                     </compilerArgs>
+                    <showWarnings>true</showWarnings>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -146,6 +146,16 @@
                             <includes>
                                 <include>**/api/**/*.class</include>
                             </includes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>full-build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>all</classifier>
                         </configuration>
                     </execution>
                 </executions>
@@ -481,4 +491,57 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
+
+    <profiles>
+        <profile>
+            <id>enterprise</id>
+            <distributionManagement>
+                <repository>
+                    <id>interface21-releases</id>
+                    <name>OpenWMS.org Release Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-releases</url>
+                </repository>
+                <snapshotRepository>
+                    <id>interface21-snapshots</id>
+                    <name>OpenWMS.org Snapshot Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-snapshots</url>
+                </snapshotRepository>
+                <site>
+                    <id>site</id>
+                    <url>scm:git:git@github.com:interface21-io/${project.artifactId}.git</url>
+                </site>
+            </distributionManagement>
+            <dependencies>
+                <dependency>
+                    <groupId>org.openwms</groupId>
+                    <artifactId>org.openwms.core.preferences.ui</artifactId>
+                    <version>${org.openwms.core.preferences.ui.version}</version>
+                </dependency>
+            </dependencies>
+            <repositories>
+                <repository>
+                    <id>interface21-snapshots</id>
+                    <name>Interface21.io Snapshot Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-snapshots</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                </repository>
+                <repository>
+                    <id>interface21-releases</id>
+                    <name>Interface21.io Release Repository</name>
+                    <url>https://repo.butan092.startdedicated.de/repository/maven-releases</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 </project>
