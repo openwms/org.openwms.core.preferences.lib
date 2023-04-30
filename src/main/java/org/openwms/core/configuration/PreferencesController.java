@@ -135,9 +135,11 @@ public class PreferencesController extends AbstractWebController {
                 if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
                     LOGGER.warn("The preference to create already exists, strict-mode allows updates but the persistent keys are not the same");
                 }
+                PreferenceEO eo = mapper.map(preference, PreferenceEO.class);
+                eo.setPersistentKey(existingPrefOpt.get().getPersistentKey());
                 result = preferencesService.update(
                         existingPrefOpt.get().getPersistentKey(),
-                        mapper.map(preference, PreferenceEO.class)
+                        eo
                 );
                 var vo = mapper.map(result, PreferenceVO.class);
                 return ResponseEntity
