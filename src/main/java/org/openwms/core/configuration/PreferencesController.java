@@ -127,7 +127,7 @@ public class PreferencesController extends AbstractWebController {
             @RequestParam(value = "strict", required = false) Boolean strict
     ) {
         PreferenceEO result;
-        if (!strict) {
+        if (strict == null || strict == Boolean.FALSE) {
             var existingPrefOpt = preferencesService.findForOwnerAndScopeAndKey(
                     preference.getOwner(), PreferenceVOConverter.resolveScope(preference), preference.getKey()
             );
