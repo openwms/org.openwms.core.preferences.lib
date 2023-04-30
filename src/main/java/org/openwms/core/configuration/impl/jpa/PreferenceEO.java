@@ -246,6 +246,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     public String toString() {
         return new StringJoiner(", ", PreferenceEO.class.getSimpleName() + "[", "]")
                 .add("key='" + key + "'")
+                .add("pKey='" + getPersistentKey() + "'")
                 .add("owner='" + owner + "'")
                 .add("description='" + description + "'")
                 .add("fromFile=" + fromFile)
@@ -261,6 +262,9 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     private PreferenceEO(Builder builder) {
         key = builder.key;
+        if (builder.hasPKey()) {
+            setPersistentKey(builder.pKey);
+        }
         owner = builder.owner;
         description = builder.description;
         fromFile = builder.fromFile;
@@ -279,6 +283,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
 
     public static final class Builder {
         private String key;
+        private String pKey;
         private String owner;
         private String description;
         private boolean fromFile;
@@ -291,6 +296,15 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
         private @NotNull PreferenceType type;
 
         private Builder() {
+        }
+
+        public Builder pKey(String val) {
+            pKey = val;
+            return this;
+        }
+
+        public boolean hasPKey() {
+            return pKey != null && !pKey.isEmpty();
         }
 
         public Builder key(String val) {

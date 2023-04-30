@@ -65,7 +65,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build-Enterprise
         run: >
-          ./mvnw clean deploy
+          ./mvnw clean install
           -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST
           -Dspring.rabbitmq.host=localhost
           -Dci.buildNumber=$GITHUB_RUN_NUMBER

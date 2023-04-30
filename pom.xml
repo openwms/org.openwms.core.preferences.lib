@@ -109,7 +109,7 @@
                         </path>
                     </annotationProcessorPaths>
                     <enablePreview>true</enablePreview>
-                    <compilerArgs>--enable-preview
+                    <compilerArgs>
                         <arg>
                             -Amapstruct.suppressGeneratorTimestamp=true
                         </arg>

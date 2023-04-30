@@ -77,6 +77,7 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
 
     /** The type of the {@code Preference}. */
     @JsonProperty("type")
+    @NotBlank
     @Size(max = LENGTH_TYPE)
     private String type;
 

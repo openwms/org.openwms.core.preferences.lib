@@ -24,9 +24,12 @@ import org.openwms.core.configuration.api.ModulePreferenceVO;
 import org.openwms.core.configuration.api.PreferenceVO;
 import org.openwms.core.configuration.api.RolePreferenceVO;
 import org.openwms.core.configuration.api.UserPreferenceVO;
+import org.openwms.core.configuration.impl.PreferenceVOConverter;
 import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +61,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @MeasuredRestController
 public class PreferencesController extends AbstractWebController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesController.class);
     private final PreferencesService preferencesService;
     private final Translator translator;
     private final BeanMapper mapper;
@@ -75,7 +79,7 @@ public class PreferencesController extends AbstractWebController {
                         linkTo(methodOn(PreferencesController.class).findAll()).withRel("preferences-findall"),
                         linkTo(methodOn(PreferencesController.class).findByPKey("pKey")).withRel("preferences-findbypkey"),
                         linkTo(methodOn(PreferencesController.class).findAllOfScope("{scope}")).withRel("preferences-findallofscope"),
-                        linkTo(methodOn(PreferencesController.class).create(new PreferenceVO())).withRel("preferences-create"),
+                        linkTo(methodOn(PreferencesController.class).create(new PreferenceVO(), false)).withRel("preferences-create"),
                         linkTo(methodOn(PreferencesController.class).update("pKey", new PreferenceVO())).withRel("preferences-update"),
                         linkTo(methodOn(PreferencesController.class).delete("pKey")).withRel("preferences-delete"),
                         linkTo(methodOn(UserPreferencesController.class).findByUser("user")).withRel("user-preferences-findbyuser"),
@@ -119,13 +123,34 @@ public class PreferencesController extends AbstractWebController {
     @Transactional
     @PostMapping(value = API_PREFERENCES)
     public ResponseEntity<PreferenceVO> create(
-            @RequestBody PreferenceVO preference
+            @RequestBody PreferenceVO preference,
+            @RequestParam(value = "strict", required = false) Boolean strict
     ) {
+        PreferenceEO result;
+        if (!strict) {
+            var existingPrefOpt = preferencesService.findForOwnerAndScopeAndKey(
+                    preference.getOwner(), PreferenceVOConverter.resolveScope(preference), preference.getKey()
+            );
+            if (existingPrefOpt.isPresent()) {
+                if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
+                    LOGGER.warn("The preference to create already exists, strict-mode allows updates but the persistent keys are not the same");
+                }
+                result = preferencesService.update(
+                        existingPrefOpt.get().getPersistentKey(),
+                        mapper.map(preference, PreferenceEO.class)
+                );
+                var vo = mapper.map(result, PreferenceVO.class);
+                return ResponseEntity
+                        .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
+                        .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                        .body(vo);
+            }
+        }
         if (preference.hasPKey()) {
             throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));
         }
         ensurePreferenceNotExists(preference);
-        var result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
+        result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
         var vo = mapper.map(result, PreferenceVO.class);
         return ResponseEntity
                 .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())

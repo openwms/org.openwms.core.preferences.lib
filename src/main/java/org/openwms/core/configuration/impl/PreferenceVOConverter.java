@@ -39,6 +39,16 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         super(PreferenceVO.class, PreferenceEO.class);
     }
 
+    public static <T extends PreferenceVO> PropertyScope resolveScope(T preference) {
+        return switch (preference) {
+            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
+            case ModulePreferenceVO ignored -> PropertyScope.MODULE;
+            case RolePreferenceVO ignored -> PropertyScope.ROLE;
+            case UserPreferenceVO ignored -> PropertyScope.USER;
+            default -> throw new IllegalStateException("Unexpected value: " + preference);
+        };
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -47,62 +57,16 @@ public class PreferenceVOConverter extends DozerConverter<PreferenceVO, Preferen
         if (source == null) {
             return null;
         }
-        if (ApplicationPreferenceVO.class.equals(source.getClass())) {
-            ApplicationPreferenceVO p = (ApplicationPreferenceVO) source;
-            PreferenceEO eo = PreferenceEO.newBuilder()
-                    .key(p.getKey())
-                    .description(p.getDescription())
-                    .val(p.getVal() == null ? null : p.getVal().toString())
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
-                    .scope(PropertyScope.APPLICATION)
-                    .groupName(p.getGroupName())
-                    .build();
-            eo.setPersistentKey(p.getpKey());
-            return eo;
-        }
-        if (ModulePreferenceVO.class.equals(source.getClass())) {
-            ModulePreferenceVO p = (ModulePreferenceVO) source;
-            PreferenceEO eo = PreferenceEO.newBuilder()
-                    .key(p.getKey())
-                    .owner(p.getOwner())
-                    .description(p.getDescription())
-                    .val(p.getVal() == null ? null : p.getVal().toString())
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
-                    .scope(PropertyScope.MODULE)
-                    .groupName(p.getGroupName())
-                    .build();
-            eo.setPersistentKey(p.getpKey());
-            return eo;
-        }
-        if (RolePreferenceVO.class.equals(source.getClass())) {
-            RolePreferenceVO p = (RolePreferenceVO) source;
-            PreferenceEO eo = PreferenceEO.newBuilder()
-                    .key(p.getKey())
-                    .owner(p.getOwner())
-                    .description(p.getDescription())
-                    .val(p.getVal() == null ? null : p.getVal().toString())
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
-                    .scope(PropertyScope.ROLE)
-                    .groupName(p.getGroupName())
-                    .build();
-            eo.setPersistentKey(p.getpKey());
-            return eo;
-        }
-        if (UserPreferenceVO.class.equals(source.getClass())) {
-            UserPreferenceVO p = (UserPreferenceVO) source;
-            PreferenceEO eo = PreferenceEO.newBuilder()
-                    .key(p.getKey())
-                    .owner(p.getOwner())
-                    .description(p.getDescription())
-                    .val(p.getVal() == null ? null : p.getVal().toString())
-                    .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(p.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + p.getType())))
-                    .scope(PropertyScope.USER)
-                    .groupName(p.getGroupName())
-                    .build();
-            eo.setPersistentKey(p.getpKey());
-            return eo;
-        }
-        throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
+        return PreferenceEO.newBuilder()
+                .pKey(source.getpKey())
+                .key(source.getKey())
+                .owner(source.getOwner())
+                .description(source.getDescription())
+                .val(source.getVal() == null ? null : source.getVal().toString())
+                .type(Arrays.stream(PreferenceType.values()).filter(v -> v.name().equals(source.getType())).findFirst().orElseThrow(() -> new NotFoundException("PreferenceType " + source.getType())))
+                .scope(resolveScope(source))
+                .groupName(source.getGroupName())
+                .build();
     }
 
     /**
