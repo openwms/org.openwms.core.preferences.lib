@@ -71,7 +71,7 @@
         <objenesis.version>3.2</objenesis.version>
         <org.openwms.core.preferences.ui.version>1.0.0-SNAPSHOT</org.openwms.core.preferences.ui.version>
         <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.6</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2021.0.7</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
