@@ -16,6 +16,7 @@
 package org.openwms.core.configuration.api;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -42,24 +44,13 @@ public interface PreferencesApi {
     /**
      * Find and return all existing preferences.
      *
-     * @return An infinite stream of all PreferenceVO
+     * @return All existing Preferences
      */
     @GetMapping(API_PREFERENCES)
     List<PreferenceVO> findAll();
 
     /**
-     * Find and return all existing preferences with the given {@code scope}.
-     *
-     * @param scope The scope to search for
-     * @return An infinite stream of all PreferenceVO
-     */
-    @GetMapping(value = API_PREFERENCES, params = "scope")
-    List<PreferenceVO> findAllOfScope(
-            @RequestParam("scope") String scope
-    );
-
-    /**
-     * Find and return an Preference identified by its persistent key.
+     * Find and return a Preference identified by its persistent key.
      *
      * @param pKey The persistent identifier
      * @return The instance
@@ -68,6 +59,47 @@ public interface PreferencesApi {
     PreferenceVO findByPKey(
             @PathVariable("pKey") String pKey
     );
+
+    /**
+     * Find and return all existing preferences with the given {@code scope}.
+     *
+     * @param scope The scope to search for
+     * @return All existing Preferences
+     */
+    @GetMapping(value = API_PREFERENCES, params = "scope")
+    List<PreferenceVO> findAllOfScope(
+            @RequestParam("scope") String scope
+    );
+
+    /**
+     * Find and return a Preference with the given identifying attributes.
+     *
+     * @param owner The owner of the Preference (nullable)
+     * @param scope The scope of the Preference (APPLICATION, MODULE, ROLE or USER)
+     * @param key The key of the Preference
+     * @return The existing Preference
+     * @throws org.ameba.exception.NotFoundException If no Preference exists
+     */
+    @GetMapping(value = API_PREFERENCES, params = {"scope", "key"})
+    PreferenceVO findByOwnerScopeKey(
+            @RequestParam(value = "owner", required = false) String owner,
+            @RequestParam("scope") @NotBlank String scope,
+            @RequestParam("key") @NotBlank String key
+    );
+
+    /**
+     * Find and return all {@code Preference}s that belong to a group with the same {@code groupName}.
+     *
+     * @param owner The owner of the Preference
+     * @param scope What kind of Preference it is
+     * @param groupName The name of the group
+     * @return All instances, never {@literal null}
+     */
+    @GetMapping(value = "/preferences/groups", params = {"scope", "name"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    List<PreferenceVO> findForOwnerAndScopeAndGroupName(
+            @RequestParam(value = "owner", required = false) String owner,
+            @RequestParam("scope") @NotBlank String scope,
+            @RequestParam("name") String groupName);
 
     /**
      * Create a new not-existing preference.

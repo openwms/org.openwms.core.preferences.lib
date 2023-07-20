@@ -59,4 +59,18 @@ interface PreferenceRepository extends JpaRepository<PreferenceEO, Long>, Prefer
             @Param("scope") PropertyScope scope,
             @Param("key") String key
     );
+
+    @Query(
+            """
+        select p
+         from PreferenceEO p
+        where (:owner is null or p.owner = :owner)
+          and p.scope = :scope
+          and p.groupName = :groupName
+            """
+    )
+    List<PreferenceEO> findByOwnerAndScopeAndGroupName(
+            @Param("owner") String owner,
+            @Param("scope") PropertyScope scope,
+            @Param("groupName") String groupName);
 }

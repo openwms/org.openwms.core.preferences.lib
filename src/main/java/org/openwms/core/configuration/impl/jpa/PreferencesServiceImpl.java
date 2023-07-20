@@ -36,6 +36,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -117,6 +118,17 @@ class PreferencesServiceImpl implements PreferencesService {
     public Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
         ensureUserPreferenceAccess(owner, scope);
         return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Measured
+    public List<PreferenceEO> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName) {
+        ensureUserPreferenceAccess(owner, scope);
+        var result = preferenceRepository.findByOwnerAndScopeAndGroupName(owner, scope, groupName);
+        return result == null ? Collections.emptyList() : result;
     }
 
     /**

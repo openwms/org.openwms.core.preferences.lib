@@ -20,6 +20,7 @@ import org.openwms.core.configuration.impl.jpa.PreferenceEO;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,6 +34,13 @@ import java.util.Optional;
 public interface PreferencesService {
 
     /**
+     * Find and return all {@code Preferences}.
+     *
+     * @return A Collection of Preferences, never {@literal null}
+     */
+    @NotNull Collection<PreferenceEO> findAll();
+
+    /**
      * Find and return the {@code Preferences} identified by the {@code pKey}.
      *
      * @param pKey The persistent identifier
@@ -40,13 +48,6 @@ public interface PreferencesService {
      * @throws org.ameba.exception.NotFoundException If the instance does not exist
      */
     @NotNull PreferenceEO findByPKey(@NotBlank String pKey);
-
-    /**
-     * Find and return all {@code Preferences}.
-     *
-     * @return A Collection of Preferences, never {@literal null}
-     */
-    @NotNull Collection<PreferenceEO> findAll();
 
     /**
      * Find and return all {@code Preferences} of a specific {@code scope} that belong to the given {@code owner}.
@@ -67,6 +68,16 @@ public interface PreferencesService {
      * @return A Collection of Preferences, never {@literal null}
      */
     Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key);
+
+    /**
+     * Find and return all {@code Preference}s that belong to a group with the same {@code groupName}.
+     *
+     * @param owner The owner of the Preference
+     * @param scope What kind of Preference it is
+     * @param groupName The name of the group
+     * @return All instances, never {@literal null}
+     */
+    List<PreferenceEO> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName);
 
     /**
      * Checks whether a {@code Preference} of a specific {@code scope} that belongs to the given {@code owner} and has the given {@code key}

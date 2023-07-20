@@ -31,6 +31,7 @@ import org.openwms.core.http.Index;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +81,7 @@ public class PreferencesController extends AbstractWebController {
                         linkTo(methodOn(PreferencesController.class).findAll()).withRel("preferences-findall"),
                         linkTo(methodOn(PreferencesController.class).findByPKey("pKey")).withRel("preferences-findbypkey"),
                         linkTo(methodOn(PreferencesController.class).findAllOfScope("{scope}")).withRel("preferences-findallofscope"),
+                        linkTo(methodOn(PreferencesController.class).findPreferencesForGroupName("user", "USER", "group1")).withRel("preferences-findbyownerscopekey"),
                         linkTo(methodOn(PreferencesController.class).create(new PreferenceVO(), false)).withRel("preferences-create"),
                         linkTo(methodOn(PreferencesController.class).update("pKey", new PreferenceVO())).withRel("preferences-update"),
                         linkTo(methodOn(PreferencesController.class).delete("pKey")).withRel("preferences-delete"),
@@ -95,29 +98,57 @@ public class PreferencesController extends AbstractWebController {
         );
     }
 
-    @GetMapping(value = API_PREFERENCES, params = "scope")
-    public ResponseEntity<List<PreferenceVO>> findAllOfScope(
-            @RequestParam("scope") String scope
-    ) {
-        PropertyScope propertyScope;
-        try {
-            propertyScope = PropertyScope.valueOf(scope);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(translator.translate(PROPERTY_SCOPE_NOT_DEFINED, new String[]{scope}, scope));
-        }
-        List<PreferenceVO> result = mapper.map(
-                new ArrayList<>(preferencesService.findForOwnerAndScope(null, propertyScope)),
-                PreferenceVO.class
-        );
-        return ResponseEntity.ok().body(result);
-    }
-
     @GetMapping(value = API_PREFERENCES + "/{pKey}")
     public ResponseEntity<PreferenceVO> findByPKey(
             @PathVariable("pKey") String pKey
     ) {
         var result = mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
+    }
+
+    @GetMapping(value = API_PREFERENCES, params = {"scope", "key"})
+    public ResponseEntity<PreferenceVO> findForOwnerAndScopeAndKey(
+            @RequestParam(value = "owner", required = false) String owner,
+            @RequestParam("scope") @NotBlank String scope,
+            @RequestParam("key") @NotBlank String key
+    ) {
+        var propertyScope = convert(scope);
+        var result = mapper.map(preferencesService.findForOwnerAndScopeAndKey(owner, propertyScope, key), PreferenceVO.class);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
+    }
+
+    @GetMapping(value = API_PREFERENCES, params = "scope")
+    public ResponseEntity<List<PreferenceVO>> findAllOfScope(
+            @RequestParam("scope") String scope
+    ) {
+        var propertyScope = convert(scope);
+        var result = mapper.map(
+                new ArrayList<>(preferencesService.findForOwnerAndScope(null, propertyScope)),
+                PreferenceVO.class
+        );
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping(value = "/preferences/groups",params = {"scope", "name"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PreferenceVO>> findPreferencesForGroupName(
+            @RequestParam(value = "owner", required = false) String owner,
+            @RequestParam("scope") @NotBlank String scope,
+            @RequestParam("name") String groupName) {
+        var propertyScope = convert(scope);
+        var groups = preferencesService.findForScopeOwnerGroupName(owner, propertyScope, groupName);
+        return groups.isEmpty()
+                ? ResponseEntity.noContent().build()
+                :ResponseEntity.ok(mapper.map(groups, PreferenceVO.class));
+    }
+
+    private PropertyScope convert(String scope) {
+        PropertyScope propertyScope;
+        try {
+            propertyScope = PropertyScope.valueOf(scope);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(translator.translate(PROPERTY_SCOPE_NOT_DEFINED, new String[]{scope}, scope));
+        }
+        return propertyScope;
     }
 
     @Transactional
@@ -135,7 +166,7 @@ public class PreferencesController extends AbstractWebController {
                 if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
                     LOGGER.warn("The preference to create already exists, strict-mode allows updates but the persistent keys are not the same");
                 }
-                PreferenceEO eo = mapper.map(preference, PreferenceEO.class);
+                var eo = mapper.map(preference, PreferenceEO.class);
                 eo.setPersistentKey(existingPrefOpt.get().getPersistentKey());
                 result = preferencesService.update(
                         existingPrefOpt.get().getPersistentKey(),
