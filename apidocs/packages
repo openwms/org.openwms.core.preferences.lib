@@ -1,5 +1,6 @@
 org.openwms.core.configuration
 org.openwms.core.configuration.api
+org.openwms.core.configuration.api.messages
 org.openwms.core.configuration.config
 org.openwms.core.configuration.impl
 org.openwms.core.configuration.impl.jpa
