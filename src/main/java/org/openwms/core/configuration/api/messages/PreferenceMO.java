@@ -40,6 +40,8 @@ public class PreferenceMO implements Serializable {
     private String description;
     /** The value of the {@code Preference}. */
     private Serializable val;
+    /** The name of the group the {@code Preference} is assigned to. */
+    private String groupName;
     /** The type of the {@code Preference}. */
     private String type;
 
@@ -94,6 +96,14 @@ public class PreferenceMO implements Serializable {
         this.val = val;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public String getType() {
         return type;
     }
@@ -118,6 +128,7 @@ public class PreferenceMO implements Serializable {
                 Objects.equals(owner, that.owner) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(val, that.val) &&
+                Objects.equals(groupName, that.groupName) &&
                 Objects.equals(type, that.type);
     }
 
@@ -128,6 +139,6 @@ public class PreferenceMO implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, type);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);
     }
 }
