@@ -18,6 +18,7 @@ package org.openwms.core.configuration.impl.events;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.SpringProfiles;
 import org.openwms.core.configuration.PreferencesEvent;
+import org.openwms.core.configuration.api.messages.PreferenceMO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;

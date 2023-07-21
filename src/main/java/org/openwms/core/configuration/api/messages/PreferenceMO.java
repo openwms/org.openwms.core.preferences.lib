@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.configuration.impl.events;
+package org.openwms.core.configuration.api.messages;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
