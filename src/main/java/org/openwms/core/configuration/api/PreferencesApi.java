@@ -15,6 +15,7 @@
  */
 package org.openwms.core.configuration.api;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,6 +47,7 @@ public interface PreferencesApi {
      *
      * @return All existing Preferences
      */
+    @Cacheable("preferences")
     @GetMapping(API_PREFERENCES)
     List<PreferenceVO> findAll();
 
@@ -55,6 +57,7 @@ public interface PreferencesApi {
      * @param pKey The persistent identifier
      * @return The instance
      */
+    @Cacheable("preferences")
     @GetMapping(value = API_PREFERENCES + "/{pKey}")
     PreferenceVO findByPKey(
             @PathVariable("pKey") String pKey
@@ -66,6 +69,7 @@ public interface PreferencesApi {
      * @param scope The scope to search for
      * @return All existing Preferences
      */
+    @Cacheable("preferences")
     @GetMapping(value = API_PREFERENCES, params = "scope")
     List<PreferenceVO> findAllOfScope(
             @RequestParam("scope") String scope
@@ -80,6 +84,7 @@ public interface PreferencesApi {
      * @return The existing Preference
      * @throws org.ameba.exception.NotFoundException If no Preference exists
      */
+    @Cacheable("preferences")
     @GetMapping(value = API_PREFERENCES, params = {"scope", "key"})
     PreferenceVO findByOwnerScopeKey(
             @RequestParam(value = "owner", required = false) String owner,
@@ -95,6 +100,7 @@ public interface PreferencesApi {
      * @param groupName The name of the group
      * @return All instances, never {@literal null}
      */
+    @Cacheable("preferences")
     @GetMapping(value = "/preferences/groups", params = {"scope", "name"}, produces = MediaType.APPLICATION_JSON_VALUE)
     List<PreferenceVO> findForOwnerAndScopeAndGroupName(
             @RequestParam(value = "owner", required = false) String owner,
