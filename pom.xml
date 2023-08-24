@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>23</version>
+        <version>24</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences</artifactId>
@@ -31,6 +31,7 @@
         <url>https://github.com/openwms/${project.artifactId}</url>
         <connection>scm:git:https://${scmuser}github.com/openwms/${project.artifactId}.git</connection>
         <developerConnection>scm:git:https://${scmuser}github.com/openwms/${project.artifactId}.git</developerConnection>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
@@ -66,7 +67,7 @@
 
     <properties>
         <commons-configuration.version>1.10</commons-configuration.version>
-        <core.version>2.0.0-SNAPSHOT</core.version>
+        <core.version>2.0.0</core.version>
         <guava.version>30.0-jre</guava.version>
         <objenesis.version>3.2</objenesis.version>
         <org.openwms.core.preferences.ui.version>1.0.0-SNAPSHOT</org.openwms.core.preferences.ui.version>
