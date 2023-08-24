@@ -119,6 +119,8 @@ spring:
           max-interval: 1s
 
 owms:
+  preferences:
+    serialization: json
   events:
     core:
       preferences:

@@ -73,7 +73,7 @@ public class PreferencesModuleConfiguration {
     }
 
     public @Bean MessageSource messageSource() {
-        NestedReloadableResourceBundleMessageSource nrrbm = new NestedReloadableResourceBundleMessageSource();
+        var nrrbm = new NestedReloadableResourceBundleMessageSource();
         nrrbm.setBasenames(
                 "classpath:META-INF/i18n/preferences"
         );
