@@ -7,23 +7,23 @@
 -source
 '17'
 -sourcepath
-'/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/src/main/java:/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-sources/annotations'
+'/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/src/main/java:/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-sources/annotations'
 -author
 -bottom
 'Copyright &#169; 2005&#x2013;2023 <a href="https://www.interface21.io">Interface21.io</a>. All rights reserved.'
 -charset
 'UTF-8'
 -d
-'/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/site/apidocs'
+'/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/site/apidocs'
 -docencoding
 'UTF-8'
 -Xdoclint:none
 -doctitle
-'OpenWMS.org CORE: Preferences 1.0.0-SNAPSHOT API'
+'OpenWMS.org CORE: Preferences Library 1.0.0-SNAPSHOT API'
 -keywords
 -tag
 "GlossaryTerm:a"
 -use
 -version
 -windowtitle
-'OpenWMS.org CORE: Preferences 1.0.0-SNAPSHOT API'
+'OpenWMS.org CORE: Preferences Library 1.0.0-SNAPSHOT API'

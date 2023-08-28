@@ -462,53 +462,53 @@ an owner of the <code>Preference</code>. This might be the name of the user, the
 <h3 id="preferences-index">Preferences Index</h3>
 <div class="paragraph">
 <p>The Preferences Index with all possible operations can be retrieved with the following <code>GET</code> request:
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-index/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-index/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The response lists all the operations with a name and the corresponding href link:
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-index/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-index/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-findall">Find all Preferences (preferences-findall)</h3>
 <div class="paragraph">
 <p>Send a HTTP <code>GET</code> request without any further query parameters to find and return all existing <code>Preferences</code>
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findall/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findall/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The server responds with an array of all <code>Preferences</code>, that might be empty if no <code>Preferences</code> exist
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findall/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findall/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-findbypkey">Find a Preference by Key (preferences-findbypkey)</h3>
 <div class="paragraph">
 <p>Send a HTTP <code>GET</code> request with the persistent key as part of the path to find and return the <code>Preference</code>
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findbykey/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findbykey/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The server returns the <code>Preference</code> resource in case it exists
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findbykey/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findbykey/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>or responds with a <code>404 NOT-FOUND</code> if the <code>Preference</code> does not exist
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findbykey404/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findbykey404/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preferences-findallofscope">Find all Preferences of particular Scope (preferences-findallofscope)</h3>
 <div class="paragraph">
 <p>Send a HTTP <code>GET</code> request with the desired <code>scope</code> as request parameter to find and return all <code>Preferences</code> that belong to the given scope
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findallofscope/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findallofscope/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The server responds with an array of <code>Preferences</code>, or an empty array if no <code>Preferences</code> exist
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findallofscope/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findallofscope/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p><strong>Notice:</strong> It is not allowed to query <code>UserPreferences</code> without a particular <code>user</code> parameter to prohibit spoofing of private user
 settings. The attempt to do so is blocked by the server with:
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-findallofscope-403/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-findallofscope-403/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
@@ -516,15 +516,15 @@ Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.op
 <div class="paragraph">
 <p>New <code>Preferences</code> can be created either with the definition in XML files or over the REST API. A client must send a <code>POST</code> request to the
 <code>Preferences</code> resource in order to create a new instance. The content is passed in the request body.
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-create/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The server responds with <code>201 CREATED</code> if the operation succeeds.
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-create/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the <code>Preference</code> to create already exists, the server returns:
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-create-fails/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-create-fails/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
@@ -532,11 +532,11 @@ Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.op
 <div class="paragraph">
 <p>To modify an existing <code>Preference</code> an <code>PUT</code> request with the <code>Preference</code> as request body is expected. The <code>Preference</code> to update is
 identified by the persistent key as part of the path.
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-update/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-update/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The server responds with <code>204 NO-CONTENT</code>.
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-update/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-update/http-response.adoc[]</p>
 </div>
 </div>
 <div class="sect2">
@@ -544,11 +544,11 @@ Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.op
 <div class="paragraph">
 <p>To delete an existing <code>Preference</code> one can call the URI to the resource with a HTTP <code>DELETE</code> request. The persistent key of the <code>Preference</code>
 is required to identify the resource to delete.
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-delete/http-request.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-delete/http-request.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>The server responds with <code>204 NO-CONTENT</code> is the resource has been deleted successfully.
-Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences/org.openwms.core.preferences/target/generated-snippets/prefs-delete/http-response.adoc[]</p>
+Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.openwms.core.preferences.lib/org.openwms.core.preferences.lib/target/generated-snippets/prefs-delete/http-response.adoc[]</p>
 </div>
 <div class="paragraph">
 <p>If the resource doesn&#8217;t exist and could not be deleted the server responds with a <code>404 NOT-FOUND</code>.</p>
@@ -559,7 +559,7 @@ Unresolved directive in 2-configuration.adoc - include::/home/runner/work/org.op
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-08-24 15:05:44 UTC
+Last updated 2023-08-28 19:10:01 UTC
 </div>
 </div>
 </body>
