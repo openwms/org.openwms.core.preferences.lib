@@ -35,14 +35,9 @@ jobs:
         with:
           servers: |
             [{
-              "id": "interface21-snapshots",
-              "username": "${{ secrets.REPO_USERNAME }}",
-              "password": "${{ secrets.REPO_PASSWORD }}"
-            },
-            {
-              "id": "interface21-releases",
-              "username": "${{ secrets.REPO_USERNAME }}",
-              "password": "${{ secrets.REPO_PASSWORD }}"
+              "id": "sonatype-nexus-releases",
+              "username": "${{ secrets.OSS_USERNAME }}",
+              "password": "${{ secrets.OSS_PASSWORD }}"
             },
             {
               "id": "sonatype-nexus-snapshots",
@@ -56,24 +51,3 @@ jobs:
           -Dspring.rabbitmq.host=localhost
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -U -B $MAVEN_OPTS
-      - name: Build Image
-        run: ./scripts/docker_build
-      - name: Upload Image
-        run: ./scripts/docker_push
-        env:
-          DOCKER_USER: ${{ secrets.DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build-Enterprise
-        run: >
-          ./mvnw clean install
-          -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST
-          -Dspring.rabbitmq.host=localhost
-          -Dci.buildNumber=$GITHUB_RUN_NUMBER
-          -Penterprise -B $MAVEN_OPTS
-      - name: Build Enterprise Image
-        run: ./scripts/enterprise/docker_build
-      - name: Upload Enterprise Image
-        run: ./scripts/enterprise/docker_push
-        env:
-          DOCKER_USER: ${{ secrets.I21_DOCKER_USER }}
-          DOCKER_PASSWORD: ${{ secrets.I21_DOCKER_PASSWORD }}

@@ -9,10 +9,10 @@
         <version>24</version>
         <relativePath/>
     </parent>
-    <artifactId>org.openwms.core.preferences</artifactId>
+    <artifactId>org.openwms.core.preferences.lib</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>OpenWMS.org CORE: Preferences</name>
-    <description>Manages preferences and application configuration parameters for microservices, users and roles</description>
+    <name>OpenWMS.org CORE: Preferences Library</name>
+    <description>The implementation library of the OpenWMS CORE Preferences Service</description>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
 
     <issueManagement>
@@ -66,11 +66,9 @@
     </ciManagement>
 
     <properties>
-        <commons-configuration.version>1.10</commons-configuration.version>
         <core.version>2.0.0</core.version>
         <guava.version>30.0-jre</guava.version>
         <objenesis.version>3.2</objenesis.version>
-        <org.openwms.core.preferences.ui.version>1.0.0-SNAPSHOT</org.openwms.core.preferences.ui.version>
         <servo-core.version>0.12.21</servo-core.version>
         <spring-cloud-dependencies.version>2021.0.7</spring-cloud-dependencies.version>
     </properties>
@@ -134,6 +132,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <executions>
                     <execution>
@@ -165,28 +164,6 @@
                 <groupId>org.asciidoctor</groupId>
                 <artifactId>asciidoctor-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>build-info</goal>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <classifier>exec</classifier>
-                        </configuration>
-                    </execution>
-                </executions>
-                <configuration>
-					<layers>
-						<configuration>${project.basedir}/src/layers.xml</configuration>
-						<enabled>true</enabled>
-					</layers>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 
@@ -202,12 +179,6 @@
                 <groupId>com.netflix.servo</groupId>
                 <artifactId>servo-core</artifactId>
                 <version>${servo-core.version}</version>
-            </dependency>
-            <dependency>
-                <!-- com.netflix.eureka:eureka has an internal clash -->
-                <groupId>commons-configuration</groupId>
-                <artifactId>commons-configuration</artifactId>
-                <version>${commons-configuration.version}</version>
             </dependency>
             <dependency>
                 <!-- Clash between Dozer and spring-boot-starter-test -->
@@ -298,12 +269,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <optional>true</optional>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-io</groupId>
-                    <artifactId>commons-io</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -492,57 +457,4 @@
             </releases>
         </pluginRepository>
     </pluginRepositories>
-
-    <profiles>
-        <profile>
-            <id>enterprise</id>
-            <distributionManagement>
-                <repository>
-                    <id>interface21-releases</id>
-                    <name>OpenWMS.org Release Repository</name>
-                    <url>https://repo.butan092.startdedicated.de/repository/maven-releases</url>
-                </repository>
-                <snapshotRepository>
-                    <id>interface21-snapshots</id>
-                    <name>OpenWMS.org Snapshot Repository</name>
-                    <url>https://repo.butan092.startdedicated.de/repository/maven-snapshots</url>
-                </snapshotRepository>
-                <site>
-                    <id>site</id>
-                    <url>scm:git:git@github.com:interface21-io/${project.artifactId}.git</url>
-                </site>
-            </distributionManagement>
-            <dependencies>
-                <dependency>
-                    <groupId>org.openwms</groupId>
-                    <artifactId>org.openwms.core.preferences.ui</artifactId>
-                    <version>${org.openwms.core.preferences.ui.version}</version>
-                </dependency>
-            </dependencies>
-            <repositories>
-                <repository>
-                    <id>interface21-snapshots</id>
-                    <name>Interface21.io Snapshot Repository</name>
-                    <url>https://repo.butan092.startdedicated.de/repository/maven-snapshots</url>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                    <releases>
-                        <enabled>false</enabled>
-                    </releases>
-                </repository>
-                <repository>
-                    <id>interface21-releases</id>
-                    <name>Interface21.io Release Repository</name>
-                    <url>https://repo.butan092.startdedicated.de/repository/maven-releases</url>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
-            </repositories>
-        </profile>
-    </profiles>
 </project>

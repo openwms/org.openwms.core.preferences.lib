@@ -38,7 +38,7 @@ import java.lang.annotation.Target;
 @Inherited
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @SpringTestSupport
-@SpringBootTest(classes = {Starter.class, PreferencesModuleConfiguration.class}, properties = {
+@SpringBootTest(classes = {PreferencesTestStarter.class, PreferencesModuleConfiguration.class}, properties = {
         "spring.jpa.show-sql=false",
         "spring.main.banner-mode=OFF",
         "spring.jackson.serialization.INDENT_OUTPUT=true"

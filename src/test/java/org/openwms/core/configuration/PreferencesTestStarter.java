@@ -16,14 +16,13 @@
 package org.openwms.core.configuration;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * A Starter.
+ * A PreferencesTestStarter.
  *
  * @author Heiko Scherrer
  */
@@ -31,7 +30,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories
 @EnableJpaAuditing
 @EnableTransactionManagement
-public class Starter {
+public class PreferencesTestStarter {
 
     /**
      * Boot up!
@@ -39,7 +38,7 @@ public class Starter {
      * @param args Some args
      */
     public static void main(String[] args) {
-        final SpringApplication application = new SpringApplication(Starter.class);
-        application.run(args);
+        var ctx = SpringApplication.run(PreferencesTestStarter.class, args);
+        ctx.start();
     }
 }

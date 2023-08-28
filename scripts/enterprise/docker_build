@@ -1,2 +1,0 @@
-#!/bin/bash
-docker build -t registry.butan092.startdedicated.de/interface21.io/org.openwms.core.preferences:latest .
