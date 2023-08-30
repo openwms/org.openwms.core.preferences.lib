@@ -110,6 +110,9 @@
                     <enablePreview>true</enablePreview>
                     <compilerArgs>
                         <arg>
+                            --enable-preview
+                        </arg>
+                        <arg>
                             -Amapstruct.suppressGeneratorTimestamp=true
                         </arg>
                         <arg>

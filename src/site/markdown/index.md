@@ -1,6 +1,4 @@
-#Preferences
-
-##Purpose
+#Purpose
 The OpenWMS.org Preferences microservice deals with configuration and preferences on application level. It can be used to store preferences
 in different scopes. Scopes can inherit preferences from each other. In the current version, four different scopes are supported with the
 following inheritance strategy:

@@ -26,7 +26,6 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -34,11 +33,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.openwms.core.configuration.api.PreferencesApi.API_PREFERENCES;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -83,7 +82,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .andExpect(jsonPath("$._links.preferences-delete").exists())
                 .andExpect(jsonPath("$._links.user-preferences-findbyuser").exists())
                 .andExpect(jsonPath("$._links.user-preferences-findbyuserandkey").exists())
-                .andExpect(jsonPath("$._links.length()", is(8)))
+                .andExpect(jsonPath("$._links.length()", is(9)))
         ;
     }
 
@@ -100,6 +99,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                                 fieldWithPath("[].pKey").description("The persistent unique key"),
                                 fieldWithPath("[].key").description("The business key, unique combined with the owner"),
                                 fieldWithPath("[].value").description("The preference value"),
+                                fieldWithPath("[].groupName").optional().description("A group the preference is assigned to"),
                                 fieldWithPath("[].type").description("The preference type (FLOAT|STRING|INT|OBJECT|BOOL)"),
                                 fieldWithPath("[].description").description("The descriptive text of the preference"),
                                 fieldWithPath("[].owner").optional().description("The exclusive preference owner"),
@@ -236,7 +236,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
         vo.setDescription("A Boolean");
         vo.setType("BOOL");
         vo.setVal(true);
-        ResultActions resultActions = mockMvc.perform(
+        var resultActions = mockMvc.perform(
                         post(API_PREFERENCES)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(vo))
