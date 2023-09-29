@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>24</version>
+        <version>25</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences.lib</artifactId>
@@ -66,11 +66,8 @@
     </ciManagement>
 
     <properties>
-        <core.version>2.0.0-SNAPSHOT</core.version>
-        <guava.version>30.0-jre</guava.version>
-        <objenesis.version>3.2</objenesis.version>
-        <servo-core.version>0.12.21</servo-core.version>
-        <spring-cloud-dependencies.version>2021.0.7</spring-cloud-dependencies.version>
+        <core.version>2.1.0-SNAPSHOT</core.version>
+        <spring-cloud-dependencies.version>2021.0.8</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -107,7 +104,6 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <enablePreview>true</enablePreview>
                     <compilerArgs>
                         <arg>
                             -Amapstruct.suppressGeneratorTimestamp=true
@@ -167,23 +163,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <!-- Clash in org.springframework.cloud:spring-cloud-starter-netflix-eureka-client -->
-                <groupId>com.netflix.servo</groupId>
-                <artifactId>servo-core</artifactId>
-                <version>${servo-core.version}</version>
-            </dependency>
-            <dependency>
-                <!-- Clash between Dozer and spring-boot-starter-test -->
-                <groupId>org.objenesis</groupId>
-                <artifactId>objenesis</artifactId>
-                <version>${objenesis.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.util</artifactId>
@@ -312,13 +291,6 @@
         <dependency>
             <groupId>com.github.dozermapper</groupId>
             <artifactId>dozer-core</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <!-- Need to upgrade Guava from version 11 because of CVE -->
-            <!-- Required by eureka-client -->
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
