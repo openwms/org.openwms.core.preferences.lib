@@ -66,7 +66,7 @@
     </ciManagement>
 
     <properties>
-        <core.version>2.0.0</core.version>
+        <core.version>2.0.0-SNAPSHOT</core.version>
         <guava.version>30.0-jre</guava.version>
         <objenesis.version>3.2</objenesis.version>
         <servo-core.version>0.12.21</servo-core.version>
@@ -110,9 +110,6 @@
                     <enablePreview>true</enablePreview>
                     <compilerArgs>
                         <arg>
-                            --enable-preview
-                        </arg>
-                        <arg>
                             -Amapstruct.suppressGeneratorTimestamp=true
                         </arg>
                         <arg>
@@ -126,8 +123,6 @@
                         </arg>
                     </compilerArgs>
                     <showWarnings>true</showWarnings>
-                    <source>17</source>
-                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>

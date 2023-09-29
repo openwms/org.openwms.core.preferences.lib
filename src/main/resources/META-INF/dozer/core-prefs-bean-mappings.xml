@@ -16,13 +16,13 @@
 				<class-a>java.time.ZonedDateTime</class-a>
 				<class-b>java.time.ZonedDateTime</class-b>
 			</converter>
-			<converter type="org.openwms.core.configuration.impl.PreferenceConverter">
-				<class-a>org.openwms.core.configuration.impl.file.GenericPreference</class-a>
-				<class-b>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-b>
+			<converter type="org.openwms.core.preferences.impl.PreferenceConverter">
+				<class-a>org.openwms.core.preferences.impl.file.GenericPreference</class-a>
+				<class-b>org.openwms.core.preferences.impl.jpa.PreferenceEO</class-b>
 			</converter>
-			<converter type="org.openwms.core.configuration.impl.PreferenceVOConverter">
-				<class-a>org.openwms.core.configuration.api.PreferenceVO</class-a>
-				<class-b>org.openwms.core.configuration.impl.jpa.PreferenceEO</class-b>
+			<converter type="org.openwms.core.preferences.impl.PreferenceVOConverter">
+				<class-a>org.openwms.core.preferences.api.PreferenceVO</class-a>
+				<class-b>org.openwms.core.preferences.impl.jpa.PreferenceEO</class-b>
 			</converter>
         </custom-converters>
 	</configuration>
