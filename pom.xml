@@ -104,7 +104,11 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <enablePreview>false</enablePreview>
                     <compilerArgs>
+                        <arg>
+                            -Amapstruct.defaultComponentModel=spring
+                        </arg>
                         <arg>
                             -Amapstruct.suppressGeneratorTimestamp=true
                         </arg>
