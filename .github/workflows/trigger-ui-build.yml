@@ -1,0 +1,36 @@
+name: "Trigger UI Build"
+on:
+  workflow_run:
+    workflows: ["master_build"]
+    branches: [ master ]
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      workflow_02:
+        description: 'ًWorkflow 2 which will be triggered'
+        required: true
+        default: 'master_build'
+
+      workflow2_github_account:
+        description: 'GitHub Account Owner'
+        required: true
+        default: 'interface21-io'
+
+      workflow2_repo_github:
+        description: 'repo-name'
+        required: true
+        default: 'org.openwms.core.preferences.ui'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger
+        run: |
+          curl -X POST https://api.github.com/repos/interface21-io/org.openwms.core.preferences.ui/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -u ${{ secrets.PUSHKEY }} \
+          --data '{"event_type": "Trigger Workflow", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+      - uses: actions/checkout@v3
