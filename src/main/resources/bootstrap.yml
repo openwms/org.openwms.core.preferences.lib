@@ -13,6 +13,7 @@ spring:
       hibernate:
         jdbc:
           time_zone: UTC
+        default_schema: public # Used to create a sequence in the UI library
     show-sql: false
   jackson:
     date-format: "yyyy-MM-dd'T'HH:mm:ssXXX" # Only matches Dates no Instants!
