@@ -11,5 +11,5 @@ particular *User* or a specific *Role*, specific to a *Module* (aka microservice
 [![Maven central](https://img.shields.io/maven-central/v/org.openwms/org.openwms.core.preferences.lib)](https://search.maven.org/search?q=a:org.openwms.core.preferences.lib)
 [![Join the chat at https://gitter.im/openwms/org.openwms](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/openwms/org.openwms?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Find further Documentation on [Microservice Website](https://openwms.github.io/org.openwms.core.preferences.lib)**
+**Find further Documentation on [Microservice Website](https://openwms.github.io/org.openwms.core.preferences.lib)** or in the **[Wiki](https://wiki.openwms.cloud/projects/core-preferences-service)**
 
