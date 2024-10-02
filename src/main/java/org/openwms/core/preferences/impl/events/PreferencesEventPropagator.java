@@ -15,6 +15,7 @@
  */
 package org.openwms.core.preferences.impl.events;
 
+import org.ameba.annotation.Measured;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.SpringProfiles;
 import org.openwms.core.preferences.PreferencesEvent;
@@ -25,6 +26,8 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
 
@@ -60,16 +63,9 @@ class PreferencesEventPropagator {
         this.exchangeName = exchangeName;
     }
 
-    @PostConstruct
-    void onStartup() {
-        try {
-            amqpTemplate.convertAndSend(exchangeName, "preference.event.boot", new PreferenceMO("BOOT"));
-        } catch (Exception e) {
-            // It's fine if the event broker is not available on startup
-        }
-    }
-
+    @Measured
     @TransactionalEventListener(fallbackExecution = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onEvent(PreferencesEvent event) {
         var preference = event.getSource();
         switch (event.getType()) {
@@ -86,6 +82,15 @@ class PreferencesEventPropagator {
                 amqpTemplate.convertAndSend(exchangeName, "preference.event.deleted", validateAndConvert(event));
             }
             default -> LOGGER.warn("Eventtype [{}] not supported", event.getType());
+        }
+    }
+
+    @PostConstruct
+    void onStartup() {
+        try {
+            amqpTemplate.convertAndSend(exchangeName, "preference.event.boot", new PreferenceMO("BOOT"));
+        } catch (Exception e) {
+            // It's fine if the event broker is not available on startup
         }
     }
 

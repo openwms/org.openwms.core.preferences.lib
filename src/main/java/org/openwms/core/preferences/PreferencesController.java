@@ -113,8 +113,12 @@ public class PreferencesController extends AbstractWebController {
             @RequestParam("key") @NotBlank String key
     ) {
         var propertyScope = convert(scope);
-        var result = mapper.map(preferencesService.findForOwnerAndScopeAndKey(owner, propertyScope, key), PreferenceVO.class);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
+        var eoOpt = preferencesService.findForOwnerAndScopeAndKey(owner, propertyScope, key);
+        if (eoOpt.isPresent()) {
+            var result = mapper.map(eoOpt.get(), PreferenceVO.class);
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = API_PREFERENCES, params = "scope")
