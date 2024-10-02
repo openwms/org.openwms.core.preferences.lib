@@ -15,6 +15,7 @@
  */
 package org.openwms.core.preferences.impl.file;
 
+import jakarta.annotation.PostConstruct;
 import org.ameba.annotation.Measured;
 import org.ameba.exception.IntegrationLayerException;
 import org.openwms.core.event.ReloadFilePreferencesEvent;
@@ -32,7 +33,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.xml.transform.stream.StreamSource;
 import java.io.IOException;
 import java.util.Collections;

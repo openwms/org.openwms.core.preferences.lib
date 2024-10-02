@@ -15,6 +15,8 @@
  */
 package org.openwms.core.preferences.impl.events;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Validator;
 import org.ameba.annotation.Measured;
 import org.ameba.mapping.BeanMapper;
 import org.openwms.core.SpringProfiles;
@@ -30,9 +32,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.util.Assert;
-
-import javax.annotation.PostConstruct;
-import javax.validation.Validator;
 
 import static org.ameba.system.ValidationUtil.validate;
 

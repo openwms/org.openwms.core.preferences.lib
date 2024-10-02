@@ -15,6 +15,7 @@
  */
 package org.openwms.core.preferences;
 
+import jakarta.validation.constraints.NotBlank;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.i18n.Translator;
@@ -42,7 +43,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;

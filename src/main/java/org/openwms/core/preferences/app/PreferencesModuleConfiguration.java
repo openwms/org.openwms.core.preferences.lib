@@ -16,6 +16,7 @@
 package org.openwms.core.preferences.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.validation.Validator;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.i18n.AbstractSpringTranslator;
 import org.ameba.i18n.Translator;
@@ -36,7 +37,6 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
-import javax.validation.Validator;
 import java.util.Properties;
 
 /**

@@ -15,10 +15,9 @@
  */
 package org.openwms.core.preferences.impl.jpa;
 
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 import org.openwms.core.preferences.PreferenceType;
-
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 
 /**
  * A PreferenceTypeConverter.

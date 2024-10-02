@@ -16,6 +16,6 @@
 /**
  * Contains classes dealing with preferences belonging to the schema http://www.openwms.org/schema/preferences.
  */
-@javax.xml.bind.annotation.XmlAccessorType(javax.xml.bind.annotation.XmlAccessType.FIELD)
-@javax.xml.bind.annotation.XmlSchema(namespace = "http//www.openwms.org/schema/preferences")
+@jakarta.xml.bind.annotation.XmlAccessorType(jakarta.xml.bind.annotation.XmlAccessType.FIELD)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http//www.openwms.org/schema/preferences")
 package org.openwms.core.preferences;

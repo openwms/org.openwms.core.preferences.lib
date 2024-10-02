@@ -15,11 +15,11 @@
  */
 package org.openwms.core.preferences.impl.file;
 
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlType;
 import org.openwms.core.preferences.PropertyScope;
 import org.springframework.util.Assert;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 /**

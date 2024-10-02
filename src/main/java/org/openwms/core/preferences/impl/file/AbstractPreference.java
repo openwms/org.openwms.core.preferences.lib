@@ -15,7 +15,8 @@
  */
 package org.openwms.core.preferences.impl.file;
 
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlTransient;
+
 import java.io.Serializable;
 
 /**
