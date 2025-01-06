@@ -37,19 +37,8 @@ class UserPreferenceIT extends DefaultTestProfile {
     private TestEntityManager em;
 
     @BeforeEach void onSetup() {
-        LOGGER.info("Active Profiles: " + System.getenv("spring.profiles.active"));
+        LOGGER.info("Active Profiles: {}", System.getenv("spring.profiles.active"));
         em.persist(new UserPreference(KNOWN_USER, "testKey"));
         em.flush();
     }
-/*
-    @Test void testSimplePersistAndGet() {
-        UserPreference up = em.getEntityManager().createNamedQuery(UserPreference.NQ_FIND_BY_OWNER, UserPreference.class).setParameter("owner", KNOWN_USER).getSingleResult();
-        assertThat(up)
-                .isNotNull()
-                .extracting("owner", "key", "type")
-                .contains(KNOWN_USER, "testKey", PropertyScope.USER)
-        ;
-    }
-
- */
 }

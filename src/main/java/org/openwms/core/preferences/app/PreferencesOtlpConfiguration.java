@@ -31,6 +31,8 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfiguration
 public class PreferencesOtlpConfiguration {
 
+    private PreferencesOtlpConfiguration() {}
+
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass(name = "io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter")
     public static class OtelConfiguration {

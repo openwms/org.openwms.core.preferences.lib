@@ -168,24 +168,22 @@ public class PreferencesController extends AbstractWebController {
             var existingPrefOpt = preferencesService.findForOwnerAndScopeAndKey(
                     preference.getOwner(), PreferenceVOConverter.resolveScope(preference), preference.getKey()
             );
-            if (existingPrefOpt.isPresent()) {
-                if (preference.getpKey() != null) {
-                    if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
-                        LOGGER.warn("The preference to create already exists, strict-mode allows updates but the persistent keys are not the same");
-                        throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));
-                    } else {
-                        var eo = mapper.map(preference, PreferenceEO.class);
-                        eo.setPersistentKey(existingPrefOpt.get().getPersistentKey());
-                        result = preferencesService.update(
-                                existingPrefOpt.get().getPersistentKey(),
-                                eo
-                        );
-                        var vo = mapper.map(result, PreferenceVO.class);
-                        return ResponseEntity
-                                .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
-                                .header(HttpHeaders.CONTENT_TYPE, "application/json")
-                                .body(vo);
-                    }
+            if (existingPrefOpt.isPresent() && preference.getpKey() != null) {
+                if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
+                    LOGGER.warn("The preference to create already exists, strict-mode allows updates but the persistent keys are not the same");
+                    throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));
+                } else {
+                    var eo = mapper.map(preference, PreferenceEO.class);
+                    eo.setPersistentKey(existingPrefOpt.get().getPersistentKey());
+                    result = preferencesService.update(
+                            existingPrefOpt.get().getPersistentKey(),
+                            eo
+                    );
+                    var vo = mapper.map(result, PreferenceVO.class);
+                    return ResponseEntity
+                            .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
+                            .header(HttpHeaders.CONTENT_TYPE, "application/json")
+                            .body(vo);
                 }
             }
         }

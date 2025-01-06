@@ -90,8 +90,6 @@ class ApplicationPreferenceTest {
     @Test void testReadPreferences() throws Exception {
         SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
         Schema schema = schemaFactory.newSchema(ResourceUtils.getFile("classpath:preferences.xsd"));
-        // Schema schema = schemaFactory.newSchema(new
-        // URL("http://www.openwms.org/schema/preferences.xsd"));
         JAXBContext ctx = JAXBContext.newInstance("org.openwms.core.preferences.impl.file");
         Unmarshaller unmarshaller = ctx.createUnmarshaller();
         unmarshaller.setSchema(schema);
@@ -123,9 +121,7 @@ class ApplicationPreferenceTest {
         ApplicationPreference ap4 = new ApplicationPreference();
 
         // Just the key is considered
-        assertThat(ap1).isEqualTo(ap1);
-        assertThat(ap1).isEqualTo(ap2);
-        assertThat(ap1).isNotEqualTo(ap3);
+        assertThat(ap1).isEqualTo(ap2).isNotEqualTo(ap3);
         assertThat(ap4).isNotEqualTo(ap3);
 
         // Test behavior in hashed collections
