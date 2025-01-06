@@ -29,8 +29,8 @@
 
     <scm>
         <url>https://github.com/openwms/${project.artifactId}</url>
-        <connection>scm:git:https://${scmuser}github.com/openwms/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:https://${scmuser}github.com/openwms/${project.artifactId}.git</developerConnection>
+        <connection>scm:git:https://github.com/openwms/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:https://github.com/openwms/${project.artifactId}.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
