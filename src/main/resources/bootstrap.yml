@@ -5,6 +5,12 @@ spring:
     user:
       name: user
       password: sa
+  jackson:
+    date-format: "yyyy-MM-dd'T'HH:mm:ssXXX" # Only matches Dates no Instants!
+    deserialization:
+      read-date-timestamps-as-nanoseconds: false
+    serialization:
+      fail_on_empty_beans: false
   jpa:
     mapping-resources:
       - META-INF/preferences-orm.xml
@@ -15,10 +21,6 @@ spring:
           time_zone: UTC
         default_schema: public # Used to create a sequence in the UI library
     show-sql: false
-  jackson:
-    date-format: "yyyy-MM-dd'T'HH:mm:ssXXX" # Only matches Dates no Instants!
-    serialization:
-      fail_on_empty_beans: false
   main:
     allow-bean-definition-overriding: true
   mvc:
@@ -26,25 +28,22 @@ spring:
       date-time: "yyyy-MM-dd'T'HH:mm:ssXXX" # Must match the pattern how of @JsonFormat field annotation patterns
       date: yyyy-MM-dd
       time: HH:mm:ss
-  zipkin:
-    sender:
-      type: web
-
-feign:
-  httpclient:
-    connection-timeout: 30000
-    connection-timer-repeat: 30000
-ribbon:
-  connectTimeout: 30000
-  ReadTimeout: 30000
+  output:
+    ansi:
+      enabled: always
 
 owms:
   eureka:
-    url: http://user:sa@localhost:8761
+    url: http://${owms.eureka.user.name}:${owms.eureka.user.password}@localhost:8761
+    user:
+      name: user
+      password: sa
     zone: ${owms.eureka.url}/eureka/
   srv:
     hostname: localhost
     protocol: http
+  tracing:
+    url: http://localhost:4317
 
 server:
   port: ${PORT:8125}
@@ -52,8 +51,9 @@ server:
 eureka:
   client:
     instance-info-replication-interval-seconds: 10 # default is 30
+    registryFetchIntervalSeconds: 5 # SBA
     service-url:
-      defaultZone: ${owms.eureka.zone}  # Must be camelCase
+      defaultZone: ${owms.eureka.zone} # Must be camelCase
   instance:
     hostname: ${owms.srv.hostname}
     # Request a lease with a validity of 5 seconds. If until then the
@@ -66,11 +66,16 @@ eureka:
     # Default: 30s
     lease-renewal-interval-in-seconds:    2
     metadata-map:
+      group: CORE
       config-protocol: http # The protocol used to access the config server
       username: ${spring.security.user.name}
       password: ${spring.security.user.password}
       protocol: ${owms.srv.protocol}
+      startup: ${random.int} # SBA
       zone: ${owms.eureka.zone}
+      prometheus.scrape: "true"
+      prometheus.path: "/actuator/prometheus"
+      prometheus.port: ${server.port}
     non-secure-port-enabled: true
     prefer-ip-address: true
     secure-port-enabled: false
@@ -78,11 +83,6 @@ eureka:
 info:
   scm-url: "@scm.url@"
   build-url: "@ciManagement.url@"
-
-logging:
-  file:
-    name: BOOT-CORE-Preferences.log
-    path: "/tmp/owms"
 
 management:
   endpoints:
@@ -92,18 +92,28 @@ management:
   health:
     rabbit:
       enabled: false
-  metrics:
-    web:
-      server:
-        request:
-          autotime:
-            enabled: true
-    export:
-      prometheus:
-        enabled: true
   info:
     git:
       mode: simple
+  metrics:
+    distribution:
+      percentiles-histogram:
+        greeting: true
+        http:
+          server:
+            requests: true
+    tags:
+      application: ${spring.application.name}
+  otlp:
+    tracing:
+      endpoint: ${owms.tracing.url}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
 
 ---
 spring:
@@ -119,6 +129,11 @@ spring:
           initial-interval: 1s
           max-interval: 1s
 
+management:
+  health:
+    rabbit:
+      enabled: true
+
 owms:
   preferences:
     serialization: json
@@ -127,15 +142,12 @@ owms:
       preferences:
         exchange-name: preferences
 
-management:
-  health:
-    rabbit:
-      enabled: true
-
 ---
+# Might run in standalone or distributed environment
 spring:
-  activate:
-    on-profile: DEMO
+  config:
+    activate:
+      on-profile: DEMO
   cloud:
     bootstrap:
       enabled: false
@@ -200,11 +212,6 @@ eureka:
       enable: false
     serviceUrl:
       registerWithEureka: false
-  zipkin:
-    enabled: false
-    discovery-client-enabled: false
-    sender:
-      type: rabbit
 
 ---
 spring:
@@ -241,10 +248,3 @@ spring:
         default_schema: public
     hibernate:
       ddl-auto: update
-  main:
-    banner-mode: "off"
-  zipkin:
-    enabled: false
-    discovery-client-enabled: false
-    sender:
-      type: rabbit

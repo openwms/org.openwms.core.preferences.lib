@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>26</version>
+        <version>27.1</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences.lib</artifactId>
@@ -14,25 +14,6 @@
     <name>OpenWMS.org CORE: Preferences Library</name>
     <description>The implementation library of the OpenWMS CORE Preferences Service</description>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/openwms/${project.artifactId}/issues</url>
-    </issueManagement>
-
-    <distributionManagement>
-        <site>
-            <id>site</id>
-            <url>scm:git:git@github.com:openwms/${project.artifactId}.git</url>
-        </site>
-    </distributionManagement>
-
-    <scm>
-        <url>https://github.com/openwms/${project.artifactId}</url>
-        <connection>scm:git:https://github.com/openwms/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:https://github.com/openwms/${project.artifactId}.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
 
     <developers>
         <developer>
@@ -52,23 +33,11 @@
         </developer>
     </developers>
 
-    <ciManagement>
-        <system>GitHub</system>
-        <url>https://github.com/openwms/${project.artifactId}/actions</url>
-        <notifiers>
-            <notifier>
-                <type>mail</type>
-                <configuration>
-                    <address>product@openwms.org</address>
-                </configuration>
-            </notifier>
-        </notifiers>
-    </ciManagement>
-
     <properties>
+        <core.test.arch.version>1.0.0-SNAPSHOT</core.test.arch.version>
         <core.version>3.0.0-SNAPSHOT</core.version>
         <dozer.version>7.0.0</dozer.version>
-        <spring-cloud-dependencies.version>2023.0.1</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -175,6 +144,11 @@
             </dependency>
             <dependency>
                 <groupId>org.openwms</groupId>
+                <artifactId>org.openwms.core.test.arch</artifactId>
+                <version>${core.test.arch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.util</artifactId>
                 <version>${core.version}</version>
             </dependency>
@@ -190,6 +164,11 @@
 
     <dependencies>
         <!-- Project Dependencies -->
+        <dependency>
+            <groupId>org.openwms</groupId>
+            <artifactId>org.openwms.core.test.arch</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.openwms</groupId>
             <artifactId>org.openwms.core.util</artifactId>
@@ -271,13 +250,8 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>io.zipkin.reporter2</groupId>
-            <artifactId>zipkin-reporter-brave</artifactId>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-otlp</artifactId>
             <optional>true</optional>
         </dependency>
 
@@ -369,17 +343,6 @@
 
     <repositories>
         <repository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
             <id>sonatype-nexus-staging</id>
             <name>Staging Repository</name>
             <url>https://oss.sonatype.org/content/groups/staging/</url>
@@ -390,51 +353,5 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-        <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
     </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-        <pluginRepository>
-            <id>sonatype-nexus-snapshots</id>
-            <name>Snapshot Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
 </project>
