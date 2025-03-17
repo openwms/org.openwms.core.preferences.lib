@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferencesEventPropagator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.impl.events</a> &gt; <span class="el_source">PreferencesEventPropagator.java</span></div><h1>PreferencesEventPropagator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences.impl.events;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Validator;
+import org.ameba.annotation.Measured;
+import org.ameba.mapping.BeanMapper;
+import org.openwms.core.SpringProfiles;
+import org.openwms.core.preferences.PreferencesEvent;
+import org.openwms.core.preferences.api.messages.PreferenceMO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionalEventListener;
+import org.springframework.util.Assert;
+
+import static org.ameba.system.ValidationUtil.validate;
+
+/**
+ * A PreferencesEventPropagator propagates internal {@link PreferencesEvent}s to the outer world, only active with Spring Profile
+ * {@link SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ *
+ * @author Heiko Scherrer
+ */
+@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
+@Component
+class PreferencesEventPropagator {
+
+<span class="fc" id="L48">    private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesEventPropagator.class);</span>
+    private final AmqpTemplate amqpTemplate;
+    private final Validator validator;
+    private final BeanMapper mapper;
+    private final String exchangeName;
+
+    PreferencesEventPropagator(
+            AmqpTemplate amqpTemplate,
+            Validator validator,
+            BeanMapper mapper, @Value(&quot;${owms.events.core.preferences.exchange-name}&quot;) String exchangeName
+<span class="fc" id="L58">    ) {</span>
+<span class="fc" id="L59">        this.amqpTemplate = amqpTemplate;</span>
+<span class="fc" id="L60">        this.validator = validator;</span>
+<span class="fc" id="L61">        this.mapper = mapper;</span>
+<span class="fc" id="L62">        this.exchangeName = exchangeName;</span>
+<span class="fc" id="L63">    }</span>
+
+    @Measured
+    @TransactionalEventListener(fallbackExecution = true)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void onEvent(PreferencesEvent event) {
+<span class="fc" id="L69">        var preference = event.getSource();</span>
+<span class="pc bpc" id="L70" title="1 of 4 branches missed.">        switch (event.getType()) {</span>
+            case CREATED -&gt; {
+<span class="fc" id="L72">                LOGGER.debug(&quot;Preference created: [{}]&quot;, preference);</span>
+<span class="fc" id="L73">                amqpTemplate.convertAndSend(exchangeName, &quot;preference.event.created&quot;, validateAndConvert(event));</span>
+<span class="fc" id="L74">            }</span>
+            case UPDATED -&gt; {
+<span class="fc" id="L76">                LOGGER.debug(&quot;Preference updated: [{}]&quot;, preference);</span>
+<span class="fc" id="L77">                amqpTemplate.convertAndSend(exchangeName, &quot;preference.event.changed&quot;, validateAndConvert(event));</span>
+<span class="fc" id="L78">            }</span>
+            case DELETED -&gt; {
+<span class="fc" id="L80">                LOGGER.debug(&quot;Preference deleted: [{}]&quot;, preference);</span>
+<span class="fc" id="L81">                amqpTemplate.convertAndSend(exchangeName, &quot;preference.event.deleted&quot;, validateAndConvert(event));</span>
+<span class="fc" id="L82">            }</span>
+<span class="nc" id="L83">            default -&gt; LOGGER.warn(&quot;Eventtype [{}] not supported&quot;, event.getType());</span>
+        }
+<span class="fc" id="L85">    }</span>
+
+    @PostConstruct
+    void onStartup() {
+        try {
+<span class="fc" id="L90">            amqpTemplate.convertAndSend(exchangeName, &quot;preference.event.boot&quot;, new PreferenceMO(&quot;BOOT&quot;));</span>
+<span class="nc" id="L91">        } catch (Exception e) {</span>
+            // It's fine if the event broker is not available on startup
+<span class="fc" id="L93">        }</span>
+<span class="fc" id="L94">    }</span>
+
+    private PreferenceMO validateAndConvert(PreferencesEvent event) {
+<span class="fc" id="L97">        Assert.notNull(event, &quot;Event to propagate is NULL&quot;);</span>
+<span class="fc" id="L98">        return validate(validator, mapper.map(event.getSource(), PreferenceMO.class));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

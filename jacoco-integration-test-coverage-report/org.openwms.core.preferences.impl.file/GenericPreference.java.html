@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GenericPreference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.impl.file</a> &gt; <span class="el_source">GenericPreference.java</span></div><h1>GenericPreference.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences.impl.file;
+
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlValue;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * An GenericPreference is a superclass for all other preference classes within the application. It encapsulates some common behavior
+ * of preference types.
+ *
+ * @author Heiko Scherrer
+ */
+@XmlType(name = &quot;abstractPreference&quot;, propOrder = {&quot;description&quot;}, namespace = &quot;http://www.openwms.org/schema/preferences&quot;)
+<span class="fc" id="L33">public abstract class GenericPreference extends AbstractPreference implements Serializable {</span>
+
+    /** The String value of the {@code AbstractPreference}. */
+    protected String value;
+
+    /** A data type of the value. */
+    protected String type;
+
+    /** Description text of the {@link GenericPreference}. */
+    protected String description;
+
+    /** Minimum value. */
+    protected String minimum;
+
+    /** Maximum value. */
+    protected String maximum;
+
+    /** Flag to remember if the preference was originally imported from a file. */
+    @XmlTransient
+    private static final boolean fromFile = true;
+
+    /* ----------------------------- methods ------------------- */
+
+    /**
+     * Return the &lt;code&gt;value&lt;/code&gt; of the {@link GenericPreference}.
+     *
+     * @return The value of the {@link GenericPreference}
+     */
+    @XmlAttribute(name = &quot;val&quot;)
+    public String getValue() {
+<span class="fc" id="L63">        return value;</span>
+    }
+
+    /**
+     * Set the &lt;code&gt;value&lt;/code&gt; of the {@link GenericPreference}.
+     *
+     * @param value The value to set
+     */
+    public void setValue(String value) {
+<span class="fc" id="L72">        this.value = value;</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Get the property value type.
+     *
+     * @return Type as String
+     */
+    @XmlAttribute(name = &quot;type&quot;)
+    public String getType() {
+<span class="fc" id="L82">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="fc" id="L86">        this.type = type;</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Return the &lt;code&gt;description&lt;/code&gt; of the {@link GenericPreference}.
+     *
+     * @return The description as String
+     */
+    @XmlValue
+    public String getDescription() {
+<span class="fc" id="L96">        return description;</span>
+    }
+
+    /**
+     * Set a &lt;code&gt;description&lt;/code&gt; for the {@link GenericPreference}.
+     *
+     * @param description The description to set
+     */
+    public void setDescription(String description) {
+<span class="fc" id="L105">        this.description = description;</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Return the possible minimum value of the {@link GenericPreference}.
+     *
+     * @return The possible minimum value
+     */
+    @XmlAttribute(name = &quot;minimum&quot;)
+    public String getMinimum() {
+<span class="fc" id="L115">        return minimum;</span>
+    }
+
+    public void setMinimum(String minimum) {
+<span class="nc" id="L119">        this.minimum = minimum;</span>
+<span class="nc" id="L120">    }</span>
+
+    /**
+     * Return the possible maximum value of the {@link GenericPreference}.
+     *
+     * @return The possible maximum value
+     */
+    @XmlAttribute(name = &quot;maximum&quot;)
+    public String getMaximum() {
+<span class="fc" id="L129">        return maximum;</span>
+    }
+
+    public void setMaximum(String maximum) {
+<span class="nc" id="L133">        this.maximum = maximum;</span>
+<span class="nc" id="L134">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L138">        return &quot;GenericPreference{&quot; +</span>
+                &quot;value='&quot; + value + '\'' +
+                &quot;, type='&quot; + type + '\'' +
+                &quot;, description='&quot; + description + '\'' +
+                &quot;, minimum=&quot; + minimum +
+                &quot;, maximum=&quot; + maximum +
+                &quot;, fromFile=&quot; + fromFile +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L151" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc" id="L152">        GenericPreference that = (GenericPreference) o;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        return Objects.equals(value, that.value)</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                &amp;&amp; Objects.equals(type, that.type)</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                &amp;&amp; Objects.equals(description, that.description)</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                &amp;&amp; Objects.equals(minimum, that.minimum)</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">                &amp;&amp; Objects.equals(maximum, that.maximum);</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L162">        return Objects.hash(value, type, description, minimum, maximum);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

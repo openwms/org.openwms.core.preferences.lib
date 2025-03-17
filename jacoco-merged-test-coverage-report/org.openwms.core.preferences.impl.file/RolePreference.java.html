@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RolePreference.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.impl.file</a> &gt; <span class="el_source">RolePreference.java</span></div><h1>RolePreference.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences.impl.file;
+
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlType;
+import org.openwms.core.preferences.PropertyScope;
+import org.springframework.util.Assert;
+
+import java.io.Serializable;
+
+/**
+ * A RolePreference is used to provide settings specific to an {@code Role} . These kind of {@link Preferences} is valid for the assigned
+ * Role only. {@code User}s assigned to a {@code Role} inherit these RolePreferences but a RolePreference can be overruled by an {@link
+ * UserPreference}. RolePreferences can be defined within a preferences file but also be created with the UI.
+ *
+ * @author Heiko Scherrer
+ * @GlossaryTerm
+ */
+@XmlType(name = &quot;rolePreference&quot;, namespace = &quot;http://www.openwms.org/schema/usermanagement&quot;)
+public class RolePreference extends GenericPreference implements Serializable {
+
+    /**
+     * Owner of the {@code RolePreference}.
+     */
+    private String owner;
+    /**
+     * Key value of the {@link RolePreference}.
+     */
+    private String key;
+
+    /**
+     * Create a new RolePreference. Defined for the JAXB implementation.
+     */
+    public RolePreference() {
+<span class="nc" id="L49">        super();</span>
+<span class="nc" id="L50">    }</span>
+
+    /**
+     * Create a new RolePreference.
+     *
+     * @param rolename The name of the Role that owns this preference
+     * @param key the key
+     * @throws IllegalArgumentException when rolename or key is {@literal null} or empty
+     */
+    public RolePreference(String rolename, String key) {
+        // Called from the client.
+<span class="nc" id="L61">        super();</span>
+<span class="nc" id="L62">        Assert.hasText(owner, &quot;Not allowed to create a RolePreference with an empty rolename&quot;);</span>
+<span class="nc" id="L63">        Assert.hasText(key, &quot;Not allowed to create a RolePreference with an empty key&quot;);</span>
+<span class="nc" id="L64">        owner = rolename;</span>
+<span class="nc" id="L65">        this.key = key;</span>
+<span class="nc" id="L66">    }</span>
+
+    /**
+     * Get the key.
+     *
+     * @return the key.
+     */
+    @XmlAttribute(name = &quot;key&quot;, required = true)
+    public String getKey() {
+<span class="nc" id="L75">        return key;</span>
+    }
+
+    public void setKey(String key) {
+<span class="nc" id="L79">        this.key = key;</span>
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Get the name of the {@code Role} as String.
+     *
+     * @return the rolename.
+     */
+    @XmlAttribute(name = &quot;owner&quot;, required = true)
+    public String getOwner() {
+<span class="nc" id="L89">        return owner;</span>
+    }
+
+    public void setOwner(String owner) {
+<span class="nc" id="L93">        this.owner = owner;</span>
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see GenericPreference#getFields()
+     */
+    @Override
+    protected Object[] getFields() {
+<span class="nc" id="L103">        return new Object[]{getOwner(), getKey(), getType()};</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Uses the type, owner and the key to create a {@link PreferenceKey} instance.
+     *
+     * @see GenericPreference#getPrefKey()
+     */
+    @Override
+    public PreferenceKey getPrefKey() {
+<span class="nc" id="L115">        return new PreferenceKey(getOwner(), getKey(), PropertyScope.ROLE.name());</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Uses key, owner and type for hashCode calculation.
+     *
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+<span class="nc" id="L128">        int result = super.hashCode();</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        result = prime * result + ((key == null) ? 0 : key.hashCode());</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        result = prime * result + ((owner == null) ? 0 : owner.hashCode());</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        result = prime * result + ((type == null) ? 0 : type.hashCode());</span>
+<span class="nc" id="L132">        return result;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Comparison done with key, owner and type fields. Not delegated to super class.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (null == obj) {</span>
+<span class="nc" id="L145">            return false;</span>
+        }
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L148">            return true;</span>
+        }
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L151">            return false;</span>
+        }
+<span class="nc" id="L153">        RolePreference other = (RolePreference) obj;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (key == null) {</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">            if (other.key != null) {</span>
+<span class="nc" id="L156">                return false;</span>
+            }
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        } else if (!key.equals(other.key)) {</span>
+<span class="nc" id="L159">            return false;</span>
+        }
+<span class="nc bnc" id="L161" title="All 2 branches missed.">        if (owner == null) {</span>
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (other.owner != null) {</span>
+<span class="nc" id="L163">                return false;</span>
+            }
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        } else if (!owner.equals(other.owner)) {</span>
+<span class="nc" id="L166">            return false;</span>
+        }
+<span class="nc" id="L168">        return type.equals(other.type);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     * &lt;p&gt;
+     * Use all fields.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L178">        return &quot;RolePreference{&quot; +</span>
+                &quot;type=&quot; + type +
+                &quot;, owner='&quot; + owner + '\'' +
+                &quot;, key='&quot; + key + '\'' +
+<span class="nc" id="L182">                &quot;} &quot; + super.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

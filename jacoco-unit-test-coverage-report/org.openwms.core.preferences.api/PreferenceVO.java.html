@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceVO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.api</a> &gt; <span class="el_source">PreferenceVO.java</span></div><h1>PreferenceVO.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences.api;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.ameba.http.AbstractBase;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A PreferenceVO.
+ *
+ * @author Heiko Scherrer
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
+<span class="nc" id="L34">public class PreferenceVO extends AbstractBase&lt;PreferenceVO&gt; {</span>
+
+    public static final String TYPE = &quot;application&quot;;
+    public static final String SUB_TYPE = &quot;vnd.openwms.core.preference-v1+json&quot;;
+    /** HTTP media type representation. */
+    public static final String MEDIA_TYPE = TYPE + &quot;/&quot; + SUB_TYPE;
+
+    /** The persistent key of the resource. */
+    @JsonProperty(&quot;pKey&quot;)
+    private String pKey;
+
+    /** The unique business key (along other identifying properties) of the resource, must not be {@literal null}. */
+    @JsonProperty(&quot;key&quot;)
+    @NotBlank
+    @Size(min = 1, max = PreferencesConstants.LENGTH_KEY)
+    private String key;
+
+    /** The owner of the resource. */
+    @JsonProperty(&quot;owner&quot;)
+    @Size(max = PreferencesConstants.LENGTH_OWNER)
+    private String owner;
+
+    /** A descriptive text of the {@code Preference}. */
+    @JsonProperty(&quot;description&quot;)
+    @Size(max = PreferencesConstants.LENGTH_DESCRIPTION)
+    private String description;
+
+    /** The value of the {@code Preference}. */
+    @JsonProperty(&quot;value&quot;)
+    @Size(max = PreferencesConstants.LENGTH_VALUE)
+    private Serializable val;
+
+    /** The groupName of the {@code Preference}. */
+    @JsonProperty(&quot;groupName&quot;)
+    @Size(max = PreferencesConstants.LENGTH_GROUP)
+    private String groupName;
+
+    /** The type of the {@code Preference}. */
+    @JsonProperty(&quot;type&quot;)
+    @NotBlank
+    @Size(max = PreferencesConstants.LENGTH_TYPE)
+    private String type;
+
+    public String getpKey() {
+<span class="nc" id="L78">        return pKey;</span>
+    }
+
+    @JsonIgnore
+    public boolean hasPKey() {
+<span class="nc bnc" id="L83" title="All 4 branches missed.">        return this.pKey != null &amp;&amp; !this.pKey.isEmpty();</span>
+    }
+
+    public void setpKey(String pKey) {
+<span class="nc" id="L87">        this.pKey = pKey;</span>
+<span class="nc" id="L88">    }</span>
+
+    public String getKey() {
+<span class="nc" id="L91">        return key;</span>
+    }
+
+    public void setKey(String key) {
+<span class="nc" id="L95">        this.key = key;</span>
+<span class="nc" id="L96">    }</span>
+
+    public String getOwner() {
+<span class="nc" id="L99">        return owner;</span>
+    }
+
+    public void setOwner(String owner) {
+<span class="nc" id="L103">        this.owner = owner;</span>
+<span class="nc" id="L104">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L107">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L111">        this.description = description;</span>
+<span class="nc" id="L112">    }</span>
+
+    public Serializable getVal() {
+<span class="nc" id="L115">        return val;</span>
+    }
+
+    public void setVal(Serializable val) {
+<span class="nc" id="L119">        this.val = val;</span>
+<span class="nc" id="L120">    }</span>
+
+    public String getGroupName() {
+<span class="nc" id="L123">        return groupName;</span>
+    }
+
+    public void setGroupName(String groupName) {
+<span class="nc" id="L127">        this.groupName = groupName;</span>
+<span class="nc" id="L128">    }</span>
+
+    public String getType() {
+<span class="nc" id="L131">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="nc" id="L135">        this.type = type;</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
+<span class="nc" id="L148">        PreferenceVO that = (PreferenceVO) o;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        return Objects.equals(pKey, that.pKey) &amp;&amp;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                Objects.equals(key, that.key) &amp;&amp;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                Objects.equals(owner, that.owner) &amp;&amp;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                Objects.equals(description, that.description) &amp;&amp;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                Objects.equals(val, that.val) &amp;&amp;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                Objects.equals(groupName, that.groupName) &amp;&amp;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                Objects.equals(type, that.type);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L165">        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);</span>
+    }
+
+    /**
+     * Returns the representation type of the Preference.
+     *
+     * @return Conforms to the HTTP {@literal Content-Type} convention
+     */
+    @JsonIgnore
+    public String getContentType() {
+<span class="nc" id="L175">        return MEDIA_TYPE;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

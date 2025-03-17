@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferencesAsyncConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.app</a> &gt; <span class="el_source">PreferencesAsyncConfiguration.java</span></div><h1>PreferencesAsyncConfiguration.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences.app;
+
+import org.ameba.amqp.RabbitTemplateConfigurable;
+import org.openwms.core.SpringProfiles;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.amqp.support.converter.SerializerMessageConverter;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor;
+import org.springframework.retry.support.RetryTemplate;
+
+import java.util.Objects;
+
+import static org.ameba.LoggingCategories.BOOT;
+
+/**
+ * A PreferencesAsyncConfiguration contains the microservice' asynchronous configuration that is activated on Spring Profile
+ * {@link SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ *
+ * @author Heiko Scherrer
+ */
+@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
+@RefreshScope
+@EnableRabbit
+@Configuration
+<span class="fc" id="L57">public class PreferencesAsyncConfiguration {</span>
+
+<span class="fc" id="L59">    private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);</span>
+
+    @RefreshScope
+    @ConditionalOnExpression(&quot;'${owms.preferences.serialization}'=='json'&quot;)
+    @Bean
+    MessageConverter messageConverter() {
+<span class="fc" id="L65">        var messageConverter = new Jackson2JsonMessageConverter();</span>
+<span class="fc" id="L66">        BOOT_LOGGER.info(&quot;Using JSON serialization over AMQP&quot;);</span>
+<span class="fc" id="L67">        return messageConverter;</span>
+    }
+
+    @RefreshScope
+    @ConditionalOnExpression(&quot;'${owms.preferences.serialization}'=='barray'&quot;)
+    @Bean
+    MessageConverter serializerMessageConverter() {
+<span class="nc" id="L74">        var messageConverter = new SerializerMessageConverter();</span>
+<span class="nc" id="L75">        BOOT_LOGGER.info(&quot;Using byte array serialization over AMQP&quot;);</span>
+<span class="nc" id="L76">        return messageConverter;</span>
+    }
+
+    @Bean
+    StatefulRetryOperationsInterceptor interceptor() {
+<span class="nc" id="L81">        return RetryInterceptorBuilder.stateful()</span>
+<span class="nc" id="L82">                .maxAttempts(3)</span>
+<span class="nc" id="L83">                .backOffOptions(1000, 2.0, 10000)</span>
+<span class="nc" id="L84">                .build();</span>
+    }
+
+    @RefreshScope
+    @Primary
+    @Bean(name = &quot;amqpTemplate&quot;)
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
+            ObjectProvider&lt;MessageConverter&gt; messageConverter,
+            @Autowired(required = false) RabbitTemplateConfigurable rabbitTemplateConfigurable) {
+<span class="fc" id="L93">        var rabbitTemplate = new RabbitTemplate(connectionFactory);</span>
+<span class="fc" id="L94">        var backOffPolicy = new ExponentialBackOffPolicy();</span>
+<span class="fc" id="L95">        backOffPolicy.setMultiplier(2);</span>
+<span class="fc" id="L96">        backOffPolicy.setMaxInterval(15000);</span>
+<span class="fc" id="L97">        backOffPolicy.setInitialInterval(500);</span>
+<span class="fc" id="L98">        var retryTemplate = new RetryTemplate();</span>
+<span class="fc" id="L99">        retryTemplate.setBackOffPolicy(backOffPolicy);</span>
+<span class="fc" id="L100">        rabbitTemplate.setRetryTemplate(retryTemplate);</span>
+<span class="fc" id="L101">        rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (rabbitTemplateConfigurable != null) {</span>
+<span class="fc" id="L103">            rabbitTemplateConfigurable.configure(rabbitTemplate);</span>
+        }
+<span class="fc" id="L105">        return rabbitTemplate;</span>
+    }
+
+    @RefreshScope
+    @Bean
+    TopicExchange lgExchange(@Value(&quot;${owms.events.core.preferences.exchange-name}&quot;) String exchangeName) {
+<span class="fc" id="L111">        return new TopicExchange(exchangeName, true, false);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

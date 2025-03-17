@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceEO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.impl.jpa</a> &gt; <span class="el_source">PreferenceEO.java</span></div><h1>PreferenceEO.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences.impl.jpa;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.ameba.integration.jpa.ApplicationEntity;
+import org.openwms.core.preferences.PreferenceType;
+import org.openwms.core.preferences.PropertyScope;
+import org.openwms.core.preferences.impl.file.PreferenceKey;
+
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.StringJoiner;
+
+import static org.openwms.core.preferences.api.PreferencesConstants.LENGTH_DESCRIPTION;
+import static org.openwms.core.preferences.api.PreferencesConstants.LENGTH_GROUP;
+import static org.openwms.core.preferences.api.PreferencesConstants.LENGTH_KEY;
+import static org.openwms.core.preferences.api.PreferencesConstants.LENGTH_OWNER;
+import static org.openwms.core.preferences.api.PreferencesConstants.LENGTH_TYPE;
+import static org.openwms.core.preferences.api.PreferencesConstants.LENGTH_VALUE;
+
+/**
+ * An PreferenceEO is the persistent entity class that represents preferences in the database.
+ *
+ * @author Heiko Scherrer
+ */
+@Entity
+@Table(name = &quot;COR_PREF_PREFERENCE&quot;, uniqueConstraints = @UniqueConstraint(name = &quot;UC_PREFERENCE&quot;, columnNames = {&quot;C_KEY&quot;, &quot;C_OWNER&quot;}))
+public class PreferenceEO extends ApplicationEntity implements Serializable {
+
+    /** Suffix for the FIND_ALL named query. Default {@value} */
+    public static final String FIND_ALL = &quot;.findAll&quot;;
+
+    /** Key field of the {@link PreferenceEO}. */
+    @Column(name = &quot;C_KEY&quot;, length = LENGTH_KEY)
+    @NotBlank
+    @Size(min = 1, max = LENGTH_KEY)
+    private String key;
+
+    @Column(name = &quot;C_OWNER&quot;, length = LENGTH_OWNER)
+    @Size(max = LENGTH_OWNER)
+    protected String owner;
+
+    /** Description text of the {@link PreferenceEO}. */
+    @Column(name = &quot;C_DESCRIPTION&quot;, length = LENGTH_DESCRIPTION)
+    @Size(max = LENGTH_DESCRIPTION)
+    protected String description;
+
+    /** Flag to remember if the preference was originally imported from a file. */
+    @Column(name = &quot;C_FROM_FILE&quot;)
+    private boolean fromFile;
+
+    /** Scope of this preference. */
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Column(name = &quot;C_SCOPE&quot;, nullable = false)
+    protected PropertyScope scope;
+
+    /** A current value of the {@link PreferenceEO}. */
+    @Column(name = &quot;C_CURRENT_VALUE&quot;, length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
+    private String val;
+
+    /** The default value of the {@link PreferenceEO}. */
+    @Column(name = &quot;C_DEF_VALUE&quot;, length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
+    private String defValue;
+
+    /** The minimum value of the {@link PreferenceEO}. */
+    @Column(name = &quot;C_MIN_VALUE&quot;, length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
+    private String minValue;
+
+    /** The maximum value of the {@link PreferenceEO}. */
+    @Column(name = &quot;C_MAX_VALUE&quot;, length = LENGTH_VALUE)
+    @Size(max = LENGTH_VALUE)
+    private String maxValue;
+
+    /** The name of the group the {@link PreferenceEO} is assigned to. */
+<span class="fc" id="L102">    @Column(name = &quot;C_GROUP_NAME&quot;, length = LENGTH_GROUP)</span>
+    @Size(max = LENGTH_GROUP)
+    private String groupName = &quot;GLOBAL&quot;;
+
+    /** Type of this preference. */
+    @Convert(converter = PreferenceTypeConverter.class)
+    @Column(name = &quot;C_TYPE&quot;, nullable = false, length = LENGTH_TYPE)
+    @NotNull
+    protected PreferenceType type;
+
+    public String getKey() {
+<span class="fc" id="L113">        return key;</span>
+    }
+
+    public void setKey(String key) {
+<span class="nc" id="L117">        this.key = key;</span>
+<span class="nc" id="L118">    }</span>
+
+    public String getOwner() {
+<span class="fc" id="L121">        return owner;</span>
+    }
+
+    public void setOwner(String owner) {
+<span class="nc" id="L125">        this.owner = owner;</span>
+<span class="nc" id="L126">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L129">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L133">        this.description = description;</span>
+<span class="nc" id="L134">    }</span>
+
+    public String getVal() {
+<span class="fc" id="L137">        return val;</span>
+    }
+
+    public void setVal(String val) {
+<span class="nc" id="L141">        this.val = val;</span>
+<span class="nc" id="L142">    }</span>
+
+    public boolean isFromFile() {
+<span class="nc" id="L145">        return fromFile;</span>
+    }
+
+    public void setFromFile(boolean fromFile) {
+<span class="nc" id="L149">        this.fromFile = fromFile;</span>
+<span class="nc" id="L150">    }</span>
+
+    public PropertyScope getScope() {
+<span class="nc" id="L153">        return scope;</span>
+    }
+
+    public void setScope(PropertyScope scope) {
+<span class="nc" id="L157">        this.scope = scope;</span>
+<span class="nc" id="L158">    }</span>
+
+    public String getDefValue() {
+<span class="nc" id="L161">        return defValue;</span>
+    }
+
+    public void setDefValue(String defValue) {
+<span class="nc" id="L165">        this.defValue = defValue;</span>
+<span class="nc" id="L166">    }</span>
+
+    public String getMinValue() {
+<span class="nc" id="L169">        return minValue;</span>
+    }
+
+    public void setMinValue(String minValue) {
+<span class="nc" id="L173">        this.minValue = minValue;</span>
+<span class="nc" id="L174">    }</span>
+
+    public String getMaxValue() {
+<span class="nc" id="L177">        return maxValue;</span>
+    }
+
+    public void setMaxValue(String maxValue) {
+<span class="nc" id="L181">        this.maxValue = maxValue;</span>
+<span class="nc" id="L182">    }</span>
+
+    public String getGroupName() {
+<span class="fc" id="L185">        return groupName;</span>
+    }
+
+    public void setGroupName(String groupName) {
+<span class="nc" id="L189">        this.groupName = groupName;</span>
+<span class="nc" id="L190">    }</span>
+
+    public PreferenceType getType() {
+<span class="fc" id="L193">        return type;</span>
+    }
+
+    public void setType(PreferenceType type) {
+<span class="nc" id="L197">        this.type = type;</span>
+<span class="nc" id="L198">    }</span>
+
+    @Override
+    public void setPersistentKey(String pKey) {
+<span class="nc" id="L202">        super.setPersistentKey(pKey);</span>
+<span class="nc" id="L203">    }</span>
+
+    /**
+     * Return a {@link PreferenceKey} of this preference.
+     *
+     * @return A {@link PreferenceKey}
+     */
+    public PreferenceKey getPrefKey() {
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        return new PreferenceKey(this.owner == null ? &quot;:APPLICATION:&quot; : this.owner, this.key, this.scope.name());</span>
+    }
+
+<span class="fc" id="L214">    public PreferenceEO() {</span>
+<span class="fc" id="L215">    }</span>
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (!(o instanceof PreferenceEO that)) return false;</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
+<span class="nc bnc" id="L227" title="All 22 branches missed.">        return fromFile == that.fromFile &amp;&amp; Objects.equals(key, that.key) &amp;&amp; Objects.equals(owner, that.owner) &amp;&amp; Objects.equals(description, that.description) &amp;&amp; scope == that.scope &amp;&amp; Objects.equals(val, that.val) &amp;&amp; Objects.equals(defValue, that.defValue) &amp;&amp; Objects.equals(minValue, that.minValue) &amp;&amp; Objects.equals(maxValue, that.maxValue) &amp;&amp; Objects.equals(groupName, that.groupName) &amp;&amp; type == that.type;</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L237">        return Objects.hash(super.hashCode(), key, owner, description, fromFile, scope, val, defValue, minValue, maxValue, groupName, type);</span>
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * All fields.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L247">        return new StringJoiner(&quot;, &quot;, PreferenceEO.class.getSimpleName() + &quot;[&quot;, &quot;]&quot;)</span>
+<span class="nc" id="L248">                .add(&quot;key='&quot; + key + &quot;'&quot;)</span>
+<span class="nc" id="L249">                .add(&quot;pKey='&quot; + getPersistentKey() + &quot;'&quot;)</span>
+<span class="nc" id="L250">                .add(&quot;owner='&quot; + owner + &quot;'&quot;)</span>
+<span class="nc" id="L251">                .add(&quot;description='&quot; + description + &quot;'&quot;)</span>
+<span class="nc" id="L252">                .add(&quot;fromFile=&quot; + fromFile)</span>
+<span class="nc" id="L253">                .add(&quot;scope=&quot; + scope)</span>
+<span class="nc" id="L254">                .add(&quot;val='&quot; + val + &quot;'&quot;)</span>
+<span class="nc" id="L255">                .add(&quot;defValue='&quot; + defValue + &quot;'&quot;)</span>
+<span class="nc" id="L256">                .add(&quot;minValue='&quot; + minValue + &quot;'&quot;)</span>
+<span class="nc" id="L257">                .add(&quot;maxValue='&quot; + maxValue + &quot;'&quot;)</span>
+<span class="nc" id="L258">                .add(&quot;groupName='&quot; + groupName + &quot;'&quot;)</span>
+<span class="nc" id="L259">                .add(&quot;type=&quot; + type)</span>
+<span class="nc" id="L260">                .toString();</span>
+    }
+
+<span class="fc" id="L263">    private PreferenceEO(Builder builder) {</span>
+<span class="fc" id="L264">        key = builder.key;</span>
+<span class="pc bpc" id="L265" title="1 of 2 branches missed.">        if (builder.hasPKey()) {</span>
+<span class="nc" id="L266">            setPersistentKey(builder.pKey);</span>
+        }
+<span class="fc" id="L268">        owner = builder.owner;</span>
+<span class="fc" id="L269">        description = builder.description;</span>
+<span class="fc" id="L270">        fromFile = builder.fromFile;</span>
+<span class="fc" id="L271">        scope = builder.scope;</span>
+<span class="fc" id="L272">        val = builder.val;</span>
+<span class="fc" id="L273">        defValue = builder.defValue;</span>
+<span class="fc" id="L274">        minValue = builder.minValue;</span>
+<span class="fc" id="L275">        maxValue = builder.maxValue;</span>
+<span class="fc" id="L276">        groupName = builder.groupName;</span>
+<span class="fc" id="L277">        type = builder.type;</span>
+<span class="fc" id="L278">    }</span>
+
+    public static Builder newBuilder() {
+<span class="fc" id="L281">        return new Builder();</span>
+    }
+
+    public static final class Builder {
+        private String key;
+        private String pKey;
+        private String owner;
+        private String description;
+        private boolean fromFile;
+        private @NotNull PropertyScope scope;
+        private String val;
+        private String defValue;
+        private String minValue;
+        private String maxValue;
+        private String groupName;
+        private @NotNull PreferenceType type;
+
+        private Builder() {
+        }
+
+        public Builder pKey(String val) {
+<span class="nc" id="L302">            pKey = val;</span>
+<span class="nc" id="L303">            return this;</span>
+        }
+
+        public boolean hasPKey() {
+<span class="pc bpc" id="L307" title="3 of 4 branches missed.">            return pKey != null &amp;&amp; !pKey.isEmpty();</span>
+        }
+
+        public Builder key(String val) {
+<span class="fc" id="L311">            key = val;</span>
+<span class="fc" id="L312">            return this;</span>
+        }
+
+        public Builder owner(String val) {
+<span class="nc" id="L316">            owner = val;</span>
+<span class="nc" id="L317">            return this;</span>
+        }
+
+        public Builder description(String val) {
+<span class="fc" id="L321">            description = val;</span>
+<span class="fc" id="L322">            return this;</span>
+        }
+
+        public Builder fromFile(boolean val) {
+<span class="fc" id="L326">            fromFile = val;</span>
+<span class="fc" id="L327">            return this;</span>
+        }
+
+        public Builder scope(@NotNull PropertyScope val) {
+<span class="fc" id="L331">            scope = val;</span>
+<span class="fc" id="L332">            return this;</span>
+        }
+
+        public Builder val(String val) {
+<span class="fc" id="L336">            this.val = val;</span>
+<span class="fc" id="L337">            return this;</span>
+        }
+
+        public Builder defValue(String val) {
+<span class="nc" id="L341">            defValue = val;</span>
+<span class="nc" id="L342">            return this;</span>
+        }
+
+        public Builder minValue(String val) {
+<span class="fc" id="L346">            minValue = val;</span>
+<span class="fc" id="L347">            return this;</span>
+        }
+
+        public Builder maxValue(String val) {
+<span class="fc" id="L351">            maxValue = val;</span>
+<span class="fc" id="L352">            return this;</span>
+        }
+
+        public Builder groupName(String val) {
+<span class="nc" id="L356">            groupName = val;</span>
+<span class="nc" id="L357">            return this;</span>
+        }
+
+        public Builder type(@NotNull PreferenceType val) {
+<span class="fc" id="L361">            type = val;</span>
+<span class="fc" id="L362">            return this;</span>
+        }
+
+        public PreferenceEO build() {
+<span class="fc" id="L366">            return new PreferenceEO(this);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferencesController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences</a> &gt; <span class="el_source">PreferencesController.java</span></div><h1>PreferencesController.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2005-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.openwms.core.preferences;
+
+import jakarta.validation.constraints.NotBlank;
+import org.ameba.exception.ResourceExistsException;
+import org.ameba.http.MeasuredRestController;
+import org.ameba.i18n.Translator;
+import org.ameba.mapping.BeanMapper;
+import org.openwms.core.http.AbstractWebController;
+import org.openwms.core.http.Index;
+import org.openwms.core.preferences.api.ApplicationPreferenceVO;
+import org.openwms.core.preferences.api.ModulePreferenceVO;
+import org.openwms.core.preferences.api.PreferenceVO;
+import org.openwms.core.preferences.api.RolePreferenceVO;
+import org.openwms.core.preferences.api.UserPreferenceVO;
+import org.openwms.core.preferences.impl.PreferenceVOConverter;
+import org.openwms.core.preferences.impl.jpa.PreferenceEO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.openwms.core.preferences.api.PreferenceVO.MEDIA_TYPE;
+import static org.openwms.core.preferences.api.PreferencesApi.API_PREFERENCES;
+import static org.openwms.core.preferences.api.PreferencesConstants.ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY;
+import static org.openwms.core.preferences.api.PreferencesConstants.NOT_ALLOWED_PKEY;
+import static org.openwms.core.preferences.api.PreferencesConstants.PROPERTY_SCOPE_NOT_DEFINED;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+/**
+ * A PreferencesController.
+ *
+ * @author Heiko Scherrer
+ */
+@Validated
+@MeasuredRestController
+public class PreferencesController extends AbstractWebController {
+
+<span class="fc" id="L68">    private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesController.class);</span>
+    private final PreferencesService preferencesService;
+    private final Translator translator;
+    private final BeanMapper mapper;
+
+<span class="fc" id="L73">    public PreferencesController(PreferencesService preferencesService, Translator translator, BeanMapper mapper) {</span>
+<span class="fc" id="L74">        this.preferencesService = preferencesService;</span>
+<span class="fc" id="L75">        this.translator = translator;</span>
+<span class="fc" id="L76">        this.mapper = mapper;</span>
+<span class="fc" id="L77">    }</span>
+
+    @GetMapping(API_PREFERENCES + &quot;/index&quot;)
+    public ResponseEntity&lt;Index&gt; index() {
+<span class="nc" id="L81">        return ResponseEntity.ok(</span>
+                new Index(
+<span class="nc" id="L83">                        linkTo(methodOn(PreferencesController.class).findAll()).withRel(&quot;preferences-findall&quot;),</span>
+<span class="nc" id="L84">                        linkTo(methodOn(PreferencesController.class).findByPKey(&quot;pKey&quot;)).withRel(&quot;preferences-findbypkey&quot;),</span>
+<span class="nc" id="L85">                        linkTo(methodOn(PreferencesController.class).findAllOfScope(&quot;{scope}&quot;)).withRel(&quot;preferences-findallofscope&quot;),</span>
+<span class="nc" id="L86">                        linkTo(methodOn(PreferencesController.class).findPreferencesForGroupName(&quot;user&quot;, &quot;USER&quot;, &quot;group1&quot;)).withRel(&quot;preferences-findbyownerscopekey&quot;),</span>
+<span class="nc" id="L87">                        linkTo(methodOn(PreferencesController.class).create(new PreferenceVO(), false)).withRel(&quot;preferences-create&quot;),</span>
+<span class="nc" id="L88">                        linkTo(methodOn(PreferencesController.class).update(&quot;pKey&quot;, new PreferenceVO())).withRel(&quot;preferences-update&quot;),</span>
+<span class="nc" id="L89">                        linkTo(methodOn(PreferencesController.class).delete(&quot;pKey&quot;)).withRel(&quot;preferences-delete&quot;),</span>
+<span class="nc" id="L90">                        linkTo(methodOn(UserPreferencesController.class).findByUser(&quot;user&quot;)).withRel(&quot;user-preferences-findbyuser&quot;),</span>
+<span class="nc" id="L91">                        linkTo(methodOn(UserPreferencesController.class).findByUserAndKey(&quot;user&quot;, &quot;key&quot;)).withRel(&quot;user-preferences-findbyuserandkey&quot;)</span>
+                )
+        );
+    }
+
+    @GetMapping(value = API_PREFERENCES, produces = MEDIA_TYPE)
+    public ResponseEntity&lt;List&lt;PreferenceVO&gt;&gt; findAll() {
+<span class="nc" id="L98">        return ResponseEntity.ok(</span>
+<span class="nc" id="L99">                mapper.map(new ArrayList&lt;&gt;(preferencesService.findAll()), PreferenceVO.class)</span>
+        );
+    }
+
+    @GetMapping(value = API_PREFERENCES + &quot;/{pKey}&quot;)
+    public ResponseEntity&lt;PreferenceVO&gt; findByPKey(
+            @PathVariable(&quot;pKey&quot;) String pKey
+    ) {
+<span class="nc" id="L107">        var result = mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class);</span>
+<span class="nc" id="L108">        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);</span>
+    }
+
+    @GetMapping(value = API_PREFERENCES, params = {&quot;scope&quot;, &quot;key&quot;})
+    public ResponseEntity&lt;PreferenceVO&gt; findForOwnerAndScopeAndKey(
+            @RequestParam(value = &quot;owner&quot;, required = false) String owner,
+            @RequestParam(&quot;scope&quot;) @NotBlank String scope,
+            @RequestParam(&quot;key&quot;) @NotBlank String key
+    ) {
+<span class="nc" id="L117">        var propertyScope = convert(scope);</span>
+<span class="nc" id="L118">        var eoOpt = preferencesService.findForOwnerAndScopeAndKey(owner, propertyScope, key);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        if (eoOpt.isPresent()) {</span>
+<span class="nc" id="L120">            var result = mapper.map(eoOpt.get(), PreferenceVO.class);</span>
+<span class="nc" id="L121">            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);</span>
+        }
+<span class="nc" id="L123">        return ResponseEntity.noContent().build();</span>
+    }
+
+    @GetMapping(value = API_PREFERENCES, params = &quot;scope&quot;)
+    public ResponseEntity&lt;List&lt;PreferenceVO&gt;&gt; findAllOfScope(
+            @RequestParam(&quot;scope&quot;) String scope
+    ) {
+<span class="nc" id="L130">        var propertyScope = convert(scope);</span>
+<span class="nc" id="L131">        var result = mapper.map(</span>
+<span class="nc" id="L132">                new ArrayList&lt;&gt;(preferencesService.findForOwnerAndScope(null, propertyScope)),</span>
+                PreferenceVO.class
+        );
+<span class="nc" id="L135">        return ResponseEntity.ok().body(result);</span>
+    }
+
+    @GetMapping(value = &quot;/preferences/groups&quot;,params = {&quot;scope&quot;, &quot;name&quot;}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;List&lt;PreferenceVO&gt;&gt; findPreferencesForGroupName(
+            @RequestParam(value = &quot;owner&quot;, required = false) String owner,
+            @RequestParam(&quot;scope&quot;) @NotBlank String scope,
+            @RequestParam(&quot;name&quot;) String groupName) {
+<span class="nc" id="L143">        var propertyScope = convert(scope);</span>
+<span class="nc" id="L144">        var groups = preferencesService.findForScopeOwnerGroupName(owner, propertyScope, groupName);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        return groups.isEmpty()</span>
+<span class="nc" id="L146">                ? ResponseEntity.noContent().build()</span>
+<span class="nc" id="L147">                :ResponseEntity.ok(mapper.map(groups, PreferenceVO.class));</span>
+    }
+
+    private PropertyScope convert(String scope) {
+        PropertyScope propertyScope;
+        try {
+<span class="nc" id="L153">            propertyScope = PropertyScope.valueOf(scope);</span>
+<span class="nc" id="L154">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L155">            throw new IllegalArgumentException(translator.translate(PROPERTY_SCOPE_NOT_DEFINED, new String[]{scope}, scope));</span>
+<span class="nc" id="L156">        }</span>
+<span class="nc" id="L157">        return propertyScope;</span>
+    }
+
+    @Transactional
+    @PostMapping(value = API_PREFERENCES)
+    public ResponseEntity&lt;PreferenceVO&gt; create(
+            @RequestBody PreferenceVO preference,
+            @RequestParam(value = &quot;strict&quot;, required = false) Boolean strict
+    ) {
+        PreferenceEO result;
+<span class="nc bnc" id="L167" title="All 4 branches missed.">        if (strict == null || strict == Boolean.FALSE) {</span>
+<span class="nc" id="L168">            var existingPrefOpt = preferencesService.findForOwnerAndScopeAndKey(</span>
+<span class="nc" id="L169">                    preference.getOwner(), PreferenceVOConverter.resolveScope(preference), preference.getKey()</span>
+            );
+<span class="nc bnc" id="L171" title="All 4 branches missed.">            if (existingPrefOpt.isPresent() &amp;&amp; preference.getpKey() != null) {</span>
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {</span>
+<span class="nc" id="L173">                    LOGGER.warn(&quot;The preference to create already exists, strict-mode allows updates but the persistent keys are not the same&quot;);</span>
+<span class="nc" id="L174">                    throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));</span>
+                } else {
+<span class="nc" id="L176">                    var eo = mapper.map(preference, PreferenceEO.class);</span>
+<span class="nc" id="L177">                    eo.setPersistentKey(existingPrefOpt.get().getPersistentKey());</span>
+<span class="nc" id="L178">                    result = preferencesService.update(</span>
+<span class="nc" id="L179">                            existingPrefOpt.get().getPersistentKey(),</span>
+                            eo
+                    );
+<span class="nc" id="L182">                    var vo = mapper.map(result, PreferenceVO.class);</span>
+<span class="nc" id="L183">                    return ResponseEntity</span>
+<span class="nc" id="L184">                            .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())</span>
+<span class="nc" id="L185">                            .header(HttpHeaders.CONTENT_TYPE, &quot;application/json&quot;)</span>
+<span class="nc" id="L186">                            .body(vo);</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L190" title="All 2 branches missed.">        if (preference.hasPKey()) {</span>
+<span class="nc" id="L191">            throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));</span>
+        }
+<span class="nc" id="L193">        ensurePreferenceNotExists(preference);</span>
+<span class="nc" id="L194">        result = preferencesService.create(mapper.map(preference, PreferenceEO.class));</span>
+<span class="nc" id="L195">        var vo = mapper.map(result, PreferenceVO.class);</span>
+<span class="nc" id="L196">        return ResponseEntity</span>
+<span class="nc" id="L197">                .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())</span>
+<span class="nc" id="L198">                .header(HttpHeaders.CONTENT_TYPE, &quot;application/json&quot;)</span>
+<span class="nc" id="L199">                .body(vo);</span>
+    }
+
+    private void ensurePreferenceNotExists(PreferenceVO preference) {
+<span class="nc bnc" id="L203" title="All 5 branches missed.">        var scope = switch (preference) {</span>
+<span class="nc" id="L204">            case UserPreferenceVO ignored -&gt; PropertyScope.USER;</span>
+<span class="nc" id="L205">            case RolePreferenceVO ignored -&gt; PropertyScope.ROLE;</span>
+<span class="nc" id="L206">            case ModulePreferenceVO ignored -&gt; PropertyScope.MODULE;</span>
+<span class="nc" id="L207">            case ApplicationPreferenceVO ignored -&gt; PropertyScope.APPLICATION;</span>
+<span class="nc" id="L208">            case null, default -&gt; throw new IllegalArgumentException(&quot;Not implemented Preference type&quot;);</span>
+        };
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        if (preferencesService.existsForOwnerAndScopeAndKey(preference.getOwner(), scope, preference.getKey())) {</span>
+<span class="nc" id="L211">            throw new ResourceExistsException(</span>
+                    translator,
+                    ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,
+<span class="nc" id="L214">                    new Serializable[]{preference.getKey(), preference.getOwner(), scope},</span>
+<span class="nc" id="L215">                    preference.getKey(), preference.getOwner(), scope</span>
+            );
+        }
+<span class="nc" id="L218">    }</span>
+
+    @PutMapping(API_PREFERENCES + &quot;/{pKey}&quot;)
+    public ResponseEntity&lt;PreferenceVO&gt; update(
+            @PathVariable(&quot;pKey&quot;) String pKey,
+            @RequestBody PreferenceVO preference
+    ) {
+<span class="nc" id="L225">        var vo = mapper.map(preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class)), PreferenceVO.class);</span>
+<span class="nc" id="L226">        return ResponseEntity</span>
+<span class="nc" id="L227">                .ok()</span>
+<span class="nc" id="L228">                .header(HttpHeaders.CONTENT_TYPE, vo.getContentType())</span>
+<span class="nc" id="L229">                .body(vo);</span>
+    }
+
+    @DeleteMapping(API_PREFERENCES + &quot;/{pKey}&quot;)
+    ResponseEntity&lt;Void&gt; delete(
+            @PathVariable(&quot;pKey&quot;) String pKey
+    ) {
+<span class="nc" id="L236">        preferencesService.delete(pKey);</span>
+<span class="nc" id="L237">        return ResponseEntity.noContent().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
