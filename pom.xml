@@ -23,7 +23,7 @@
             <url>https://openwms.github.io/</url>
             <organization>Interface21.io</organization>
             <organizationUrl>https://www.interface21.io</organizationUrl>
-            <timezone>+2</timezone>
+            <timezone>+1</timezone>
             <roles>
                 <role>Project Lead</role>
                 <role>Architect</role>
