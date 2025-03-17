@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>Index</title>
+<title>UserPreference</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,46 +439,110 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="resources-index">Index</h2>
+<h2 id="_userpreference">UserPreference</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The initial HTTP request to retrieve information about all available resources looks like the following. The Index page is a public
-available resource and does not need any authentication.</p>
+<p>A <code>UserPreference</code> is a <code>Preference</code> that is only valid for a single user.</p>
+</div>
+<div class="sect2">
+<h3 id="_find_all_userpreferences_of_an_user_user_preferences_findbyuser">Find all UserPreferences of an User (user-preferences-findbyuser)</h3>
+<div class="paragraph">
+<p>Send a HTTP GET request without the user name as query parameter to find all existing <code>UserPreferences</code> of that user.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /index HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?user=owner1 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The Index resource is returned in the response body with the response status of 200-OK. This main Index lists all primary resource entities
-to follow next.</p>
+<p>The server responds with an array of all <code>UserPreferences</code>, that might be empty if no <code>UserPreferences</code> exist.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 488
+
+[ {
+  "@class" : "org.openwms.core.preferences.api.UserPreferenceVO",
+  "pKey" : "1000",
+  "key" : "key1",
+  "owner" : "owner1",
+  "description" : "String description",
+  "value" : "current val",
+  "groupName" : "GLOBAL",
+  "type" : "STRING"
+}, {
+  "@class" : "org.openwms.core.preferences.api.UserPreferenceVO",
+  "pKey" : "1001",
+  "key" : "key2",
+  "owner" : "owner1",
+  "description" : "String description",
+  "value" : "current val",
+  "groupName" : "GLOBAL",
+  "type" : "STRING"
+} ]</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_find_a_userpreference_by_key_user_preferences_findbyuserandkey">Find a UserPreference by Key (user-preferences-findbyuserandkey)</h3>
+<div class="paragraph">
+<p>Send a HTTP GET request with the persistent key and the user name as query parameters to find and return the <code>UserPreference</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?user=owner1&amp;key=key1 HTTP/1.1
+Host: localhost:8080</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The server returns the <code>UserPreference</code> if exists.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 116
+Content-Length: 241
 
 {
-  "_links" : {
-    "preferences-index" : {
-      "href" : "http://localhost:8080/v1/preferences/index"
-    }
-  }
+  "@class" : "org.openwms.core.preferences.api.UserPreferenceVO",
+  "pKey" : "1000",
+  "key" : "key1",
+  "owner" : "owner1",
+  "description" : "String description",
+  "value" : "current val",
+  "groupName" : "GLOBAL",
+  "type" : "STRING"
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>A client application must only know about the agreed link names and follow the corresponding <code>href</code> link to navigate further.</p>
+<p>or responds with a <code>404 NOT-FOUND</code> if the <code>UserPreference</code> does not exist.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
+Content-Type: application/hal+json
+Content-Length: 256
+
+{
+  "message" : "Preference key [UNKNOWN] and owner [owner1] and scope [USER] does not exist",
+  "messageKey" : "owms.core.preferences.notFoundByOwnerAndScopeAndKey",
+  "obj" : [ "UNKNOWN", "owner1", "USER" ],
+  "httpStatus" : "404",
+  "class" : "String"
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-03-17 16:56:05 UTC
+Last updated 2025-03-17 17:32:39 UTC
 </div>
 </div>
 </body>
