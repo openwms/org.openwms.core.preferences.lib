@@ -23,7 +23,7 @@ jobs:
         ports:
           - 5672:5672
       postgres:
-        image: openwms/postgres-image:latest
+        image: openwms/postgres-image:17
         env:
           POSTGRES_PASSWORD: postgres
         # Set health checks to wait until postgres has started
@@ -75,12 +75,12 @@ jobs:
           -Dscmpublish.pubScmUrl=scm:git:https://openwms:$PUSHKEY@github.com/openwms/org.openwms.core.preferences.lib.git
           -DdeveloperConnectionUrl=scm:git:https://openwms:$PUSHKEY@github.com/openwms/org.openwms.core.preferences.lib.git
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
-          -Pschemagen,release -B $MAVEN_OPTS
+          -Pschemagen,release,coverage -B $MAVEN_OPTS
         env:
           PUSHKEY: ${{ secrets.GITHUB_TOKEN }}
       - name: Sonar
         run: >
-          ./mvnw verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
+          ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
           -DsurefireArgs="-Dspring.profiles.active=ASYNCHRONOUS,TEST"
           -Dspring.rabbitmq.host=localhost
           -Dsonar.login=$SONAR_TOKEN
