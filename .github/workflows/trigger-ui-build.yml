@@ -15,7 +15,7 @@ on:
       workflow2_github_account:
         description: 'GitHub Account Owner'
         required: true
-        default: 'interface21-io'
+        default: 'openwms'
 
       workflow2_repo_github:
         description: 'repo-name'
@@ -29,7 +29,7 @@ jobs:
     steps:
       - name: Trigger
         run: |
-          curl -X POST https://api.github.com/repos/interface21-io/org.openwms.core.preferences.ui/dispatches \
+          curl -X POST https://api.github.com/repos/openwms/org.openwms.core.preferences.ui/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
           -u ${{ secrets.PAT }} \
           --data '{"event_type": "Remote Trigger", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
