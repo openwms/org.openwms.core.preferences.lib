@@ -37,6 +37,7 @@
         <core.test.arch.version>1.0.2</core.test.arch.version>
         <core.version>3.0.0</core.version>
         <dozer.version>7.0.0</dozer.version>
+        <schemaspy-maven-plugin.version>5.3.1</schemaspy-maven-plugin.version>
         <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
     </properties>
 
