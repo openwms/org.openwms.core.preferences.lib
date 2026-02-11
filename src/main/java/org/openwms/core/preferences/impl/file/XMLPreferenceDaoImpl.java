@@ -64,7 +64,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
     private final Map<PreferenceKey, GenericPreference> prefs = new ConcurrentHashMap<>();
 
     XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller,
-            @Value("${openwms.core.config.initial-properties}") String fileName) {
+            @Value("${openwms.core.config.initial-properties:}") String fileName) {
         this.ctx = ctx;
         this.unmarshaller = unmarshaller;
         this.fileName = fileName;

@@ -22,15 +22,15 @@ package org.openwms.core.preferences;
  */
 public enum PropertyScope {
 
-    /** This kind of preferences belong to the main application. */
+    /** This kind of preference belongs to the main application. */
     APPLICATION,
 
-    /** This kind of preferences are specific to a {@code Module}. */
+    /** This kind of preference is specific to a {@code Module}. */
     MODULE,
 
-    /** This kind of preferences belong to a particular {@code Role}. */
+    /** This kind of preference belongs to a particular {@code Role}. */
     ROLE,
 
-    /** This kind of preferences belong to a certain {@code User}. */
+    /** This kind of preference belongs to a certain {@code User}. */
     USER;
 }

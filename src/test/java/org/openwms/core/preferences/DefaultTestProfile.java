@@ -26,7 +26,7 @@ public class DefaultTestProfile {
 
     @BeforeAll
     static void onBeforeAll() {
-        String property = System.getProperty("spring.profiles.active", "");
+        var property = System.getProperty("spring.profiles.active", "");
         if ("".equals(property)) {
             System.setProperty("spring.profiles.active", "TEST");
         }

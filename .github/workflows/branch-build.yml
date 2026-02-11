@@ -36,8 +36,8 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build
         run: >
-          ./mvnw clean verify
-          -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST
+          ./mvnw verify
+          -DsurefireArgs=-Dspring.profiles.active=AMQP,TEST
           -Dspring.rabbitmq.host=localhost
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -U -B $MAVEN_OPTS

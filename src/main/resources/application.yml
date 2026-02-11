@@ -1,9 +1,0 @@
-eureka:
-  client:
-    healthcheck:
-      enabled: true
-
-openwms:
-  core:
-    config:
-      initial-properties: classpath:initial-preferences.xml
