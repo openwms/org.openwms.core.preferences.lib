@@ -40,6 +40,7 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
 
     /** The persistent key of the resource. */
     @JsonProperty("pKey")
+    @Size(max = 36)
     private String pKey;
 
     /** The unique business key (along other identifying properties) of the resource, must not be {@literal null}. */
