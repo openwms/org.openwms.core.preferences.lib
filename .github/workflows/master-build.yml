@@ -2,6 +2,8 @@ name: 'master_build'
 on:
   push:
     branches: [ master ]
+  schedule:
+    - cron: "0 2 * * *" # Every day 2pm UTC to deploy snapshots
 
 env:
   MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
