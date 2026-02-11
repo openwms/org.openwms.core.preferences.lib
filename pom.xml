@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>27.2</version>
+        <version>27.7</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences.lib</artifactId>
@@ -23,7 +23,7 @@
             <url>https://openwms.github.io/</url>
             <organization>Interface21.io</organization>
             <organizationUrl>https://www.interface21.io</organizationUrl>
-            <timezone>+1</timezone>
+            <timezone>+2</timezone>
             <roles>
                 <role>Project Lead</role>
                 <role>Architect</role>
@@ -37,8 +37,7 @@
         <core.test.arch.version>1.0.2</core.test.arch.version>
         <core.version>3.0.0</core.version>
         <dozer.version>7.0.0</dozer.version>
-        <schemaspy-maven-plugin.version>5.3.1</schemaspy-maven-plugin.version>
-        <spring-cloud-dependencies.version>2024.0.0</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
     </properties>
 
     <reporting>
@@ -75,7 +74,6 @@
                             <version>${org.mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <enablePreview>false</enablePreview>
                     <compilerArgs>
                         <arg>
                             -Amapstruct.defaultComponentModel=spring
@@ -93,6 +91,7 @@
                             -Amapstruct.verbose=true
                         </arg>
                     </compilerArgs>
+                    <enablePreview>false</enablePreview>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
@@ -295,12 +294,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>net.logstash.logback</groupId>
-            <artifactId>logstash-logback-encoder</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <optional>true</optional>
@@ -344,14 +337,14 @@
 
     <repositories>
         <repository>
-            <id>sonatype-nexus-staging</id>
-            <name>Staging Repository</name>
-            <url>https://oss.sonatype.org/content/groups/staging/</url>
+            <id>central-portal-snapshots</id>
+            <name>Central Portal Snapshots</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </releases>
         </repository>
     </repositories>

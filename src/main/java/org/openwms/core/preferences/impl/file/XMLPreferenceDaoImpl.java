@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
     private final Map<PreferenceKey, GenericPreference> prefs = new ConcurrentHashMap<>();
 
     XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller,
-            @Value("${openwms.core.config.initial-properties}") String fileName) {
+            @Value("${openwms.core.config.initial-properties:}") String fileName) {
         this.ctx = ctx;
         this.unmarshaller = unmarshaller;
         this.fileName = fileName;

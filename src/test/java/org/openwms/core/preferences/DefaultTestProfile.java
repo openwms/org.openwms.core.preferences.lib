@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ public class DefaultTestProfile {
 
     @BeforeAll
     static void onBeforeAll() {
-        String property = System.getProperty("spring.profiles.active", "");
+        var property = System.getProperty("spring.profiles.active", "");
         if ("".equals(property)) {
             System.setProperty("spring.profiles.active", "TEST");
         }
