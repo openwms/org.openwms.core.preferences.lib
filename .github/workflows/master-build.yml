@@ -3,7 +3,7 @@ on:
   push:
     branches: [ master ]
   schedule:
-    - cron: "0 2 * * *" # Every day 2pm UTC to deploy snapshots
+    - cron: "0 2 * * *" # Every day at 02:00 to deploy snapshots
 
 env:
   MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
@@ -132,8 +132,11 @@ jobs:
         run: |
           curl -X POST https://api.github.com/repos/openwms/org.openwms.core.preferences.ui/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
-          -u ${{ secrets.PAT }} \
+          -H "Authorization: Bearer ${DISPATCH_TOKEN}" \
+          --fail-with-body \
           --data '{"event_type": "Remote Trigger", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+        env:
+          DISPATCH_TOKEN: ${{ secrets.PAT }}
       - uses: actions/checkout@v3
 
   sonar_job:

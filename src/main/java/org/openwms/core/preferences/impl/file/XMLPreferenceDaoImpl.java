@@ -44,7 +44,7 @@ import static java.lang.String.format;
 
 /**
  * A XMLPreferenceDaoImpl reads an XML file of {@code Preferences} and keeps them in-memory in a Map. An initial preferences file can be
- * configured with a property {@literal openwms.core.config.initial-properties} in the {@literal application.properties} file.
+ * configured with a property {@literal owms.core.config.initial-properties} in the {@literal application.properties} file.
  *
  * <p>On a {@link ReloadFilePreferencesEvent} the internal Map is cleared and reloaded.</p>
  *
@@ -64,7 +64,7 @@ class XMLPreferenceDaoImpl implements PreferenceDao, ApplicationListener<ReloadF
     private final Map<PreferenceKey, GenericPreference> prefs = new ConcurrentHashMap<>();
 
     XMLPreferenceDaoImpl(ApplicationContext ctx, Unmarshaller unmarshaller,
-            @Value("${openwms.core.config.initial-properties:}") String fileName) {
+            @Value("${owms.core.config.initial-properties:}") String fileName) {
         this.ctx = ctx;
         this.unmarshaller = unmarshaller;
         this.fileName = fileName;
