@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceVO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.api</a> &gt; <span class="el_source">PreferenceVO.java</span></div><h1>PreferenceVO.java</h1><pre class="source lang-java linenums">/*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ import java.util.Objects;
 
     /** The persistent key of the resource. */
     @JsonProperty(&quot;pKey&quot;)
+    @Size(max = 36)
     private String pKey;
 
     /** The unique business key (along other identifying properties) of the resource, must not be {@literal null}. */
@@ -75,65 +76,65 @@ import java.util.Objects;
     private String type;
 
     public String getpKey() {
-<span class="fc" id="L78">        return pKey;</span>
+<span class="fc" id="L79">        return pKey;</span>
     }
 
     @JsonIgnore
     public boolean hasPKey() {
-<span class="pc bpc" id="L83" title="3 of 4 branches missed.">        return this.pKey != null &amp;&amp; !this.pKey.isEmpty();</span>
+<span class="pc bpc" id="L84" title="3 of 4 branches missed.">        return this.pKey != null &amp;&amp; !this.pKey.isEmpty();</span>
     }
 
     public void setpKey(String pKey) {
-<span class="fc" id="L87">        this.pKey = pKey;</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L88">        this.pKey = pKey;</span>
+<span class="fc" id="L89">    }</span>
 
     public String getKey() {
-<span class="fc" id="L91">        return key;</span>
+<span class="fc" id="L92">        return key;</span>
     }
 
     public void setKey(String key) {
-<span class="fc" id="L95">        this.key = key;</span>
-<span class="fc" id="L96">    }</span>
+<span class="fc" id="L96">        this.key = key;</span>
+<span class="fc" id="L97">    }</span>
 
     public String getOwner() {
-<span class="fc" id="L99">        return owner;</span>
+<span class="fc" id="L100">        return owner;</span>
     }
 
     public void setOwner(String owner) {
-<span class="fc" id="L103">        this.owner = owner;</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L104">        this.owner = owner;</span>
+<span class="fc" id="L105">    }</span>
 
     public String getDescription() {
-<span class="fc" id="L107">        return description;</span>
+<span class="fc" id="L108">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="fc" id="L111">        this.description = description;</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L112">        this.description = description;</span>
+<span class="fc" id="L113">    }</span>
 
     public Serializable getVal() {
-<span class="fc" id="L115">        return val;</span>
+<span class="fc" id="L116">        return val;</span>
     }
 
     public void setVal(Serializable val) {
-<span class="fc" id="L119">        this.val = val;</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L120">        this.val = val;</span>
+<span class="fc" id="L121">    }</span>
 
     public String getGroupName() {
-<span class="fc" id="L123">        return groupName;</span>
+<span class="fc" id="L124">        return groupName;</span>
     }
 
     public void setGroupName(String groupName) {
-<span class="fc" id="L127">        this.groupName = groupName;</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L128">        this.groupName = groupName;</span>
+<span class="fc" id="L129">    }</span>
 
     public String getType() {
-<span class="fc" id="L131">        return type;</span>
+<span class="fc" id="L132">        return type;</span>
     }
 
     public void setType(String type) {
-<span class="fc" id="L135">        this.type = type;</span>
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L136">        this.type = type;</span>
+<span class="fc" id="L137">    }</span>
 
     /**
      * {@inheritDoc}
@@ -142,17 +143,17 @@ import java.util.Objects;
      */
     @Override
     public boolean equals(Object o) {
-<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (this == o) return true;</span>
-<span class="nc bnc" id="L146" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
-<span class="nc" id="L148">        PreferenceVO that = (PreferenceVO) o;</span>
-<span class="nc bnc" id="L149" title="All 2 branches missed.">        return Objects.equals(pKey, that.pKey) &amp;&amp;</span>
-<span class="nc bnc" id="L150" title="All 2 branches missed.">                Objects.equals(key, that.key) &amp;&amp;</span>
-<span class="nc bnc" id="L151" title="All 2 branches missed.">                Objects.equals(owner, that.owner) &amp;&amp;</span>
-<span class="nc bnc" id="L152" title="All 2 branches missed.">                Objects.equals(description, that.description) &amp;&amp;</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">                Objects.equals(val, that.val) &amp;&amp;</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">                Objects.equals(groupName, that.groupName) &amp;&amp;</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">                Objects.equals(type, that.type);</span>
+<span class="nc bnc" id="L146" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L147" title="All 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (!super.equals(o)) return false;</span>
+<span class="nc" id="L149">        PreferenceVO that = (PreferenceVO) o;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        return Objects.equals(pKey, that.pKey) &amp;&amp;</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                Objects.equals(key, that.key) &amp;&amp;</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">                Objects.equals(owner, that.owner) &amp;&amp;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                Objects.equals(description, that.description) &amp;&amp;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                Objects.equals(val, that.val) &amp;&amp;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                Objects.equals(groupName, that.groupName) &amp;&amp;</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                Objects.equals(type, that.type);</span>
     }
 
     /**
@@ -162,7 +163,7 @@ import java.util.Objects;
      */
     @Override
     public int hashCode() {
-<span class="nc" id="L165">        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);</span>
+<span class="nc" id="L166">        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);</span>
     }
 
     /**
@@ -172,7 +173,7 @@ import java.util.Objects;
      */
     @JsonIgnore
     public String getContentType() {
-<span class="nc" id="L175">        return MEDIA_TYPE;</span>
+<span class="nc" id="L176">        return MEDIA_TYPE;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

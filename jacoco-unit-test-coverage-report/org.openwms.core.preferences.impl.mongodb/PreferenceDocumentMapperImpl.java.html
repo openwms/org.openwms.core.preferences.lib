@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceDocumentMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.impl.mongodb</a> &gt; <span class="el_source">PreferenceDocumentMapperImpl.java</span></div><h1>PreferenceDocumentMapperImpl.java</h1><pre class="source lang-java linenums">package org.openwms.core.preferences.impl.mongodb;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.openwms.core.preferences.Preference;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;
+)
+@Component
+<span class="fc" id="L13">public class PreferenceDocumentMapperImpl implements PreferenceDocumentMapper {</span>
+
+    @Override
+    public Preference toDomain(PreferenceDocument document) {
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if ( document == null ) {</span>
+<span class="nc" id="L18">            return null;</span>
+        }
+
+<span class="nc" id="L21">        Preference.Builder preference = Preference.newBuilder();</span>
+
+<span class="nc" id="L23">        preference.pKey( document.getPKey() );</span>
+<span class="nc" id="L24">        preference.key( document.getKey() );</span>
+<span class="nc" id="L25">        preference.owner( document.getOwner() );</span>
+<span class="nc" id="L26">        preference.description( document.getDescription() );</span>
+<span class="nc" id="L27">        preference.val( document.getVal() );</span>
+<span class="nc" id="L28">        preference.defValue( document.getDefValue() );</span>
+<span class="nc" id="L29">        preference.minValue( document.getMinValue() );</span>
+<span class="nc" id="L30">        preference.maxValue( document.getMaxValue() );</span>
+<span class="nc" id="L31">        preference.groupName( document.getGroupName() );</span>
+<span class="nc" id="L32">        preference.scope( document.getScope() );</span>
+<span class="nc" id="L33">        preference.type( document.getType() );</span>
+<span class="nc" id="L34">        preference.fromFile( document.isFromFile() );</span>
+<span class="nc" id="L35">        preference.lastModifiedDt( document.getLastModifiedDt() );</span>
+
+<span class="nc" id="L37">        return preference.build();</span>
+    }
+
+    @Override
+    public List&lt;Preference&gt; toDomainList(List&lt;PreferenceDocument&gt; documents) {
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if ( documents == null ) {</span>
+<span class="nc" id="L43">            return null;</span>
+        }
+
+<span class="nc" id="L46">        List&lt;Preference&gt; list = new ArrayList&lt;Preference&gt;( documents.size() );</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        for ( PreferenceDocument preferenceDocument : documents ) {</span>
+<span class="nc" id="L48">            list.add( toDomain( preferenceDocument ) );</span>
+<span class="nc" id="L49">        }</span>
+
+<span class="nc" id="L51">        return list;</span>
+    }
+
+    @Override
+    public PreferenceDocument toDocument(Preference preference) {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if ( preference == null ) {</span>
+<span class="nc" id="L57">            return null;</span>
+        }
+
+<span class="nc" id="L60">        PreferenceDocument preferenceDocument = new PreferenceDocument();</span>
+
+<span class="nc" id="L62">        preferenceDocument.setPKey( preference.getPKey() );</span>
+<span class="nc" id="L63">        preferenceDocument.setKey( preference.getKey() );</span>
+<span class="nc" id="L64">        preferenceDocument.setOwner( preference.getOwner() );</span>
+<span class="nc" id="L65">        preferenceDocument.setDescription( preference.getDescription() );</span>
+<span class="nc" id="L66">        preferenceDocument.setVal( preference.getVal() );</span>
+<span class="nc" id="L67">        preferenceDocument.setDefValue( preference.getDefValue() );</span>
+<span class="nc" id="L68">        preferenceDocument.setMinValue( preference.getMinValue() );</span>
+<span class="nc" id="L69">        preferenceDocument.setMaxValue( preference.getMaxValue() );</span>
+<span class="nc" id="L70">        preferenceDocument.setGroupName( preference.getGroupName() );</span>
+<span class="nc" id="L71">        preferenceDocument.setScope( preference.getScope() );</span>
+<span class="nc" id="L72">        preferenceDocument.setType( preference.getType() );</span>
+<span class="nc" id="L73">        preferenceDocument.setFromFile( preference.isFromFile() );</span>
+<span class="nc" id="L74">        preferenceDocument.setLastModifiedDt( preference.getLastModifiedDt() );</span>
+
+<span class="nc" id="L76">        return preferenceDocument;</span>
+    }
+
+    @Override
+    public PreferenceDocument updateDocument(Preference preference, PreferenceDocument document) {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if ( preference == null ) {</span>
+<span class="nc" id="L82">            return document;</span>
+        }
+
+<span class="nc" id="L85">        document.setPKey( preference.getPKey() );</span>
+<span class="nc" id="L86">        document.setKey( preference.getKey() );</span>
+<span class="nc" id="L87">        document.setOwner( preference.getOwner() );</span>
+<span class="nc" id="L88">        document.setDescription( preference.getDescription() );</span>
+<span class="nc" id="L89">        document.setVal( preference.getVal() );</span>
+<span class="nc" id="L90">        document.setDefValue( preference.getDefValue() );</span>
+<span class="nc" id="L91">        document.setMinValue( preference.getMinValue() );</span>
+<span class="nc" id="L92">        document.setMaxValue( preference.getMaxValue() );</span>
+<span class="nc" id="L93">        document.setGroupName( preference.getGroupName() );</span>
+<span class="nc" id="L94">        document.setScope( preference.getScope() );</span>
+<span class="nc" id="L95">        document.setType( preference.getType() );</span>
+<span class="nc" id="L96">        document.setFromFile( preference.isFromFile() );</span>
+<span class="nc" id="L97">        document.setLastModifiedDt( preference.getLastModifiedDt() );</span>
+
+<span class="nc" id="L99">        return document;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

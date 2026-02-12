@@ -7,3 +7,4 @@ org.openwms.core.preferences.impl
 org.openwms.core.preferences.impl.events
 org.openwms.core.preferences.impl.file
 org.openwms.core.preferences.impl.jpa
+org.openwms.core.preferences.impl.mongodb

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PreferenceEOMapperImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences.impl.jpa</a> &gt; <span class="el_source">PreferenceEOMapperImpl.java</span></div><h1>PreferenceEOMapperImpl.java</h1><pre class="source lang-java linenums">package org.openwms.core.preferences.impl.jpa;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.processing.Generated;
+import org.openwms.core.preferences.Preference;
+import org.springframework.stereotype.Component;
+
+@Generated(
+    value = &quot;org.mapstruct.ap.MappingProcessor&quot;
+)
+@Component
+<span class="fc" id="L13">class PreferenceEOMapperImpl implements PreferenceEOMapper {</span>
+
+    @Override
+    public Preference toDomain(PreferenceEO eo) {
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if ( eo == null ) {</span>
+<span class="nc" id="L18">            return null;</span>
+        }
+
+<span class="fc" id="L21">        Preference preference = new Preference();</span>
+
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if ( eo.hasPersistentKey() ) {</span>
+<span class="fc" id="L24">            preference.setPKey( eo.getPersistentKey() );</span>
+        }
+<span class="fc" id="L26">        preference.setKey( eo.getKey() );</span>
+<span class="fc" id="L27">        preference.setOwner( eo.getOwner() );</span>
+<span class="fc" id="L28">        preference.setDescription( eo.getDescription() );</span>
+<span class="fc" id="L29">        preference.setVal( eo.getVal() );</span>
+<span class="fc" id="L30">        preference.setDefValue( eo.getDefValue() );</span>
+<span class="fc" id="L31">        preference.setMinValue( eo.getMinValue() );</span>
+<span class="fc" id="L32">        preference.setMaxValue( eo.getMaxValue() );</span>
+<span class="fc" id="L33">        preference.setGroupName( eo.getGroupName() );</span>
+<span class="fc" id="L34">        preference.setScope( eo.getScope() );</span>
+<span class="fc" id="L35">        preference.setType( eo.getType() );</span>
+<span class="fc" id="L36">        preference.setFromFile( eo.isFromFile() );</span>
+<span class="fc" id="L37">        preference.setLastModifiedDt( eo.getLastModifiedDt() );</span>
+
+<span class="fc" id="L39">        return preference;</span>
+    }
+
+    @Override
+    public List&lt;Preference&gt; toDomainList(List&lt;PreferenceEO&gt; eos) {
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if ( eos == null ) {</span>
+<span class="nc" id="L45">            return null;</span>
+        }
+
+<span class="fc" id="L48">        List&lt;Preference&gt; list = new ArrayList&lt;Preference&gt;( eos.size() );</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for ( PreferenceEO preferenceEO : eos ) {</span>
+<span class="fc" id="L50">            list.add( toDomain( preferenceEO ) );</span>
+<span class="fc" id="L51">        }</span>
+
+<span class="fc" id="L53">        return list;</span>
+    }
+
+    @Override
+    public PreferenceEO toEntity(Preference preference) {
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if ( preference == null ) {</span>
+<span class="nc" id="L59">            return null;</span>
+        }
+
+<span class="fc" id="L62">        PreferenceEO preferenceEO = new PreferenceEO();</span>
+
+<span class="fc" id="L64">        preferenceEO.setPersistentKey( preference.getPKey() );</span>
+<span class="fc" id="L65">        preferenceEO.setKey( preference.getKey() );</span>
+<span class="fc" id="L66">        preferenceEO.setOwner( preference.getOwner() );</span>
+<span class="fc" id="L67">        preferenceEO.setDescription( preference.getDescription() );</span>
+<span class="fc" id="L68">        preferenceEO.setVal( preference.getVal() );</span>
+<span class="fc" id="L69">        preferenceEO.setFromFile( preference.isFromFile() );</span>
+<span class="fc" id="L70">        preferenceEO.setScope( preference.getScope() );</span>
+<span class="fc" id="L71">        preferenceEO.setDefValue( preference.getDefValue() );</span>
+<span class="fc" id="L72">        preferenceEO.setMinValue( preference.getMinValue() );</span>
+<span class="fc" id="L73">        preferenceEO.setMaxValue( preference.getMaxValue() );</span>
+<span class="fc" id="L74">        preferenceEO.setGroupName( preference.getGroupName() );</span>
+<span class="fc" id="L75">        preferenceEO.setType( preference.getType() );</span>
+
+<span class="fc" id="L77">        return preferenceEO;</span>
+    }
+
+    @Override
+    public PreferenceEO updateEntity(Preference preference, PreferenceEO eo) {
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">        if ( preference == null ) {</span>
+<span class="nc" id="L83">            return eo;</span>
+        }
+
+<span class="fc" id="L86">        eo.setKey( preference.getKey() );</span>
+<span class="fc" id="L87">        eo.setOwner( preference.getOwner() );</span>
+<span class="fc" id="L88">        eo.setDescription( preference.getDescription() );</span>
+<span class="fc" id="L89">        eo.setVal( preference.getVal() );</span>
+<span class="fc" id="L90">        eo.setFromFile( preference.isFromFile() );</span>
+<span class="fc" id="L91">        eo.setScope( preference.getScope() );</span>
+<span class="fc" id="L92">        eo.setDefValue( preference.getDefValue() );</span>
+<span class="fc" id="L93">        eo.setMinValue( preference.getMinValue() );</span>
+<span class="fc" id="L94">        eo.setMaxValue( preference.getMaxValue() );</span>
+<span class="fc" id="L95">        eo.setGroupName( preference.getGroupName() );</span>
+<span class="fc" id="L96">        eo.setType( preference.getType() );</span>
+
+<span class="fc" id="L98">        return eo;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

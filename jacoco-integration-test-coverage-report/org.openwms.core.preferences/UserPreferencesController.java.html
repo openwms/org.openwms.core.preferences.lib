@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserPreferencesController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OpenWMS.org CORE: Preferences Library</a> &gt; <a href="index.source.html" class="el_package">org.openwms.core.preferences</a> &gt; <span class="el_source">UserPreferencesController.java</span></div><h1>UserPreferencesController.java</h1><pre class="source lang-java linenums">/*
- * Copyright 2005-2025 the original author or authors.
+ * Copyright 2005-2026 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.preferences.api.PreferencesApi;
 import org.openwms.core.preferences.api.PreferencesConstants;
@@ -44,22 +43,21 @@ public class UserPreferencesController extends AbstractWebController {
 
     private final PreferencesService preferencesService;
     private final Translator translator;
-    private final BeanMapper mapper;
+    private final PreferenceVOMapper preferenceVOMapper;
 
-<span class="fc" id="L49">    public UserPreferencesController(PreferencesService preferencesService, Translator translator, BeanMapper mapper) {</span>
-<span class="fc" id="L50">        this.preferencesService = preferencesService;</span>
-<span class="fc" id="L51">        this.translator = translator;</span>
-<span class="fc" id="L52">        this.mapper = mapper;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L48">    public UserPreferencesController(PreferencesService preferencesService, Translator translator, PreferenceVOMapper preferenceVOMapper) {</span>
+<span class="fc" id="L49">        this.preferencesService = preferencesService;</span>
+<span class="fc" id="L50">        this.translator = translator;</span>
+<span class="fc" id="L51">        this.preferenceVOMapper = preferenceVOMapper;</span>
+<span class="fc" id="L52">    }</span>
 
     @GetMapping(value = PreferencesApi.API_PREFERENCES, params = &quot;user&quot;)
     public ResponseEntity&lt;List&lt;UserPreferenceVO&gt;&gt; findByUser(
             @RequestParam(&quot;user&quot;) @NotBlank String user
     ) {
-<span class="fc" id="L59">        return ResponseEntity.ok(mapper.map(</span>
-<span class="fc" id="L60">                        new ArrayList&lt;&gt;(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)),</span>
-                        UserPreferenceVO.class)
-                );
+<span class="fc" id="L58">        return ResponseEntity.ok(</span>
+<span class="fc" id="L59">                preferenceVOMapper.toUserVOList(new ArrayList&lt;&gt;(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)))</span>
+        );
     }
 
     @GetMapping(value = PreferencesApi.API_PREFERENCES, params = {&quot;user&quot;, &quot;key&quot;})
@@ -67,19 +65,18 @@ public class UserPreferencesController extends AbstractWebController {
             @RequestParam(&quot;user&quot;) @NotBlank String user,
             @RequestParam(&quot;key&quot;) @NotBlank String key
     ) {
-<span class="fc" id="L70">        return ResponseEntity.ok(</span>
-<span class="fc" id="L71">                mapper.map(</span>
-<span class="fc" id="L72">                        preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)</span>
-<span class="fc" id="L73">                                .orElseThrow(() -&gt;</span>
-<span class="fc" id="L74">                                        new NotFoundException(</span>
+<span class="fc" id="L68">        return ResponseEntity.ok(</span>
+<span class="fc" id="L69">                preferenceVOMapper.toUserVO(</span>
+<span class="fc" id="L70">                        preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)</span>
+<span class="fc" id="L71">                                .orElseThrow(() -&gt;</span>
+<span class="fc" id="L72">                                        new NotFoundException(</span>
                                                 translator,
                                                 PreferencesConstants.NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY,
                                                 new Serializable[]{key, user, PropertyScope.USER}, key, user, PropertyScope.USER
                                         )
-                                ),
-                        UserPreferenceVO.class
+                                )
                 )
         );
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
