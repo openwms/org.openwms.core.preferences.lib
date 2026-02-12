@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.openwms.core.preferences.impl.jpa;
+package org.openwms.core.preferences.impl;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,11 +22,12 @@ import org.ameba.annotation.TxService;
 import org.ameba.exception.NotFoundException;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.core.preferences.NotAuthorizedException;
+import org.openwms.core.preferences.Preference;
 import org.openwms.core.preferences.PreferencesEvent;
 import org.openwms.core.preferences.PreferencesService;
 import org.openwms.core.preferences.PropertyScope;
+import org.openwms.core.preferences.impl.file.FilePreferenceMapper;
 import org.openwms.core.preferences.impl.file.PreferenceDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,15 +57,15 @@ class PreferencesServiceImpl implements PreferencesService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesServiceImpl.class);
     private final PreferenceDao fileDao;
-    private final PreferenceRepository preferenceRepository;
-    private final BeanMapper mapper;
+    private final PreferencePersistencePort persistencePort;
+    private final FilePreferenceMapper filePreferenceMapper;
     private final Translator translator;
     private final ApplicationContext ctx;
 
-    PreferencesServiceImpl(PreferenceDao fileDao, PreferenceRepository preferenceRepository, BeanMapper mapper, Translator translator, ApplicationContext ctx) {
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferencePersistencePort persistencePort, FilePreferenceMapper filePreferenceMapper, Translator translator, ApplicationContext ctx) {
         this.fileDao = fileDao;
-        this.preferenceRepository = preferenceRepository;
-        this.mapper = mapper;
+        this.persistencePort = persistencePort;
+        this.filePreferenceMapper = filePreferenceMapper;
         this.translator = translator;
         this.ctx = ctx;
     }
@@ -74,12 +75,12 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull PreferenceEO findByPKey(@NotBlank String pKey) {
+    public @NotNull Preference findByPKey(@NotBlank String pKey) {
         return findByPKeyInternal(pKey);
     }
 
-    private PreferenceEO findByPKeyInternal(String pKey) {
-        return preferenceRepository.findBypKey(pKey).orElseThrow(
+    private Preference findByPKeyInternal(String pKey) {
+        return persistencePort.findBypKey(pKey).orElseThrow(
                 () -> new NotFoundException(translator, NOT_FOUND_BY_PKEY, new String[]{pKey}, pKey)
         );
     }
@@ -89,8 +90,8 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull Collection<PreferenceEO> findAll() {
-        return preferenceRepository.findAll();
+    public @NotNull Collection<Preference> findAll() {
+        return persistencePort.findAll();
     }
 
     /**
@@ -98,9 +99,9 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull Collection<PreferenceEO> findForOwnerAndScope(String owner, @NotNull PropertyScope scope) {
+    public @NotNull Collection<Preference> findForOwnerAndScope(String owner, @NotNull PropertyScope scope) {
         ensureUserPreferenceAccess(owner, scope);
-        var result = preferenceRepository.findByOwnerAndScope(owner, scope);
+        var result = persistencePort.findByOwnerAndScope(owner, scope);
         return result == null ? Collections.emptyList() : result;
     }
 
@@ -115,9 +116,9 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
+    public Optional<Preference> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
         ensureUserPreferenceAccess(owner, scope);
-        return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
+        return persistencePort.findByOwnerAndScopeAndKey(owner, scope, key);
     }
 
     /**
@@ -125,9 +126,9 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public List<PreferenceEO> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName) {
+    public List<Preference> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName) {
         ensureUserPreferenceAccess(owner, scope);
-        var result = preferenceRepository.findByOwnerAndScopeAndGroupName(owner, scope, groupName);
+        var result = persistencePort.findByOwnerAndScopeAndGroupName(owner, scope, groupName);
         return result == null ? Collections.emptyList() : result;
     }
 
@@ -137,7 +138,7 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public boolean existsForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
-        return preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key).isPresent();
+        return persistencePort.findByOwnerAndScopeAndKey(owner, scope, key).isPresent();
     }
 
     /**
@@ -145,7 +146,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull PreferenceEO create(@NotNull PreferenceEO preference) {
+    public @NotNull Preference create(@NotNull Preference preference) {
         if (preference.hasPersistentKey()) {
             throw new ResourceExistsException(translator, ALREADY_EXISTS,
                     new String[]{preference.getPersistentKey()},
@@ -155,15 +156,15 @@ class PreferencesServiceImpl implements PreferencesService {
         return saveInternal(preference, PreferencesEvent.Type.CREATED);
     }
 
-    private PreferenceEO saveInternal(PreferenceEO preference, PreferencesEvent.Type type) {
-        var saved = preferenceRepository.save(preference);
+    private Preference saveInternal(Preference preference, PreferencesEvent.Type type) {
+        var saved = persistencePort.save(preference);
         ctx.publishEvent(new PreferencesEvent(saved, type));
         return saved;
     }
 
     private void verifyDoesNotExist(String owner, PropertyScope scope, String key) {
-        var eoOpt = preferenceRepository.findByOwnerAndScopeAndKey(owner, scope, key);
-        if (eoOpt.isPresent()) {
+        var opt = persistencePort.findByOwnerAndScopeAndKey(owner, scope, key);
+        if (opt.isPresent()) {
             throw new ResourceExistsException(translator, ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,
                     new Serializable[]{key, owner, scope},
                     key, owner, scope);
@@ -175,10 +176,11 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public @NotNull PreferenceEO update(@NotBlank String pKey, @NotNull PreferenceEO preference) {
-        var eo = findByPKeyInternal(pKey);
-        LOGGER.debug("Overriding existing Preference [{}] with [{}]", eo, preference);
-        return saveInternal(mapper.mapFromTo(preference, eo), PreferencesEvent.Type.UPDATED);
+    public @NotNull Preference update(@NotBlank String pKey, @NotNull Preference preference) {
+        var existing = findByPKeyInternal(pKey);
+        LOGGER.debug("Overriding existing Preference [{}] with [{}]", existing, preference);
+        preference.setPKey(existing.getPersistentKey());
+        return saveInternal(preference, PreferencesEvent.Type.UPDATED);
     }
 
     /**
@@ -187,9 +189,9 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public void delete(@NotBlank String pKey) {
-        var eo = findByPKeyInternal(pKey);
-        preferenceRepository.delete(eo);
-        ctx.publishEvent(new PreferencesEvent(eo, PreferencesEvent.Type.DELETED));
+        var existing = findByPKeyInternal(pKey);
+        persistencePort.delete(existing);
+        ctx.publishEvent(new PreferencesEvent(existing, PreferencesEvent.Type.DELETED));
     }
 
     /**
@@ -199,11 +201,11 @@ class PreferencesServiceImpl implements PreferencesService {
     @Measured
     public void reloadInitialPreferences() {
         var fromFile = fileDao.findAll();
-        var persistedPrefs = preferenceRepository.findAll().stream()
-                .collect(Collectors.toMap(PreferenceEO::getPrefKey, p -> p));
+        var persistedPrefs = persistencePort.findAll().stream()
+                .collect(Collectors.toMap(Preference::getPrefKey, p -> p));
         for (var pref : fromFile) {
             if (!persistedPrefs.containsKey(pref.getPrefKey())) {
-                saveInternal(mapper.map(pref, PreferenceEO.class), PreferencesEvent.Type.CREATED);
+                saveInternal(filePreferenceMapper.toDomain(pref), PreferencesEvent.Type.CREATED);
             }
         }
     }

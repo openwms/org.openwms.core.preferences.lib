@@ -15,36 +15,18 @@
  */
 package org.openwms.core.preferences;
 
-import org.openwms.core.event.RootApplicationEvent;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * A PreferencesEvent.
+ * A PreferencesStartupIT.
  *
  * @author Heiko Scherrer
  */
-public final class PreferencesEvent extends RootApplicationEvent {
+@SpringBootTest
+class PreferencesStartupIT {
 
-    private Type type;
-
-    public enum Type {
-        CREATED, UPDATED, DELETED
-    }
-
-    public PreferencesEvent(Preference source) {
-        super(source);
-    }
-
-    public PreferencesEvent(Preference source, Type type) {
-        super(source);
-        this.type = type;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public Preference getSource() {
-        return (Preference) super.getSource();
+    @Test void contextLoads() {
+        // Just try to load the context
     }
 }

@@ -19,7 +19,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.ameba.exception.NotFoundException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.preferences.api.PreferencesApi;
 import org.openwms.core.preferences.api.PreferencesConstants;
@@ -44,22 +43,21 @@ public class UserPreferencesController extends AbstractWebController {
 
     private final PreferencesService preferencesService;
     private final Translator translator;
-    private final BeanMapper mapper;
+    private final PreferenceVOMapper preferenceVOMapper;
 
-    public UserPreferencesController(PreferencesService preferencesService, Translator translator, BeanMapper mapper) {
+    public UserPreferencesController(PreferencesService preferencesService, Translator translator, PreferenceVOMapper preferenceVOMapper) {
         this.preferencesService = preferencesService;
         this.translator = translator;
-        this.mapper = mapper;
+        this.preferenceVOMapper = preferenceVOMapper;
     }
 
     @GetMapping(value = PreferencesApi.API_PREFERENCES, params = "user")
     public ResponseEntity<List<UserPreferenceVO>> findByUser(
             @RequestParam("user") @NotBlank String user
     ) {
-        return ResponseEntity.ok(mapper.map(
-                        new ArrayList<>(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)),
-                        UserPreferenceVO.class)
-                );
+        return ResponseEntity.ok(
+                preferenceVOMapper.toUserVOList(new ArrayList<>(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)))
+        );
     }
 
     @GetMapping(value = PreferencesApi.API_PREFERENCES, params = {"user", "key"})
@@ -68,7 +66,7 @@ public class UserPreferencesController extends AbstractWebController {
             @RequestParam("key") @NotBlank String key
     ) {
         return ResponseEntity.ok(
-                mapper.map(
+                preferenceVOMapper.toUserVO(
                         preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)
                                 .orElseThrow(() ->
                                         new NotFoundException(
@@ -76,8 +74,7 @@ public class UserPreferencesController extends AbstractWebController {
                                                 PreferencesConstants.NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY,
                                                 new Serializable[]{key, user, PropertyScope.USER}, key, user, PropertyScope.USER
                                         )
-                                ),
-                        UserPreferenceVO.class
+                                )
                 )
         );
     }

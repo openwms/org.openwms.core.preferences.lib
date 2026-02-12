@@ -19,7 +19,6 @@ import jakarta.validation.constraints.NotBlank;
 import org.ameba.exception.ResourceExistsException;
 import org.ameba.http.MeasuredRestController;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
 import org.openwms.core.preferences.api.ApplicationPreferenceVO;
@@ -27,8 +26,6 @@ import org.openwms.core.preferences.api.ModulePreferenceVO;
 import org.openwms.core.preferences.api.PreferenceVO;
 import org.openwms.core.preferences.api.RolePreferenceVO;
 import org.openwms.core.preferences.api.UserPreferenceVO;
-import org.openwms.core.preferences.impl.PreferenceVOConverter;
-import org.openwms.core.preferences.impl.jpa.PreferenceEO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +42,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.openwms.core.preferences.api.PreferenceVO.MEDIA_TYPE;
@@ -68,12 +64,12 @@ public class PreferencesController extends AbstractWebController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesController.class);
     private final PreferencesService preferencesService;
     private final Translator translator;
-    private final BeanMapper mapper;
+    private final PreferenceVOMapper preferenceVOMapper;
 
-    public PreferencesController(PreferencesService preferencesService, Translator translator, BeanMapper mapper) {
+    public PreferencesController(PreferencesService preferencesService, Translator translator, PreferenceVOMapper preferenceVOMapper) {
         this.preferencesService = preferencesService;
         this.translator = translator;
-        this.mapper = mapper;
+        this.preferenceVOMapper = preferenceVOMapper;
     }
 
     @GetMapping(API_PREFERENCES + "/index")
@@ -96,7 +92,7 @@ public class PreferencesController extends AbstractWebController {
     @GetMapping(value = API_PREFERENCES, produces = MEDIA_TYPE)
     public ResponseEntity<List<PreferenceVO>> findAll() {
         return ResponseEntity.ok(
-                mapper.map(new ArrayList<>(preferencesService.findAll()), PreferenceVO.class)
+                preferenceVOMapper.toVOList(preferencesService.findAll())
         );
     }
 
@@ -104,7 +100,7 @@ public class PreferencesController extends AbstractWebController {
     public ResponseEntity<PreferenceVO> findByPKey(
             @PathVariable("pKey") String pKey
     ) {
-        var result = mapper.map(preferencesService.findByPKey(pKey), PreferenceVO.class);
+        var result = preferenceVOMapper.toVO(preferencesService.findByPKey(pKey));
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
     }
 
@@ -115,9 +111,9 @@ public class PreferencesController extends AbstractWebController {
             @RequestParam("key") @NotBlank String key
     ) {
         var propertyScope = convert(scope);
-        var eoOpt = preferencesService.findForOwnerAndScopeAndKey(owner, propertyScope, key);
-        if (eoOpt.isPresent()) {
-            var result = mapper.map(eoOpt.get(), PreferenceVO.class);
+        var prefOpt = preferencesService.findForOwnerAndScopeAndKey(owner, propertyScope, key);
+        if (prefOpt.isPresent()) {
+            var result = preferenceVOMapper.toVO(prefOpt.get());
             return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, result.getContentType()).body(result);
         }
         return ResponseEntity.noContent().build();
@@ -128,10 +124,7 @@ public class PreferencesController extends AbstractWebController {
             @RequestParam("scope") String scope
     ) {
         var propertyScope = convert(scope);
-        var result = mapper.map(
-                new ArrayList<>(preferencesService.findForOwnerAndScope(null, propertyScope)),
-                PreferenceVO.class
-        );
+        var result = preferenceVOMapper.toVOList(preferencesService.findForOwnerAndScope(null, propertyScope));
         return ResponseEntity.ok().body(result);
     }
 
@@ -144,7 +137,7 @@ public class PreferencesController extends AbstractWebController {
         var groups = preferencesService.findForScopeOwnerGroupName(owner, propertyScope, groupName);
         return groups.isEmpty()
                 ? ResponseEntity.noContent().build()
-                :ResponseEntity.ok(mapper.map(groups, PreferenceVO.class));
+                :ResponseEntity.ok(preferenceVOMapper.toVOList(groups));
     }
 
     private PropertyScope convert(String scope) {
@@ -163,23 +156,23 @@ public class PreferencesController extends AbstractWebController {
             @RequestBody PreferenceVO preference,
             @RequestParam(value = "strict", required = false) Boolean strict
     ) {
-        PreferenceEO result;
+        Preference result;
         if (strict == null || strict == Boolean.FALSE) {
             var existingPrefOpt = preferencesService.findForOwnerAndScopeAndKey(
-                    preference.getOwner(), PreferenceVOConverter.resolveScope(preference), preference.getKey()
+                    preference.getOwner(), PreferenceVOMapper.resolveScope(preference), preference.getKey()
             );
             if (existingPrefOpt.isPresent() && preference.getpKey() != null) {
                 if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
                     LOGGER.warn("The preference to create already exists, strict-mode allows updates but the persistent keys are not the same");
                     throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));
                 } else {
-                    var eo = mapper.map(preference, PreferenceEO.class);
-                    eo.setPersistentKey(existingPrefOpt.get().getPersistentKey());
+                    var domain = preferenceVOMapper.toDomain(preference);
+                    domain.setPKey(existingPrefOpt.get().getPersistentKey());
                     result = preferencesService.update(
                             existingPrefOpt.get().getPersistentKey(),
-                            eo
+                            domain
                     );
-                    var vo = mapper.map(result, PreferenceVO.class);
+                    var vo = preferenceVOMapper.toVO(result);
                     return ResponseEntity
                             .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
                             .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -191,8 +184,8 @@ public class PreferencesController extends AbstractWebController {
             throw new IllegalArgumentException(translator.translate(NOT_ALLOWED_PKEY, preference.getpKey()));
         }
         ensurePreferenceNotExists(preference);
-        result = preferencesService.create(mapper.map(preference, PreferenceEO.class));
-        var vo = mapper.map(result, PreferenceVO.class);
+        result = preferencesService.create(preferenceVOMapper.toDomain(preference));
+        var vo = preferenceVOMapper.toVO(result);
         return ResponseEntity
                 .created(linkTo(methodOn(PreferencesController.class).findByPKey(result.getPersistentKey())).toUri())
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
@@ -222,7 +215,7 @@ public class PreferencesController extends AbstractWebController {
             @PathVariable("pKey") String pKey,
             @RequestBody PreferenceVO preference
     ) {
-        var vo = mapper.map(preferencesService.update(pKey, mapper.map(preference, PreferenceEO.class)), PreferenceVO.class);
+        var vo = preferenceVOMapper.toVO(preferencesService.update(pKey, preferenceVOMapper.toDomain(preference)));
         return ResponseEntity
                 .ok()
                 .header(HttpHeaders.CONTENT_TYPE, vo.getContentType())

@@ -20,8 +20,6 @@ import jakarta.validation.Validator;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.i18n.AbstractSpringTranslator;
 import org.ameba.i18n.Translator;
-import org.ameba.mapping.BeanMapper;
-import org.ameba.mapping.DozerMapperImpl;
 import org.ameba.system.NestedReloadableResourceBundleMessageSource;
 import org.openwms.core.preferences.config.ModuleProperties;
 import org.openwms.core.preferences.impl.file.FilePackage;
@@ -87,11 +85,6 @@ public class PreferencesModuleConfiguration {
         var mvpp = new MethodValidationPostProcessor();
         mvpp.setValidator(validatorFactoryBean);
         return mvpp;
-    }
-
-    public @Bean
-    BeanMapper beanMapper() {
-        return new DozerMapperImpl("META-INF/dozer/core-prefs-bean-mappings.xml");
     }
 
     @Bean
