@@ -37,7 +37,7 @@ jobs:
       - name: Build
         run: >
           ./mvnw verify
-          -DsurefireArgs=-Dspring.profiles.active=AMQP,TEST
+          -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST
           -Dspring.rabbitmq.host=localhost
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -U -B $MAVEN_OPTS

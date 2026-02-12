@@ -26,7 +26,7 @@ import java.util.Optional;
 
 /**
  * A MongoPreferencePersistenceAdapter implements {@link PreferencePersistencePort} using MongoDB.
- *ASYNCHRONOUS,DISTRIBUTED,LOCAL,
+ *
  * @author Heiko Scherrer
  */
 @Profile("MONGODB")

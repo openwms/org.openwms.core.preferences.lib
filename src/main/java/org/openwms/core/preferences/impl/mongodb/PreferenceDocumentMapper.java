@@ -20,6 +20,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 import org.openwms.core.preferences.Preference;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import java.util.List;
  *
  * @author Heiko Scherrer
  */
+@Profile("MONGODB")
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface PreferenceDocumentMapper {
 

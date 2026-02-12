@@ -91,7 +91,7 @@ jobs:
       - name: Build & Deploy
         run: >
           ./mvnw deploy
-          -DsurefireArgs=-Dspring.profiles.active=AMQP,TEST
+          -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST
           -Dspring.rabbitmq.host=localhost
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -U -B -Prelease,release-central,gpg $MAVEN_OPTS
@@ -109,8 +109,8 @@ jobs:
         run: >
           ./mvnw post-integration-test site scm-publish:publish-scm
           -DM2_REPO_DIR=/home/runner/.m2/repository
-          -DsurefireArgs=-Dspring.profiles.active=AMQP,TEST,TESTPG
-          -Dargs=-Dspring.profiles.active=AMQP,TEST,TESTPG
+          -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST,TESTPG
+          -Dargs=-Dspring.profiles.active=ASYNCHRONOUS,TEST,TESTPG
           -Dspring.datasource.url=jdbc:postgresql://localhost:5432/testdb
           -Dspring.rabbitmq.host=localhost
           -DDB_HOST=localhost
@@ -169,7 +169,7 @@ jobs:
       - name: Sonar
         run: >
           ./mvnw clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar
-          -DsurefireArgs="-Dspring.profiles.active=AMQP,TEST"
+          -DsurefireArgs="-Dspring.profiles.active=ASYNCHRONOUS,TEST"
           -Dspring.rabbitmq.host=localhost
           -Dsonar.login=$SONAR_TOKEN
           -DSONAR_TOKEN=$SONAR_TOKEN
