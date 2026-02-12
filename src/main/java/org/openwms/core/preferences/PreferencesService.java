@@ -17,7 +17,6 @@ package org.openwms.core.preferences;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.openwms.core.preferences.impl.jpa.PreferenceEO;
 
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +37,7 @@ public interface PreferencesService {
      *
      * @return A Collection of Preferences, never {@literal null}
      */
-    @NotNull Collection<PreferenceEO> findAll();
+    @NotNull Collection<Preference> findAll();
 
     /**
      * Find and return the {@code Preferences} identified by the {@code pKey}.
@@ -47,7 +46,7 @@ public interface PreferencesService {
      * @return The instance, never {@literal null}
      * @throws org.ameba.exception.NotFoundException If the instance does not exist
      */
-    @NotNull PreferenceEO findByPKey(@NotBlank String pKey);
+    @NotNull Preference findByPKey(@NotBlank String pKey);
 
     /**
      * Find and return all {@code Preferences} of a specific {@code scope} that belong to the given {@code owner}.
@@ -56,7 +55,7 @@ public interface PreferencesService {
      * @param scope What kind of Preference it is
      * @return A Collection of Preferences, never {@literal null}
      */
-    @NotNull Collection<PreferenceEO> findForOwnerAndScope(String owner, @NotNull PropertyScope scope);
+    @NotNull Collection<Preference> findForOwnerAndScope(String owner, @NotNull PropertyScope scope);
 
     /**
      * Find and return the {@code Preference} of a specific {@code scope} that belongs to the given {@code owner} and has the given
@@ -67,7 +66,7 @@ public interface PreferencesService {
      * @param key The Preference key
      * @return A Collection of Preferences, never {@literal null}
      */
-    Optional<PreferenceEO> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key);
+    Optional<Preference> findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key);
 
     /**
      * Find and return all {@code Preference}s that belong to a group with the same {@code groupName}.
@@ -77,7 +76,7 @@ public interface PreferencesService {
      * @param groupName The name of the group
      * @return All instances, never {@literal null}
      */
-    List<PreferenceEO> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName);
+    List<Preference> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName);
 
     /**
      * Checks whether a {@code Preference} of a specific {@code scope} that belongs to the given {@code owner} and has the given {@code key}
@@ -97,7 +96,7 @@ public interface PreferencesService {
      * @return The created instance
      * @throws org.ameba.exception.ResourceExistsException in case the passed Preference already exists
      */
-    @NotNull PreferenceEO create(@NotNull PreferenceEO preference);
+    @NotNull Preference create(@NotNull Preference preference);
 
     /**
      * Update the given and existing {@code Preference}.
@@ -107,7 +106,7 @@ public interface PreferencesService {
      * @return Saved instance
      * @throws org.ameba.exception.NotFoundException In case the Preferences does not exist
      */
-    @NotNull PreferenceEO update(@NotBlank String pKey, @NotNull PreferenceEO preference);
+    @NotNull Preference update(@NotBlank String pKey, @NotNull Preference preference);
 
     /**
      * Delete an existing {@code Preference}.

@@ -36,7 +36,6 @@
     <properties>
         <core.test.arch.version>1.0.2</core.test.arch.version>
         <core.version>3.0.0</core.version>
-        <dozer.version>7.0.0</dozer.version>
         <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
     </properties>
 
@@ -138,11 +137,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.github.dozermapper</groupId>
-                <artifactId>dozer-core</artifactId>
-                <version>${dozer.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.openwms</groupId>
                 <artifactId>org.openwms.core.test.arch</artifactId>
                 <version>${core.test.arch.version}</version>
@@ -203,6 +197,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-hateoas</artifactId>
             <optional>true</optional>
         </dependency>
@@ -255,6 +254,19 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- JAXB (needed for file-based preference XML unmarshalling) -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 3rd party dependencies -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -270,11 +282,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>com.github.dozermapper</groupId>
-            <artifactId>dozer-core</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

@@ -18,8 +18,8 @@ package org.openwms.core.preferences.impl.events;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Validator;
 import org.ameba.annotation.Measured;
-import org.ameba.mapping.BeanMapper;
 import org.openwms.core.SpringProfiles;
+import org.openwms.core.preferences.PreferenceVOMapper;
 import org.openwms.core.preferences.PreferencesEvent;
 import org.openwms.core.preferences.api.messages.PreferenceMO;
 import org.slf4j.Logger;
@@ -48,17 +48,17 @@ class PreferencesEventPropagator {
     private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesEventPropagator.class);
     private final AmqpTemplate amqpTemplate;
     private final Validator validator;
-    private final BeanMapper mapper;
+    private final PreferenceVOMapper preferenceVOMapper;
     private final String exchangeName;
 
     PreferencesEventPropagator(
             AmqpTemplate amqpTemplate,
             Validator validator,
-            BeanMapper mapper, @Value("${owms.events.core.preferences.exchange-name}") String exchangeName
+            PreferenceVOMapper preferenceVOMapper, @Value("${owms.events.core.preferences.exchange-name}") String exchangeName
     ) {
         this.amqpTemplate = amqpTemplate;
         this.validator = validator;
-        this.mapper = mapper;
+        this.preferenceVOMapper = preferenceVOMapper;
         this.exchangeName = exchangeName;
     }
 
@@ -95,6 +95,6 @@ class PreferencesEventPropagator {
 
     private PreferenceMO validateAndConvert(PreferencesEvent event) {
         Assert.notNull(event, "Event to propagate is NULL");
-        return validate(validator, mapper.map(event.getSource(), PreferenceMO.class));
+        return validate(validator, preferenceVOMapper.toMO(event.getSource()));
     }
 }
