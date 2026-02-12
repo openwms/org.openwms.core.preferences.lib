@@ -35,7 +35,7 @@
             <item name="Wiki" href="https://wiki.openwms.cloud/projects/core-preferences-service/wiki" />
             <item name="Configuration" href="configuration.html" />
             <item name="Javadoc" href="apidocs/index.html" />
-            <item name="Database Schema" href="schemaspy/relationships.html" />
+            <item name="Database Schema" href="schemaspy/index.html" />
             <item name="Sonar" href="https://sonarcloud.io/dashboard?id=org.openwms:${project.artifactId}" />
             <item name="Jacoco" href="jacoco-merged-test-coverage-report/index.html" />
         </menu>

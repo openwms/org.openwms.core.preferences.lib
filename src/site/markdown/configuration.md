@@ -4,12 +4,12 @@ OpenWMS.org defines additional configuration parameters beside the standard Spri
 
 | Parameter                           | Type   | Default profile value               | Description                                                                                                                 |
 |-------------------------------------|--------|-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| DB_DRIVER_CLASS                     | string | 'org.postgresql.Driver'             | FQN of the JDBC driver class                                                                                                |
-| DB_URL                              | string | 'jdbc:postgresql://db/demodb'       | JDBC connection URL                                                                                                         |
-| DB_USERNAME                         | string | 'demo'                              | JDBC connection username                                                                                                    |
-| DB_PASSWORD                         | string | 'DEMO'                              | JDBC connection password                                                                                                    |
-| DB_DIALECT                          | string | 'postgresql'                        | JDBC dialect                                                                                                                |
-| DB_PASSWORD                         | string | 'DEMO'                              | JDBC connection password                                                                                                    |
+| DB_DRIVER_CLASS                     | string | `org.postgresql.Driver`             | FQN of the JDBC driver class                                                                                                |
+| DB_URL                              | string | `jdbc:postgresql://db/demodb`       | JDBC connection URL                                                                                                         |
+| DB_USERNAME                         | string | `demo`                              | JDBC connection username                                                                                                    |
+| DB_PASSWORD                         | string | `DEMO`                              | JDBC connection password                                                                                                    |
+| DB_DIALECT                          | string | `postgresql`                        | JDBC dialect                                                                                                                |
+| DB_PASSWORD                         | string | `DEMO`                              | JDBC connection password                                                                                                    |
 | owms.eureka.hostname                | string | `localhost`                         | Hostname where the discovery server is running                                                                              |
 | owms.eureka.port                    | string | `8761`                              | Port of the discovery server instance                                                                                       |
 | owms.eureka.url                     | string | `http://user:sa@localhost:8761`     | URI to connect to the discovery server - a combination or hostname, port, username and password                             |

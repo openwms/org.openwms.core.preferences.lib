@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 /**
- * Contains the persistence model and access objects for RDBMS.
+ * Contains the persistence model and access objects for MongoDB.
  */
-package org.openwms.core.preferences.impl.jpa;
+package org.openwms.core.preferences.impl.mongodb;
