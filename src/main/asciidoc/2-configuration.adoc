@@ -21,14 +21,6 @@ include::{generated}/prefs-index/http-request.adoc[]
 The response lists all the operations with a name and the corresponding href link:
 include::{generated}/prefs-index/http-response.adoc[]
 
-[[preferences-findall]]
-=== Find all Preferences (preferences-findall)
-Send a HTTP `GET` request without any further query parameters to find and return all existing `Preferences`
-include::{generated}/prefs-findall/http-request.adoc[]
-
-The server responds with an array of all `Preferences`, that might be empty if no `Preferences` exist
-include::{generated}/prefs-findall/http-response.adoc[]
-
 [[preferences-findbypkey]]
 === Find a Preference by Key (preferences-findbypkey)
 Send a HTTP `GET` request with the persistent key as part of the path to find and return the `Preference`
@@ -36,9 +28,18 @@ include::{generated}/prefs-findbykey/http-request.adoc[]
 
 The server returns the `Preference` resource in case it exists
 include::{generated}/prefs-findbykey/http-response.adoc[]
+include::{generated}/prefs-findbykey/response-fields.adoc[]
 
 or responds with a `404 NOT-FOUND` if the `Preference` does not exist
 include::{generated}/prefs-findbykey404/http-response.adoc[]
+
+[[preferences-findall]]
+=== Find all Preferences (preferences-findall)
+Send a HTTP `GET` request without any further query parameters to find and return all existing `Preferences`
+include::{generated}/prefs-findall/http-request.adoc[]
+
+The server responds with an array of all `Preferences`, that might be empty if no `Preferences` exist
+include::{generated}/prefs-findall/http-response.adoc[]
 
 [[preferences-findallofscope]]
 === Find all Preferences of particular Scope (preferences-findallofscope)

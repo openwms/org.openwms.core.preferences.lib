@@ -142,7 +142,18 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                         get(PreferencesApi.API_PREFERENCES + "/1000")
                 )
                 .andExpect(status().isOk())
-                .andDo(document("prefs-findbykey", preprocessResponse(prettyPrint())))
+                .andDo(document("prefs-findbykey",
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("@class").description("The full-qualified name (FQN) of the type"),
+                                fieldWithPath("pKey").description("The persistent technical key of the Preference"),
+                                fieldWithPath("key").description("An identifying key property (uniqueness depends on scope)"),
+                                fieldWithPath("owner").description("The owner of the preference (nullable - depends on scope if the Preference has an owner or not)"),
+                                fieldWithPath("description").description("Some arbitrary description text to describe the usage of the Preference"),
+                                fieldWithPath("value").description("The current value of the Preference"),
+                                fieldWithPath("groupName").description("Some arbitrary name to group, or keep, Preferences together by any logical name"),
+                                fieldWithPath("type").description("The type can either be one of the following: [FLOAT|STRING|INT|OBJECT|BOOL|JSON]")
+                        )))
                 .andExpect(jsonPath("$.key", is("key1")))
                 .andExpect(jsonPath("$.value", is("current val")))
                 .andExpect(jsonPath("$.description", is("String description")))
