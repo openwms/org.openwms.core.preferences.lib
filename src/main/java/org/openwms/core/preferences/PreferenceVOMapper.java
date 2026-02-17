@@ -30,7 +30,6 @@ import java.util.List;
 
 /**
  * A PreferenceVOMapper maps between {@link Preference} (domain) and {@link PreferenceVO} (API VO).
- * Replaces the Dozer-based {@code PreferenceVOConverter}.
  *
  * @author Heiko Scherrer
  */

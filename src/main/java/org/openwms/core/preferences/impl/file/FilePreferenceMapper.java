@@ -25,7 +25,6 @@ import java.util.Arrays;
 
 /**
  * A FilePreferenceMapper maps from {@link GenericPreference} (XML file) to {@link Preference} (domain model).
- * Replaces the Dozer-based {@code PreferenceConverter}.
  *
  * @author Heiko Scherrer
  */

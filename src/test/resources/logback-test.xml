@@ -9,7 +9,6 @@
 
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <logger name="com.github.dozermapper" level="ERROR"/>
     <logger name="org.ameba" level="OFF"/>
     <logger name="org.hibernate" level="OFF"/>
     <logger name="org.hibernate.SQL" level="OFF"/>
