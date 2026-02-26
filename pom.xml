@@ -60,7 +60,7 @@
     </reporting>
 
     <build>
-        <finalName>openwms-core-preferences</finalName>
+        <finalName>openwms-core-preferences-lib</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

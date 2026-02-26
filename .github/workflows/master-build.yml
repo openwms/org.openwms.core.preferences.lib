@@ -133,7 +133,6 @@ jobs:
           curl --fail -X POST https://api.github.com/repos/openwms/org.openwms.core.preferences.ui/dispatches \
           -H 'Accept: application/vnd.github.everest-preview+json' \
           -H "Authorization: Bearer ${DISPATCH_TOKEN}" \
-          --fail-with-body \
           --data '{"event_type": "Remote Trigger", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
         env:
           DISPATCH_TOKEN: ${{ secrets.PAT }}

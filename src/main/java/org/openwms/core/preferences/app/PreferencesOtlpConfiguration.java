@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author Heiko Scherrer
  */
-@ConditionalOnProperty("owms.tracing.url")
 @ConditionalOnClass(name = "io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter")
 @AutoConfiguration
 public class PreferencesOtlpConfiguration {
@@ -36,7 +35,6 @@ public class PreferencesOtlpConfiguration {
     private PreferencesOtlpConfiguration() {}
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty("owms.tracing.url")
     @ConditionalOnClass(name = "io.opentelemetry.exporter.otlp.trace.OtlpGrpcSpanExporter")
     public static class OtelConfiguration {
         @ConditionalOnProperty("owms.tracing.url")
