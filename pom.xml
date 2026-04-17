@@ -90,6 +90,7 @@
                             -Amapstruct.verbose=true
                         </arg>
                     </compilerArgs>
+                    <release>17</release>
                     <enablePreview>false</enablePreview>
                     <showWarnings>true</showWarnings>
                 </configuration>
