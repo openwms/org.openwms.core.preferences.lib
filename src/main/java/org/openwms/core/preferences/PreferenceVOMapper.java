@@ -37,13 +37,11 @@ import java.util.List;
 public abstract class PreferenceVOMapper {
 
     public static <T extends PreferenceVO> PropertyScope resolveScope(T preference) {
-        return switch (preference) {
-            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
-            case ModulePreferenceVO ignored -> PropertyScope.MODULE;
-            case RolePreferenceVO ignored -> PropertyScope.ROLE;
-            case UserPreferenceVO ignored -> PropertyScope.USER;
-            default -> throw new IllegalStateException("Unexpected value: " + preference);
-        };
+        if (preference instanceof ApplicationPreferenceVO) return PropertyScope.APPLICATION;
+        if (preference instanceof ModulePreferenceVO) return PropertyScope.MODULE;
+        if (preference instanceof RolePreferenceVO) return PropertyScope.ROLE;
+        if (preference instanceof UserPreferenceVO) return PropertyScope.USER;
+        throw new IllegalStateException("Unexpected value: " + preference);
     }
 
     public PreferenceVO toVO(Preference source) {

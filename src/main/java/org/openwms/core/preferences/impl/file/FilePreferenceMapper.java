@@ -35,28 +35,11 @@ public abstract class FilePreferenceMapper {
         if (source == null) {
             return null;
         }
-        return switch (source) {
-            case ApplicationPreference p -> createBuilder(p)
-                    .key(p.getKey())
-                    .scope(PropertyScope.APPLICATION)
-                    .build();
-            case ModulePreference p -> createBuilder(p)
-                    .key(p.getKey())
-                    .owner(p.getOwner())
-                    .scope(PropertyScope.MODULE)
-                    .build();
-            case RolePreference p -> createBuilder(p)
-                    .key(p.getKey())
-                    .owner(p.getOwner())
-                    .scope(PropertyScope.ROLE)
-                    .build();
-            case UserPreference p -> createBuilder(p)
-                    .key(p.getKey())
-                    .owner(p.getOwner())
-                    .scope(PropertyScope.USER)
-                    .build();
-            default -> throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
-        };
+        if (source instanceof ApplicationPreference p) return createBuilder(p).key(p.getKey()).scope(PropertyScope.APPLICATION).build();
+        if (source instanceof ModulePreference p) return createBuilder(p).key(p.getKey()).owner(p.getOwner()).scope(PropertyScope.MODULE).build();
+        if (source instanceof RolePreference p) return createBuilder(p).key(p.getKey()).owner(p.getOwner()).scope(PropertyScope.ROLE).build();
+        if (source instanceof UserPreference p) return createBuilder(p).key(p.getKey()).owner(p.getOwner()).scope(PropertyScope.USER).build();
+        throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
     }
 
     private Preference.Builder createBuilder(GenericPreference p) {
