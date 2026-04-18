@@ -126,7 +126,7 @@ class PreferencesServiceImpl implements PreferencesService {
      */
     @Override
     @Measured
-    public List<Preference> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName) {
+    public @NotNull List<Preference> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName) {
         ensureUserPreferenceAccess(owner, scope);
         var result = persistencePort.findByOwnerAndScopeAndGroupName(owner, scope, groupName);
         return result == null ? Collections.emptyList() : result;

@@ -98,7 +98,7 @@ public interface PreferencesApi {
      * @param owner The owner of the Preference
      * @param scope What kind of Preference it is
      * @param groupName The name of the group
-     * @return All instances, never {@literal null}
+     * @return All instances, or {@literal null} if not existed
      */
     @Cacheable("preferences")
     @GetMapping(value = "/preferences/groups", params = {"scope", "name"}, produces = MediaType.APPLICATION_JSON_VALUE)

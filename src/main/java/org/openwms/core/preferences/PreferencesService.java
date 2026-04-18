@@ -76,7 +76,7 @@ public interface PreferencesService {
      * @param groupName The name of the group
      * @return All instances, never {@literal null}
      */
-    List<Preference> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName);
+    @NotNull List<Preference> findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName);
 
     /**
      * Checks whether a {@code Preference} of a specific {@code scope} that belongs to the given {@code owner} and has the given {@code key}
