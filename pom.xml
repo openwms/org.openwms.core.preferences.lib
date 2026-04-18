@@ -90,7 +90,6 @@
                             -Amapstruct.verbose=true
                         </arg>
                     </compilerArgs>
-                    <release>17</release>
                     <enablePreview>false</enablePreview>
                     <showWarnings>true</showWarnings>
                 </configuration>
@@ -167,7 +166,7 @@
         <dependency>
             <groupId>org.openwms</groupId>
             <artifactId>org.openwms.core.util</artifactId>
-            <optional>true</optional>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Spring Dependencies -->

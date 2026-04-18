@@ -193,13 +193,13 @@ public class PreferencesController extends AbstractWebController {
     }
 
     private void ensurePreferenceNotExists(PreferenceVO preference) {
-        if (preference == null) throw new IllegalArgumentException("Not implemented Preference type");
-        PropertyScope scope;
-        if (preference instanceof UserPreferenceVO) scope = PropertyScope.USER;
-        else if (preference instanceof RolePreferenceVO) scope = PropertyScope.ROLE;
-        else if (preference instanceof ModulePreferenceVO) scope = PropertyScope.MODULE;
-        else if (preference instanceof ApplicationPreferenceVO) scope = PropertyScope.APPLICATION;
-        else throw new IllegalArgumentException("Not implemented Preference type");
+        var scope = switch (preference) {
+            case UserPreferenceVO ignored -> PropertyScope.USER;
+            case RolePreferenceVO ignored -> PropertyScope.ROLE;
+            case ModulePreferenceVO ignored -> PropertyScope.MODULE;
+            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
+            case null, default -> throw new IllegalArgumentException("Not implemented Preference type");
+        };
         if (preferencesService.existsForOwnerAndScopeAndKey(preference.getOwner(), scope, preference.getKey())) {
             throw new ResourceExistsException(
                     translator,
