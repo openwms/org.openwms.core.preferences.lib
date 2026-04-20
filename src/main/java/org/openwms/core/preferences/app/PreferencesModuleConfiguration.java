@@ -81,7 +81,7 @@ public class PreferencesModuleConfiguration {
     }
 
     @Bean
-    MethodValidationPostProcessor methodValidationPostProcessor(Validator validatorFactoryBean) {
+    public static MethodValidationPostProcessor methodValidationPostProcessor(Validator validatorFactoryBean) {
         var mvpp = new MethodValidationPostProcessor();
         mvpp.setValidator(validatorFactoryBean);
         return mvpp;
