@@ -18,8 +18,11 @@ package org.openwms.core.preferences;
 import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openwms.core.preferences.api.ApplicationPreferenceVO;
+import org.openwms.core.preferences.api.ModulePreferenceVO;
 import org.openwms.core.preferences.api.PreferenceVO;
 import org.openwms.core.preferences.api.PreferencesApi;
+import org.openwms.core.preferences.api.RolePreferenceVO;
 import org.openwms.core.preferences.api.UserPreferenceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -217,7 +220,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
     }
 
     @Test
-    void shall_create_preference() throws Exception {
+    void shall_create_user_preference() throws Exception {
         var om = JsonMapper.builder().build();
         var vo = new UserPreferenceVO();
         vo.setKey("keyY");
@@ -225,14 +228,82 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
         vo.setDescription("A Boolean");
         vo.setType("BOOL");
         vo.setVal(true);
-        mockMvc.perform(
+        var resultActions = mockMvc.perform(
                         MockMvcRequestBuilders.post(PreferencesApi.API_PREFERENCES)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(om.writeValueAsString(vo))
                 )
                 .andExpect(status().isCreated())
-                .andDo(document("prefs-create", preprocessResponse(prettyPrint())))
-        ;
+                .andDo(document("prefs-create", preprocessResponse(prettyPrint())));
+
+        var result = om.readValue(resultActions.andReturn().getResponse().getContentAsString(), PreferenceVO.class);
+        assertThat(result).isInstanceOf(UserPreferenceVO.class);
+        assertThat(result.getpKey()).isNotBlank();
+    }
+
+    @Test
+    void shall_create_role_preference() throws Exception {
+        var om = JsonMapper.builder().build();
+        var vo = new RolePreferenceVO();
+        vo.setKey("keyY");
+        vo.setOwner("role2");
+        vo.setDescription("A Boolean");
+        vo.setType("BOOL");
+        vo.setVal(true);
+        var resultActions = mockMvc.perform(
+                        MockMvcRequestBuilders.post(PreferencesApi.API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
+                )
+                .andExpect(status().isCreated())
+                .andDo(document("prefs-create-role", preprocessResponse(prettyPrint())));
+
+        var result = om.readValue(resultActions.andReturn().getResponse().getContentAsString(), PreferenceVO.class);
+        assertThat(result).isInstanceOf(RolePreferenceVO.class);
+        assertThat(result.getpKey()).isNotBlank();
+    }
+
+    @Test
+    void shall_create_module_preference() throws Exception {
+        var om = JsonMapper.builder().build();
+        var vo = new ModulePreferenceVO();
+        vo.setKey("keyY");
+        vo.setOwner("module2");
+        vo.setDescription("A Boolean");
+        vo.setType("BOOL");
+        vo.setVal(true);
+        var resultActions = mockMvc.perform(
+                        MockMvcRequestBuilders.post(PreferencesApi.API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
+                )
+                .andExpect(status().isCreated())
+                .andDo(document("prefs-create-module", preprocessResponse(prettyPrint())));
+
+        var result = om.readValue(resultActions.andReturn().getResponse().getContentAsString(), PreferenceVO.class);
+        assertThat(result).isInstanceOf(ModulePreferenceVO.class);
+        assertThat(result.getpKey()).isNotBlank();
+    }
+
+    @Test
+    void shall_create_application_preference() throws Exception {
+        var om = JsonMapper.builder().build();
+        var vo = new ApplicationPreferenceVO();
+        vo.setKey("keyY");
+        vo.setDescription("A Boolean");
+        vo.setType("BOOL");
+        vo.setVal(true);
+        var resultActions = mockMvc.perform(
+                        MockMvcRequestBuilders.post(PreferencesApi.API_PREFERENCES)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(om.writeValueAsString(vo))
+                )
+                .andExpect(status().isCreated())
+                .andDo(document("prefs-create-application", preprocessResponse(prettyPrint())));
+
+        var result = om.readValue(resultActions.andReturn().getResponse().getContentAsString(), PreferenceVO.class);
+        assertThat(result).isInstanceOf(ApplicationPreferenceVO.class);
+        assertThat(result.getpKey()).isNotBlank();
     }
 
     @Test
