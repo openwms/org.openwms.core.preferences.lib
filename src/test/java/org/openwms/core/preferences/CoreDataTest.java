@@ -17,10 +17,10 @@ package org.openwms.core.preferences;
 
 import org.ameba.annotation.EnableAspects;
 import org.ameba.test.categories.SpringTestSupport;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 import java.lang.annotation.Documented;

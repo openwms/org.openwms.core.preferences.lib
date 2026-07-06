@@ -15,7 +15,7 @@
  */
 package org.openwms.core.preferences;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.preferences.api.PreferencesApi;
@@ -91,7 +91,7 @@ class UserPreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_create_userpreference() throws Exception {
-        var om = new ObjectMapper();
+        var om = JsonMapper.builder().build();
         var up = new UserPreferenceVO();
         up.setOwner("owner1");
         up.setDescription("test desc");

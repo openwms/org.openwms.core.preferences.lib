@@ -7,8 +7,6 @@ spring:
       password: sa
   jackson:
     date-format: "yyyy-MM-dd'T'HH:mm:ssXXX" # Only matches Dates no Instants!
-    deserialization:
-      read-date-timestamps-as-nanoseconds: false
     serialization:
       fail_on_empty_beans: false
   jpa:

@@ -36,9 +36,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor;
-import org.springframework.retry.support.RetryTemplate;
+import org.springframework.amqp.rabbit.config.StatefulRetryOperationsInterceptor;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.RetryTemplate;
+import org.springframework.util.backoff.ExponentialBackOff;
 
 import java.util.Objects;
 
@@ -79,7 +80,7 @@ public class PreferencesAsyncConfiguration {
     @Bean
     StatefulRetryOperationsInterceptor interceptor() {
         return RetryInterceptorBuilder.stateful()
-                .maxAttempts(3)
+                .maxRetries(2)
                 .backOffOptions(1000, 2.0, 10000)
                 .build();
     }
@@ -91,12 +92,11 @@ public class PreferencesAsyncConfiguration {
             ObjectProvider<MessageConverter> messageConverter,
             @Autowired(required = false) RabbitTemplateConfigurable rabbitTemplateConfigurable) {
         var rabbitTemplate = new RabbitTemplate(connectionFactory);
-        var backOffPolicy = new ExponentialBackOffPolicy();
-        backOffPolicy.setMultiplier(2);
-        backOffPolicy.setMaxInterval(15000);
-        backOffPolicy.setInitialInterval(500);
-        var retryTemplate = new RetryTemplate();
-        retryTemplate.setBackOffPolicy(backOffPolicy);
+        var backOff = new ExponentialBackOff();
+        backOff.setMultiplier(2);
+        backOff.setMaxInterval(15000);
+        backOff.setInitialInterval(500);
+        var retryTemplate = new RetryTemplate(RetryPolicy.builder().maxRetries(3).backOff(backOff).build());
         rabbitTemplate.setRetryTemplate(retryTemplate);
         rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));
         if (rabbitTemplateConfigurable != null) {

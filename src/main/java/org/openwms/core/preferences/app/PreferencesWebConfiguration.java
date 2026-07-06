@@ -21,7 +21,13 @@ import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.json.JsonMapper;
+
+import java.util.List;
 
 /**
  * A PreferencesWebConfiguration is the microservice Spring web configuration, active by default.
@@ -35,5 +41,20 @@ public class PreferencesWebConfiguration {
     @Bean
     Filter corsFiler() {
         return new CorsFilter(new PermitAllCorsConfigurationSource());
+    }
+
+    /**
+     * Register an unrestricted Jackson converter for the custom {@code application/*+json} vendor media types. Actuator and Spring
+     * HATEOAS bind type-specific {@code ObjectMapper}s to the shared converter, which makes it serve only those registered types.
+     * This converter, appended last, keeps their precedence while still serializing the plain Preference value objects.
+     */
+    @Bean
+    WebMvcConfigurer preferencesMessageConverterConfigurer(JsonMapper jsonMapper) {
+        return new WebMvcConfigurer() {
+            @Override
+            public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+                converters.add(new JacksonJsonHttpMessageConverter(jsonMapper));
+            }
+        };
     }
 }

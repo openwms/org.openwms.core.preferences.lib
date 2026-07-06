@@ -25,7 +25,7 @@ import org.openwms.core.preferences.config.ModuleProperties;
 import org.openwms.core.preferences.impl.file.FilePackage;
 import org.openwms.core.startup.LocalServiceInitializer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
+import org.springframework.boot.micrometer.metrics.autoconfigure.MeterRegistryCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;

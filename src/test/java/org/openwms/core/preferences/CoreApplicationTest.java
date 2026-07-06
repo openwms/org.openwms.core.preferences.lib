@@ -17,7 +17,7 @@ package org.openwms.core.preferences;
 
 import org.ameba.test.categories.SpringTestSupport;
 import org.openwms.core.preferences.app.PreferencesModuleConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.lang.annotation.Documented;

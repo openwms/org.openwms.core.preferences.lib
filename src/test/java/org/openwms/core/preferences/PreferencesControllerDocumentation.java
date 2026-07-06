@@ -15,7 +15,7 @@
  */
 package org.openwms.core.preferences;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.preferences.api.PreferenceVO;
@@ -173,7 +173,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_update_preference_by_key() throws Exception {
-        var om = new ObjectMapper();
+        var om = JsonMapper.builder().build();
         var vo = new UserPreferenceVO();
         vo.setpKey("1000");
         vo.setKey("keyX");
@@ -193,7 +193,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_update_preference_UNKNOWN() throws Exception {
-        var om = new ObjectMapper();
+        var om = JsonMapper.builder().build();
         var vo = new UserPreferenceVO();
         vo.setpKey("1000");
         mockMvc.perform(
@@ -218,7 +218,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_create_preference() throws Exception {
-        var om = new ObjectMapper();
+        var om = JsonMapper.builder().build();
         var vo = new UserPreferenceVO();
         vo.setKey("keyY");
         vo.setOwner("owner2");
@@ -237,7 +237,7 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
 
     @Test
     void shall_fail_to_create_existing_preference() throws Exception {
-        var om = new ObjectMapper();
+        var om = JsonMapper.builder().build();
         var vo = new UserPreferenceVO();
         vo.setKey("keyY");
         vo.setOwner("owner2");
