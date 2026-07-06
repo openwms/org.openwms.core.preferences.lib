@@ -1,0 +1,25 @@
+== ModulePreference
+
+A `ModulePreference` is a `Preference` that is only valid within a single module (microservice).
+
+=== Find all ModulePreferences of a Module (module-preferences-findbymodule)
+Send a HTTP GET request with the module name as query parameter to find all existing `ModulePreferences` of that module.
+
+include::{generated}/prefs-findformodule/http-request.adoc[]
+
+The server responds with an array of all `ModulePreferences`, that might be empty if no `ModulePreferences` exist.
+
+include::{generated}/prefs-findformodule/http-response.adoc[]
+
+=== Find a ModulePreference by Key (module-preferences-findbymoduleandkey)
+Send a HTTP GET request with the key and the module name as query parameters to find and return the `ModulePreference`.
+
+include::{generated}/prefs-findformodulekey/http-request.adoc[]
+
+The server returns the `ModulePreference` if exists.
+
+include::{generated}/prefs-findformodulekey/http-response.adoc[]
+
+or responds with a `404 NOT-FOUND` if the `ModulePreference` does not exist.
+
+include::{generated}/prefs-findformodulekey404/http-response.adoc[]

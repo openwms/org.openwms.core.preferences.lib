@@ -1,0 +1,25 @@
+== RolePreference
+
+A `RolePreference` is a `Preference` that is only valid for all users assigned to a role.
+
+=== Find all RolePreferences of a Role (role-preferences-findbyrole)
+Send a HTTP GET request with the role name as query parameter to find all existing `RolePreferences` of that role.
+
+include::{generated}/prefs-findforrole/http-request.adoc[]
+
+The server responds with an array of all `RolePreferences`, that might be empty if no `RolePreferences` exist.
+
+include::{generated}/prefs-findforrole/http-response.adoc[]
+
+=== Find a RolePreference by Key (role-preferences-findbyroleandkey)
+Send a HTTP GET request with the key and the role name as query parameters to find and return the `RolePreference`.
+
+include::{generated}/prefs-findforrolekey/http-request.adoc[]
+
+The server returns the `RolePreference` if exists.
+
+include::{generated}/prefs-findforrolekey/http-response.adoc[]
+
+or responds with a `404 NOT-FOUND` if the `RolePreference` does not exist.
+
+include::{generated}/prefs-findforrolekey404/http-response.adoc[]
