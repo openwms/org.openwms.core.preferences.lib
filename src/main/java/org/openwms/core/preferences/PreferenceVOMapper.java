@@ -58,21 +58,31 @@ public abstract class PreferenceVOMapper {
             case USER -> p = new UserPreferenceVO();
             default -> throw new IllegalArgumentException("Source entity preferences type is unknown: " + source.getScope());
         }
-        p.setpKey(source.getPersistentKey());
-        p.setKey(source.getKey());
-        p.setOwner(source.getOwner());
-        p.setVal(source.getVal());
-        p.setDescription(source.getDescription());
-        p.setType(source.getType() != null ? source.getType().name() : null);
-        p.setGroupName(source.getGroupName());
-        return p;
+        return fillVO(p, source);
     }
 
     public UserPreferenceVO toUserVO(Preference source) {
         if (source == null) {
             return null;
         }
-        var p = new UserPreferenceVO();
+        return fillVO(new UserPreferenceVO(), source);
+    }
+
+    public RolePreferenceVO toRoleVO(Preference source) {
+        if (source == null) {
+            return null;
+        }
+        return fillVO(new RolePreferenceVO(), source);
+    }
+
+    public ModulePreferenceVO toModuleVO(Preference source) {
+        if (source == null) {
+            return null;
+        }
+        return fillVO(new ModulePreferenceVO(), source);
+    }
+
+    private <T extends PreferenceVO> T fillVO(T p, Preference source) {
         p.setpKey(source.getPersistentKey());
         p.setKey(source.getKey());
         p.setOwner(source.getOwner());
@@ -95,6 +105,20 @@ public abstract class PreferenceVOMapper {
             return List.of();
         }
         return sources.stream().map(this::toUserVO).toList();
+    }
+
+    public List<RolePreferenceVO> toRoleVOList(Collection<Preference> sources) {
+        if (sources == null) {
+            return List.of();
+        }
+        return sources.stream().map(this::toRoleVO).toList();
+    }
+
+    public List<ModulePreferenceVO> toModuleVOList(Collection<Preference> sources) {
+        if (sources == null) {
+            return List.of();
+        }
+        return sources.stream().map(this::toModuleVO).toList();
     }
 
     public Preference toDomain(PreferenceVO source) {

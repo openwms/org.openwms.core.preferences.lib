@@ -84,7 +84,11 @@ public class PreferencesController extends AbstractWebController {
                         linkTo(methodOn(PreferencesController.class).update("pKey", new PreferenceVO())).withRel("preferences-update"),
                         linkTo(methodOn(PreferencesController.class).delete("pKey")).withRel("preferences-delete"),
                         linkTo(methodOn(UserPreferencesController.class).findByUser("user")).withRel("user-preferences-findbyuser"),
-                        linkTo(methodOn(UserPreferencesController.class).findByUserAndKey("user", "key")).withRel("user-preferences-findbyuserandkey")
+                        linkTo(methodOn(UserPreferencesController.class).findByUserAndKey("user", "key")).withRel("user-preferences-findbyuserandkey"),
+                        linkTo(methodOn(RolePreferencesController.class).findByRole("role")).withRel("role-preferences-findbyrole"),
+                        linkTo(methodOn(RolePreferencesController.class).findByRoleAndKey("role", "key")).withRel("role-preferences-findbyroleandkey"),
+                        linkTo(methodOn(ModulePreferencesController.class).findByModule("module")).withRel("module-preferences-findbymodule"),
+                        linkTo(methodOn(ModulePreferencesController.class).findByModuleAndKey("module", "key")).withRel("module-preferences-findbymoduleandkey")
                 )
         );
     }

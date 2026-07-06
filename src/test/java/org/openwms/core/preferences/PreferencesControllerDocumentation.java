@@ -44,6 +44,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -82,7 +83,11 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                 .andExpect(jsonPath("$._links.preferences-delete").exists())
                 .andExpect(jsonPath("$._links.user-preferences-findbyuser").exists())
                 .andExpect(jsonPath("$._links.user-preferences-findbyuserandkey").exists())
-                .andExpect(jsonPath("$._links.length()", is(9)))
+                .andExpect(jsonPath("$._links.role-preferences-findbyrole").exists())
+                .andExpect(jsonPath("$._links.role-preferences-findbyroleandkey").exists())
+                .andExpect(jsonPath("$._links.module-preferences-findbymodule").exists())
+                .andExpect(jsonPath("$._links.module-preferences-findbymoduleandkey").exists())
+                .andExpect(jsonPath("$._links.length()", is(13)))
         ;
     }
 
@@ -157,10 +162,49 @@ class PreferencesControllerDocumentation extends DefaultTestProfile {
                                 fieldWithPath("groupName").description("Some arbitrary name to group, or keep, Preferences together by any logical name"),
                                 fieldWithPath("type").description("The type can either be one of the following: [FLOAT|STRING|INT|OBJECT|BOOL|JSON]")
                         )))
+                .andExpect(content().contentType(UserPreferenceVO.MEDIA_TYPE))
                 .andExpect(jsonPath("$.key", is("key1")))
                 .andExpect(jsonPath("$.value", is("current val")))
                 .andExpect(jsonPath("$.description", is("String description")))
                 .andExpect(jsonPath("$.@class", is("org.openwms.core.preferences.api.UserPreferenceVO")))
+        ;
+    }
+
+    @Test
+    void shall_return_role_preference_by_key() throws Exception {
+        mockMvc.perform(
+                        get(PreferencesApi.API_PREFERENCES + "/1003")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(RolePreferenceVO.MEDIA_TYPE))
+                .andExpect(jsonPath("$.key", is("key4")))
+                .andExpect(jsonPath("$.owner", is("role1")))
+                .andExpect(jsonPath("$.@class", is("org.openwms.core.preferences.api.RolePreferenceVO")))
+        ;
+    }
+
+    @Test
+    void shall_return_module_preference_by_key() throws Exception {
+        mockMvc.perform(
+                        get(PreferencesApi.API_PREFERENCES + "/1004")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(ModulePreferenceVO.MEDIA_TYPE))
+                .andExpect(jsonPath("$.key", is("key5")))
+                .andExpect(jsonPath("$.owner", is("module1")))
+                .andExpect(jsonPath("$.@class", is("org.openwms.core.preferences.api.ModulePreferenceVO")))
+        ;
+    }
+
+    @Test
+    void shall_return_application_preference_by_key() throws Exception {
+        mockMvc.perform(
+                        get(PreferencesApi.API_PREFERENCES + "/1002")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(ApplicationPreferenceVO.MEDIA_TYPE))
+                .andExpect(jsonPath("$.key", is("key3")))
+                .andExpect(jsonPath("$.@class", is("org.openwms.core.preferences.api.ApplicationPreferenceVO")))
         ;
     }
 
