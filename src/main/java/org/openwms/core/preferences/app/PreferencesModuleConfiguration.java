@@ -16,7 +16,6 @@
 package org.openwms.core.preferences.app;
 
 import io.micrometer.core.instrument.MeterRegistry;
-import jakarta.validation.Validator;
 import org.ameba.annotation.EnableAspects;
 import org.ameba.i18n.AbstractSpringTranslator;
 import org.ameba.i18n.Translator;
@@ -33,7 +32,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import java.util.Properties;
 
@@ -78,13 +76,6 @@ public class PreferencesModuleConfiguration {
         nrrbm.setDefaultEncoding("UTF-8");
         nrrbm.setCommonMessages(new Properties());
         return nrrbm;
-    }
-
-    @Bean
-    public static MethodValidationPostProcessor methodValidationPostProcessor(Validator validatorFactoryBean) {
-        var mvpp = new MethodValidationPostProcessor();
-        mvpp.setValidator(validatorFactoryBean);
-        return mvpp;
     }
 
     @Bean
