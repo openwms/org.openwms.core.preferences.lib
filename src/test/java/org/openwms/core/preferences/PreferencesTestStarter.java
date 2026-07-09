@@ -17,19 +17,13 @@ package org.openwms.core.preferences;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * A PreferencesTestStarter.
+ * A PreferencesTestStarter. JPA repositories, auditing and transaction management come from the module's auto-configuration.
  *
  * @author Heiko Scherrer
  */
 @SpringBootApplication
-@EnableJpaRepositories
-@EnableJpaAuditing
-@EnableTransactionManagement
 public class PreferencesTestStarter {
 
     /**
