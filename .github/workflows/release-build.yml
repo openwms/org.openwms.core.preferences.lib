@@ -13,7 +13,7 @@ jobs:
     name: Build & Test Microservice on Release branches
     services:
       rabbitmq:
-        image: rabbitmq:3.8
+        image: openwms/rabbitmq:latest
         env:
           RABBITMQ_DEFAULT_USER: guest
           RABBITMQ_DEFAULT_PASS: guest

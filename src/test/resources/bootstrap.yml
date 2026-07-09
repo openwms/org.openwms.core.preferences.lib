@@ -102,9 +102,11 @@ management:
             requests: true
     tags:
       application: ${spring.application.name}
-  otlp:
+  opentelemetry:
     tracing:
-      endpoint: ${owms.tracing.url}
+      export:
+        otlp:
+          endpoint: ${owms.tracing.url}
   prometheus:
     metrics:
       export:
@@ -241,8 +243,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        temp:
-          use_jdbc_metadata_defaults: false
         default_schema: public
     hibernate:
       ddl-auto: update
