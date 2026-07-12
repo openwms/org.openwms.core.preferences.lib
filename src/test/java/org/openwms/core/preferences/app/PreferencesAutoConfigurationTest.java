@@ -43,7 +43,9 @@ class PreferencesAutoConfigurationTest {
             ))
             .withPropertyValues(
                     "spring.application.name=preferences-test",
-                    "spring.jpa.mapping-resources=META-INF/preferences-orm.xml"
+                    "spring.jpa.mapping-resources=META-INF/preferences-orm.xml",
+                    // Decouple from any profiles passed to the surefire JVM, like AMQP in CI
+                    "spring.profiles.active=DEFAULT"
             );
 
     @Test

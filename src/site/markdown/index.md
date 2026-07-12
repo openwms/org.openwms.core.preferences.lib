@@ -1,7 +1,9 @@
-#Purpose
+# Purpose
 The OpenWMS.org Preferences Service deals with configuration and preferences for the whole application. It can be used to store
 configuration parameters in different validity scopes. Scopes can be merged and inherited. Preferences might be stored only valid for a
 particular *User* or a specific *Role*, specific to a *Module* (aka microservice) or the whole *Application*.
+
+This library contains the essential functionality of the Preferences Service and is built with Spring Boot 4.1 on Java 25.
 
 | scope       | applied to | inherits from |
 | ----------- | ---------- | ------------- |

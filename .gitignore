@@ -5,6 +5,7 @@ doc/master.zip
 doc/src/*GitHubIssues.adoc
 /build/
 /bin/
+docs/
 target/
 **/${project.build.directory}/
 /null/
@@ -31,6 +32,7 @@ libs/
 rebel.xml
 
 *.versionsBackup
+CLAUDE.md
 
 ######################
 # Windows

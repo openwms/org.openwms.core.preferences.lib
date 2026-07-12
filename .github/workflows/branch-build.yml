@@ -4,7 +4,6 @@ on:
     branches-ignore:
       - master
       - gh-pages
-      - 'release/**'
 
 env:
   MAVEN_OPTS: -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
@@ -38,7 +37,7 @@ jobs:
       - name: Build
         run: >
           ./mvnw verify
-          -DsurefireArgs=-Dspring.profiles.active=ASYNCHRONOUS,TEST
+          -DsurefireArgs=-Dspring.profiles.active=AMQP,TEST
           -Dspring.rabbitmq.host=localhost
           -Dci.buildNumber=$GITHUB_RUN_NUMBER
           -U -B $MAVEN_OPTS

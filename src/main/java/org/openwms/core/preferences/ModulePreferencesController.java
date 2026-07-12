@@ -23,6 +23,7 @@ import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.preferences.api.ModulePreferenceVO;
 import org.openwms.core.preferences.api.PreferencesApi;
 import org.openwms.core.preferences.api.PreferencesConstants;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,9 @@ public class ModulePreferencesController extends AbstractWebController {
     private final Translator translator;
     private final PreferenceVOMapper preferenceVOMapper;
 
-    public ModulePreferencesController(PreferencesService preferencesService, Translator translator, PreferenceVOMapper preferenceVOMapper) {
+    public ModulePreferencesController(MessageSource messageSource, PreferencesService preferencesService, Translator translator,
+            PreferenceVOMapper preferenceVOMapper) {
+        super(messageSource);
         this.preferencesService = preferencesService;
         this.translator = translator;
         this.preferenceVOMapper = preferenceVOMapper;

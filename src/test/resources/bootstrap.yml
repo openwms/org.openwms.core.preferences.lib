@@ -7,8 +7,6 @@ spring:
       password: sa
   jackson:
     date-format: "yyyy-MM-dd'T'HH:mm:ssXXX" # Only matches Dates no Instants!
-    serialization:
-      fail_on_empty_beans: false
   jpa:
     mapping-resources:
       - META-INF/preferences-orm.xml
@@ -107,6 +105,11 @@ management:
       export:
         otlp:
           endpoint: ${owms.tracing.url}
+          transport: grpc
+  otlp:
+    metrics:
+      export:
+        enabled: false # Metrics are scraped by Prometheus, OTLP is only used for traces
   prometheus:
     metrics:
       export:
@@ -119,12 +122,12 @@ management:
 spring:
   config:
     activate:
-      on-profile: ASYNCHRONOUS
+      on-profile: AMQP
   rabbitmq:
     listener:
       simple:
         retry:
-          max-attempts: 3
+          max-retries: 3
           enabled: true
           initial-interval: 1s
           max-interval: 1s
@@ -242,7 +245,6 @@ spring:
     generate-ddl: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: public
     hibernate:
       ddl-auto: update

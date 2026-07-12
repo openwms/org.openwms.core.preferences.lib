@@ -18,7 +18,7 @@ package org.openwms.core.preferences.impl.events;
 import jakarta.annotation.PostConstruct;
 import jakarta.validation.Validator;
 import org.ameba.annotation.Measured;
-import org.openwms.core.SpringProfiles;
+import org.ameba.app.SpringProfiles;
 import org.openwms.core.preferences.PreferenceVOMapper;
 import org.openwms.core.preferences.PreferencesEvent;
 import org.openwms.core.preferences.api.messages.PreferenceMO;
@@ -37,11 +37,11 @@ import static org.ameba.system.ValidationUtil.validate;
 
 /**
  * A PreferencesEventPropagator propagates internal {@link PreferencesEvent}s to the outer world, only active with Spring Profile
- * {@link SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ * {@link SpringProfiles#AMQP}.
  *
  * @author Heiko Scherrer
  */
-@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
+@Profile(SpringProfiles.AMQP)
 @Component
 class PreferencesEventPropagator {
 

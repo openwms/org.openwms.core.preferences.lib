@@ -18,6 +18,7 @@ package org.openwms.core.preferences;
 import org.ameba.http.MeasuredRestController;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -31,6 +32,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
  */
 @MeasuredRestController
 class IndexController extends AbstractWebController {
+
+    IndexController(MessageSource messageSource) {
+        super(messageSource);
+    }
 
     @GetMapping("/index")
     public ResponseEntity<Index> getIndex() {

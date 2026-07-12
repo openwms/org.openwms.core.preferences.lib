@@ -28,6 +28,7 @@ import org.openwms.core.preferences.api.RolePreferenceVO;
 import org.openwms.core.preferences.api.UserPreferenceVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,9 @@ public class PreferencesController extends AbstractWebController {
     private final Translator translator;
     private final PreferenceVOMapper preferenceVOMapper;
 
-    public PreferencesController(PreferencesService preferencesService, Translator translator, PreferenceVOMapper preferenceVOMapper) {
+    public PreferencesController(MessageSource messageSource, PreferencesService preferencesService, Translator translator,
+            PreferenceVOMapper preferenceVOMapper) {
+        super(messageSource);
         this.preferencesService = preferencesService;
         this.translator = translator;
         this.preferenceVOMapper = preferenceVOMapper;

@@ -3,6 +3,24 @@ The OpenWMS.org Preferences Service deals with configuration and preferences for
 configuration parameters in different validity scopes. Scopes can be merged and inherited. Preferences might be stored only valid for a
 particular *User* or a specific *Role*, specific to a *Module* (aka microservice) or the whole *Application*.
 
+This library contains the essential functionality of the Preferences Service and is built with Spring Boot 4.1 on Java 25. It is not a
+standalone microservice: it is embedded into the [OpenWMS.org Preferences Service](https://github.com/openwms/org.openwms.core.preferences)
+that is distributed as a Docker image.
+
+# Build
+A JDK 25 and Maven 3.9+ are required to build. Build the library with all unit and in-memory database integration tests but without a
+required [RabbitMQ](https://www.rabbitmq.com) server:
+
+```
+./mvnw package
+```
+
+To also run the tests against a RabbitMQ instance, running locally with default settings, activate the `AMQP` profile:
+
+```
+./mvnw package -DsurefireArgs=-Dspring.profiles.active=AMQP,TEST
+```
+
 # Resources
 
 [![Build status](https://github.com/openwms/org.openwms.core.preferences.lib/actions/workflows/master-build.yml/badge.svg)](https://github.com/openwms/org.openwms.core.preferences.lib/actions/workflows/master-build.yml)

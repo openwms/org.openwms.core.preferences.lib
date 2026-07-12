@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openwms</groupId>
         <artifactId>org.openwms.parent</artifactId>
-        <version>28.0.M1</version>
+        <version>28.0</version>
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences.lib</artifactId>
@@ -34,9 +34,9 @@
     </developers>
 
     <properties>
-        <ameba-lib.version>4.3.0</ameba-lib.version>
+        <ameba-lib.version>4.3.1-SNAPSHOT</ameba-lib.version>
         <core.test.arch.version>1.0.2</core.test.arch.version>
-        <core.version>3.0.0</core.version>
+        <core.version>4.0.0-SNAPSHOT</core.version>
         <spring-cloud-dependencies.version>2025.1.2</spring-cloud-dependencies.version>
         <spring-plugin-core.version>4.1.0</spring-plugin-core.version>
     </properties>

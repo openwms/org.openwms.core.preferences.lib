@@ -16,15 +16,16 @@
 package org.openwms.core.preferences.app;
 
 import org.ameba.amqp.RabbitTemplateConfigurable;
-import org.openwms.core.SpringProfiles;
+import org.ameba.app.SpringProfiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
+import org.springframework.amqp.rabbit.config.StatefulRetryOperationsInterceptor;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.support.converter.SerializerMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
@@ -36,22 +37,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.amqp.rabbit.config.StatefulRetryOperationsInterceptor;
 import org.springframework.core.retry.RetryPolicy;
 import org.springframework.core.retry.RetryTemplate;
-import org.springframework.util.backoff.ExponentialBackOff;
 
+import java.time.Duration;
 import java.util.Objects;
 
 import static org.ameba.LoggingCategories.BOOT;
 
 /**
  * A PreferencesAsyncConfiguration contains the microservice' asynchronous configuration that is activated on Spring Profile
- * {@link SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ * {@link SpringProfiles#AMQP}.
  *
  * @author Heiko Scherrer
  */
-@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
+@Profile(SpringProfiles.AMQP)
 @RefreshScope
 @EnableRabbit
 @Configuration
@@ -63,7 +63,7 @@ public class PreferencesAsyncConfiguration {
     @ConditionalOnExpression("'${owms.preferences.serialization}'=='json'")
     @Bean
     MessageConverter messageConverter() {
-        var messageConverter = new Jackson2JsonMessageConverter();
+        var messageConverter = new JacksonJsonMessageConverter();
         BOOT_LOGGER.info("Using JSON serialization over AMQP");
         return messageConverter;
     }
@@ -92,11 +92,12 @@ public class PreferencesAsyncConfiguration {
             ObjectProvider<MessageConverter> messageConverter,
             @Autowired(required = false) RabbitTemplateConfigurable rabbitTemplateConfigurable) {
         var rabbitTemplate = new RabbitTemplate(connectionFactory);
-        var backOff = new ExponentialBackOff();
-        backOff.setMultiplier(2);
-        backOff.setMaxInterval(15000);
-        backOff.setInitialInterval(500);
-        var retryTemplate = new RetryTemplate(RetryPolicy.builder().maxRetries(3).backOff(backOff).build());
+        var retryTemplate = new RetryTemplate(RetryPolicy.builder()
+                .maxRetries(3)
+                .delay(Duration.ofMillis(500))
+                .multiplier(2.0)
+                .maxDelay(Duration.ofMillis(15000))
+                .build());
         rabbitTemplate.setRetryTemplate(retryTemplate);
         rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));
         if (rabbitTemplateConfigurable != null) {
