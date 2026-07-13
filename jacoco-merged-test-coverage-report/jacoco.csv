@@ -1,30 +1,36 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.events,PreferencesEventPropagator,6,98,1,3,2,24,1,7,0,5
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,IndexController,0,22,0,0,0,3,0,2,0,2
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,IndexController,0,23,0,0,0,4,0,2,0,2
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PropertyScope,0,27,0,0,0,5,0,1,0,1
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,ModulePreferencesController,0,78,0,0,0,12,0,4,0,4
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,Preference,231,173,29,5,20,60,20,32,5,30
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferenceType,0,76,0,0,0,12,0,5,0,5
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,NotAuthorizedException,0,7,0,0,0,2,0,1,0,1
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,Preference.Builder,25,56,1,3,10,18,6,11,5,10
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferenceVOMapper,55,227,16,14,13,52,16,12,0,10
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferenceVOMapper,37,264,14,22,12,58,14,22,0,15
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferencesEvent.Type,0,21,0,0,0,2,0,1,0,1
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferencesEvent,4,14,0,0,2,5,1,3,1,3
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,UserPreferencesController,0,77,0,0,0,12,0,4,0,4
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferencesController,197,358,15,8,29,53,13,13,2,11
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,RolePreferencesController,0,78,0,0,0,12,0,4,0,4
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,UserPreferencesController,0,78,0,0,0,12,0,4,0,4
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferencesController,182,428,12,11,27,60,10,16,2,11
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences,PreferenceVOMapperImpl,0,3,0,0,0,1,0,1,0,1
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesDistributedConfiguration,3,0,0,0,1,0,1,0,1,0
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesWebConfiguration.new WebMvcConfigurer() {...},0,20,0,0,0,3,0,2,0,2
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesApplicationListener,0,10,0,0,0,5,0,2,0,2
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesModuleConfiguration,0,72,0,0,0,15,0,8,0,8
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesModuleConfiguration.new AbstractSpringTranslator() {...},0,10,0,0,0,2,0,2,0,2
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesAsyncConfiguration,20,65,1,1,7,18,3,5,2,5
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesOtlpConfiguration.OtelConfiguration,0,8,0,0,0,2,0,2,0,2
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesWebConfiguration,7,3,0,0,1,1,1,1,1,1
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesMongoConfiguration,3,0,0,0,1,0,1,0,1,0
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesAutoConfiguration.PreferencesJpaConfiguration,0,3,0,0,0,1,0,1,0,1
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesModuleConfiguration,0,63,0,0,0,12,0,7,0,7
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesModuleConfiguration.new AbstractSpringTranslator() {...},0,13,0,0,0,2,0,2,0,2
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesAsyncConfiguration,20,61,1,1,7,18,3,5,2,5
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesAutoConfiguration.PreferencesComponentsConfiguration,0,3,0,0,0,1,0,1,0,1
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesAutoConfiguration,0,3,0,0,0,1,0,1,0,1
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.app,PreferencesWebConfiguration,7,9,0,0,1,2,1,2,1,2
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl,PreferencesServiceImpl,95,210,9,9,10,43,9,18,2,16
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,ApplicationPreferenceVO,2,3,0,0,1,1,1,1,1,1
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,ApplicationPreferenceVO,0,5,0,0,0,2,0,2,0,2
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,PreferenceVO,122,57,25,1,13,23,16,16,3,16
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,UserPreferenceVO,0,5,0,0,0,2,0,2,0,2
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,RolePreferenceVO,5,0,0,0,2,0,2,0,2,0
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,ModulePreferenceVO,5,0,0,0,2,0,2,0,2,0
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,RolePreferenceVO,0,5,0,0,0,2,0,2,0,2
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api,ModulePreferenceVO,0,5,0,0,0,2,0,2,0,2
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.file,FilePreferenceMapperImpl,0,3,0,0,0,1,0,1,0,1
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.file,AbstractPreference,0,3,0,0,0,1,0,1,0,1
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.file,ObjectFactory,53,0,0,0,11,0,8,0,8,0
@@ -41,7 +47,7 @@ OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.file,XML
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.mongodb,PreferenceDocumentMapperImpl,223,3,10,0,57,1,9,1,4,1
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.mongodb,PreferenceDocument,141,0,8,0,46,0,33,0,29,0
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.mongodb,MongoPreferencePersistenceAdapter,111,0,6,0,20,0,11,0,8,0
-OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api.messages,PreferenceMO,125,51,22,0,16,22,16,14,5,14
+OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.api.messages,PreferenceMO,128,48,22,0,17,21,17,13,6,13
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.jpa,PreferenceEO.Builder,76,0,4,0,26,0,16,0,14,0
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.jpa,JpaPreferencePersistenceAdapter,15,103,2,4,2,19,3,8,1,7
 OpenWMS.org CORE: Preferences Library,org.openwms.core.preferences.impl.jpa,PreferenceRepositoryImpl,15,3,2,0,2,1,2,1,1,1

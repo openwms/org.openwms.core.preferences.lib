@@ -25,52 +25,51 @@ import java.util.Arrays;
 
 /**
  * A FilePreferenceMapper maps from {@link GenericPreference} (XML file) to {@link Preference} (domain model).
- * Replaces the Dozer-based {@code PreferenceConverter}.
  *
  * @author Heiko Scherrer
  */
 @Mapper(componentModel = &quot;spring&quot;)
-<span class="fc" id="L33">public abstract class FilePreferenceMapper {</span>
+<span class="fc" id="L32">public abstract class FilePreferenceMapper {</span>
 
     public Preference toDomain(GenericPreference source) {
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (source == null) {</span>
-<span class="nc" id="L37">            return null;</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L36">            return null;</span>
         }
-<span class="nc bnc" id="L39" title="All 5 branches missed.">        return switch (source) {</span>
-<span class="nc" id="L40">            case ApplicationPreference p -&gt; createBuilder(p)</span>
-<span class="nc" id="L41">                    .key(p.getKey())</span>
-<span class="nc" id="L42">                    .scope(PropertyScope.APPLICATION)</span>
-<span class="nc" id="L43">                    .build();</span>
-<span class="nc" id="L44">            case ModulePreference p -&gt; createBuilder(p)</span>
-<span class="nc" id="L45">                    .key(p.getKey())</span>
-<span class="nc" id="L46">                    .owner(p.getOwner())</span>
-<span class="nc" id="L47">                    .scope(PropertyScope.MODULE)</span>
-<span class="nc" id="L48">                    .build();</span>
-<span class="nc" id="L49">            case RolePreference p -&gt; createBuilder(p)</span>
-<span class="nc" id="L50">                    .key(p.getKey())</span>
-<span class="nc" id="L51">                    .owner(p.getOwner())</span>
-<span class="nc" id="L52">                    .scope(PropertyScope.ROLE)</span>
-<span class="nc" id="L53">                    .build();</span>
-<span class="nc" id="L54">            case UserPreference p -&gt; createBuilder(p)</span>
-<span class="nc" id="L55">                    .key(p.getKey())</span>
-<span class="nc" id="L56">                    .owner(p.getOwner())</span>
-<span class="nc" id="L57">                    .scope(PropertyScope.USER)</span>
-<span class="nc" id="L58">                    .build();</span>
-<span class="nc" id="L59">            default -&gt; throw new IllegalArgumentException(&quot;Source XML preferences type is unknown: &quot; + source.getClass());</span>
+<span class="nc bnc" id="L38" title="All 5 branches missed.">        return switch (source) {</span>
+<span class="nc" id="L39">            case ApplicationPreference p -&gt; createBuilder(p)</span>
+<span class="nc" id="L40">                    .key(p.getKey())</span>
+<span class="nc" id="L41">                    .scope(PropertyScope.APPLICATION)</span>
+<span class="nc" id="L42">                    .build();</span>
+<span class="nc" id="L43">            case ModulePreference p -&gt; createBuilder(p)</span>
+<span class="nc" id="L44">                    .key(p.getKey())</span>
+<span class="nc" id="L45">                    .owner(p.getOwner())</span>
+<span class="nc" id="L46">                    .scope(PropertyScope.MODULE)</span>
+<span class="nc" id="L47">                    .build();</span>
+<span class="nc" id="L48">            case RolePreference p -&gt; createBuilder(p)</span>
+<span class="nc" id="L49">                    .key(p.getKey())</span>
+<span class="nc" id="L50">                    .owner(p.getOwner())</span>
+<span class="nc" id="L51">                    .scope(PropertyScope.ROLE)</span>
+<span class="nc" id="L52">                    .build();</span>
+<span class="nc" id="L53">            case UserPreference p -&gt; createBuilder(p)</span>
+<span class="nc" id="L54">                    .key(p.getKey())</span>
+<span class="nc" id="L55">                    .owner(p.getOwner())</span>
+<span class="nc" id="L56">                    .scope(PropertyScope.USER)</span>
+<span class="nc" id="L57">                    .build();</span>
+<span class="nc" id="L58">            default -&gt; throw new IllegalArgumentException(&quot;Source XML preferences type is unknown: &quot; + source.getClass());</span>
         };
     }
 
     private Preference.Builder createBuilder(GenericPreference p) {
-<span class="nc" id="L64">        return Preference.newBuilder()</span>
-<span class="nc" id="L65">                .description(p.getDescription())</span>
-<span class="nc" id="L66">                .val(p.getValue())</span>
-<span class="nc" id="L67">                .fromFile(true)</span>
-<span class="nc" id="L68">                .type(Arrays.stream(PreferenceType.values())</span>
-<span class="nc" id="L69">                        .filter(v -&gt; v.name().equals(p.getType()))</span>
-<span class="nc" id="L70">                        .findFirst()</span>
-<span class="nc" id="L71">                        .orElseThrow(() -&gt; new NotFoundException(&quot;PreferenceType &quot; + p.getType())))</span>
-<span class="nc" id="L72">                .minValue(p.getMinimum())</span>
-<span class="nc" id="L73">                .maxValue(p.getMaximum());</span>
+<span class="nc" id="L63">        return Preference.newBuilder()</span>
+<span class="nc" id="L64">                .description(p.getDescription())</span>
+<span class="nc" id="L65">                .val(p.getValue())</span>
+<span class="nc" id="L66">                .fromFile(true)</span>
+<span class="nc" id="L67">                .type(Arrays.stream(PreferenceType.values())</span>
+<span class="nc" id="L68">                        .filter(v -&gt; v.name().equals(p.getType()))</span>
+<span class="nc" id="L69">                        .findFirst()</span>
+<span class="nc" id="L70">                        .orElseThrow(() -&gt; new NotFoundException(&quot;PreferenceType &quot; + p.getType())))</span>
+<span class="nc" id="L71">                .minValue(p.getMinimum())</span>
+<span class="nc" id="L72">                .maxValue(p.getMaximum());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

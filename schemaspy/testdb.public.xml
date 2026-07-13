@@ -3,13 +3,13 @@
       <sequence increment="1" name="cor_pref_seq" startValue="1"/>
    </sequences>
    <tables>
-      <table catalog="testdb" name="cor_pref_preference" numRows="0" remarks="" schema="public" type="TABLE">
+      <table catalog="testdb" name="cor_pref_preference" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="c_pk" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="c_created" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="c_created_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="c_updated_by" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="4" name="c_updated" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="c_ol" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="c_ol" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="c_pid" nullable="false" remarks="" size="255" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="c_def_value" nullable="true" remarks="" size="4096" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="c_description" nullable="true" remarks="" size="255" type="varchar" typeCode="12"/>
@@ -34,6 +34,7 @@
             <column ascending="true" name="c_pid"/>
          </index>
          <checkConstraint constraint="((c_scope)::text = ANY ((ARRAY['APPLICATION'::character varying, 'MODULE'::character varying, 'ROLE'::character varying, 'USER'::character varying])::text[]))" name="cor_pref_preference_c_scope_check"/>
+         <checkConstraint constraint="((c_type)::text = ANY ((ARRAY['java.lang.Float'::character varying, 'java.lang.Boolean'::character varying, 'java.lang.Object'::character varying, 'JSON'::character varying, 'java.lang.String'::character varying, 'java.lang.Integer'::character varying])::text[]))" name="cor_pref_preference_c_type_check"/>
       </table>
    </tables>
 </database>

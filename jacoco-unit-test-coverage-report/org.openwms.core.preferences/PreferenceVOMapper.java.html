@@ -30,105 +30,128 @@ import java.util.List;
 
 /**
  * A PreferenceVOMapper maps between {@link Preference} (domain) and {@link PreferenceVO} (API VO).
- * Replaces the Dozer-based {@code PreferenceVOConverter}.
  *
  * @author Heiko Scherrer
  */
 @Mapper(componentModel = &quot;spring&quot;)
-<span class="fc" id="L38">public abstract class PreferenceVOMapper {</span>
+<span class="fc" id="L37">public abstract class PreferenceVOMapper {</span>
 
     public static &lt;T extends PreferenceVO&gt; PropertyScope resolveScope(T preference) {
-<span class="nc bnc" id="L41" title="All 5 branches missed.">        return switch (preference) {</span>
-<span class="nc" id="L42">            case ApplicationPreferenceVO ignored -&gt; PropertyScope.APPLICATION;</span>
-<span class="nc" id="L43">            case ModulePreferenceVO ignored -&gt; PropertyScope.MODULE;</span>
-<span class="nc" id="L44">            case RolePreferenceVO ignored -&gt; PropertyScope.ROLE;</span>
-<span class="nc" id="L45">            case UserPreferenceVO ignored -&gt; PropertyScope.USER;</span>
-<span class="nc" id="L46">            default -&gt; throw new IllegalStateException(&quot;Unexpected value: &quot; + preference);</span>
+<span class="nc bnc" id="L40" title="All 5 branches missed.">        return switch (preference) {</span>
+<span class="nc" id="L41">            case ApplicationPreferenceVO ignored -&gt; PropertyScope.APPLICATION;</span>
+<span class="nc" id="L42">            case ModulePreferenceVO ignored -&gt; PropertyScope.MODULE;</span>
+<span class="nc" id="L43">            case RolePreferenceVO ignored -&gt; PropertyScope.ROLE;</span>
+<span class="nc" id="L44">            case UserPreferenceVO ignored -&gt; PropertyScope.USER;</span>
+<span class="nc" id="L45">            default -&gt; throw new IllegalStateException(&quot;Unexpected value: &quot; + preference);</span>
         };
     }
 
     public PreferenceVO toVO(Preference source) {
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if (source == null) {</span>
-<span class="nc" id="L52">            return null;</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L51">            return null;</span>
         }
         PreferenceVO p;
-<span class="nc bnc" id="L55" title="All 5 branches missed.">        switch (source.getScope()) {</span>
-<span class="nc" id="L56">            case APPLICATION -&gt; p = new ApplicationPreferenceVO();</span>
-<span class="nc" id="L57">            case MODULE -&gt; p = new ModulePreferenceVO();</span>
-<span class="nc" id="L58">            case ROLE -&gt; p = new RolePreferenceVO();</span>
-<span class="nc" id="L59">            case USER -&gt; p = new UserPreferenceVO();</span>
-<span class="nc" id="L60">            default -&gt; throw new IllegalArgumentException(&quot;Source entity preferences type is unknown: &quot; + source.getScope());</span>
+<span class="nc bnc" id="L54" title="All 5 branches missed.">        switch (source.getScope()) {</span>
+<span class="nc" id="L55">            case APPLICATION -&gt; p = new ApplicationPreferenceVO();</span>
+<span class="nc" id="L56">            case MODULE -&gt; p = new ModulePreferenceVO();</span>
+<span class="nc" id="L57">            case ROLE -&gt; p = new RolePreferenceVO();</span>
+<span class="nc" id="L58">            case USER -&gt; p = new UserPreferenceVO();</span>
+<span class="nc" id="L59">            default -&gt; throw new IllegalArgumentException(&quot;Source entity preferences type is unknown: &quot; + source.getScope());</span>
         }
-<span class="nc" id="L62">        p.setpKey(source.getPersistentKey());</span>
-<span class="nc" id="L63">        p.setKey(source.getKey());</span>
-<span class="nc" id="L64">        p.setOwner(source.getOwner());</span>
-<span class="nc" id="L65">        p.setVal(source.getVal());</span>
-<span class="nc" id="L66">        p.setDescription(source.getDescription());</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">        p.setType(source.getType() != null ? source.getType().name() : null);</span>
-<span class="nc" id="L68">        p.setGroupName(source.getGroupName());</span>
-<span class="nc" id="L69">        return p;</span>
+<span class="nc" id="L61">        return fillVO(p, source);</span>
     }
 
     public UserPreferenceVO toUserVO(Preference source) {
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (source == null) {</span>
-<span class="nc" id="L74">            return null;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L66">            return null;</span>
         }
-<span class="nc" id="L76">        var p = new UserPreferenceVO();</span>
-<span class="nc" id="L77">        p.setpKey(source.getPersistentKey());</span>
-<span class="nc" id="L78">        p.setKey(source.getKey());</span>
-<span class="nc" id="L79">        p.setOwner(source.getOwner());</span>
-<span class="nc" id="L80">        p.setVal(source.getVal());</span>
-<span class="nc" id="L81">        p.setDescription(source.getDescription());</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        p.setType(source.getType() != null ? source.getType().name() : null);</span>
-<span class="nc" id="L83">        p.setGroupName(source.getGroupName());</span>
-<span class="nc" id="L84">        return p;</span>
+<span class="nc" id="L68">        return fillVO(new UserPreferenceVO(), source);</span>
+    }
+
+    public RolePreferenceVO toRoleVO(Preference source) {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L73">            return null;</span>
+        }
+<span class="nc" id="L75">        return fillVO(new RolePreferenceVO(), source);</span>
+    }
+
+    public ModulePreferenceVO toModuleVO(Preference source) {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L80">            return null;</span>
+        }
+<span class="nc" id="L82">        return fillVO(new ModulePreferenceVO(), source);</span>
+    }
+
+    private &lt;T extends PreferenceVO&gt; T fillVO(T p, Preference source) {
+<span class="nc" id="L86">        p.setpKey(source.getPersistentKey());</span>
+<span class="nc" id="L87">        p.setKey(source.getKey());</span>
+<span class="nc" id="L88">        p.setOwner(source.getOwner());</span>
+<span class="nc" id="L89">        p.setVal(source.getVal());</span>
+<span class="nc" id="L90">        p.setDescription(source.getDescription());</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        p.setType(source.getType() != null ? source.getType().name() : null);</span>
+<span class="nc" id="L92">        p.setGroupName(source.getGroupName());</span>
+<span class="nc" id="L93">        return p;</span>
     }
 
     public List&lt;PreferenceVO&gt; toVOList(Collection&lt;Preference&gt; sources) {
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (sources == null) {</span>
-<span class="nc" id="L89">            return List.of();</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (sources == null) {</span>
+<span class="nc" id="L98">            return List.of();</span>
         }
-<span class="nc" id="L91">        return sources.stream().map(this::toVO).toList();</span>
+<span class="nc" id="L100">        return sources.stream().map(this::toVO).toList();</span>
     }
 
     public List&lt;UserPreferenceVO&gt; toUserVOList(Collection&lt;Preference&gt; sources) {
-<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (sources == null) {</span>
-<span class="nc" id="L96">            return List.of();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (sources == null) {</span>
+<span class="nc" id="L105">            return List.of();</span>
         }
-<span class="nc" id="L98">        return sources.stream().map(this::toUserVO).toList();</span>
+<span class="nc" id="L107">        return sources.stream().map(this::toUserVO).toList();</span>
+    }
+
+    public List&lt;RolePreferenceVO&gt; toRoleVOList(Collection&lt;Preference&gt; sources) {
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (sources == null) {</span>
+<span class="nc" id="L112">            return List.of();</span>
+        }
+<span class="nc" id="L114">        return sources.stream().map(this::toRoleVO).toList();</span>
+    }
+
+    public List&lt;ModulePreferenceVO&gt; toModuleVOList(Collection&lt;Preference&gt; sources) {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (sources == null) {</span>
+<span class="nc" id="L119">            return List.of();</span>
+        }
+<span class="nc" id="L121">        return sources.stream().map(this::toModuleVO).toList();</span>
     }
 
     public Preference toDomain(PreferenceVO source) {
-<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (source == null) {</span>
-<span class="nc" id="L103">            return null;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L126">            return null;</span>
         }
-<span class="nc" id="L105">        return Preference.newBuilder()</span>
-<span class="nc" id="L106">                .pKey(source.getpKey())</span>
-<span class="nc" id="L107">                .key(source.getKey())</span>
-<span class="nc" id="L108">                .owner(source.getOwner())</span>
-<span class="nc" id="L109">                .description(source.getDescription())</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">                .val(source.getVal() == null ? null : source.getVal().toString())</span>
-<span class="nc" id="L111">                .type(Arrays.stream(PreferenceType.values())</span>
-<span class="nc" id="L112">                        .filter(v -&gt; v.name().equals(source.getType()))</span>
-<span class="nc" id="L113">                        .findFirst()</span>
-<span class="nc" id="L114">                        .orElseThrow(() -&gt; new NotFoundException(&quot;PreferenceType &quot; + source.getType())))</span>
-<span class="nc" id="L115">                .scope(resolveScope(source))</span>
-<span class="nc" id="L116">                .groupName(source.getGroupName())</span>
-<span class="nc" id="L117">                .build();</span>
+<span class="nc" id="L128">        return Preference.newBuilder()</span>
+<span class="nc" id="L129">                .pKey(source.getpKey())</span>
+<span class="nc" id="L130">                .key(source.getKey())</span>
+<span class="nc" id="L131">                .owner(source.getOwner())</span>
+<span class="nc" id="L132">                .description(source.getDescription())</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">                .val(source.getVal() == null ? null : source.getVal().toString())</span>
+<span class="nc" id="L134">                .type(Arrays.stream(PreferenceType.values())</span>
+<span class="nc" id="L135">                        .filter(v -&gt; v.name().equals(source.getType()))</span>
+<span class="nc" id="L136">                        .findFirst()</span>
+<span class="nc" id="L137">                        .orElseThrow(() -&gt; new NotFoundException(&quot;PreferenceType &quot; + source.getType())))</span>
+<span class="nc" id="L138">                .scope(resolveScope(source))</span>
+<span class="nc" id="L139">                .groupName(source.getGroupName())</span>
+<span class="nc" id="L140">                .build();</span>
     }
 
     public PreferenceMO toMO(Preference source) {
-<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (source == null) {</span>
-<span class="nc" id="L122">            return null;</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L145">            return null;</span>
         }
-<span class="nc" id="L124">        var mo = new PreferenceMO(source.getKey());</span>
-<span class="nc" id="L125">        mo.setpKey(source.getPersistentKey());</span>
-<span class="nc" id="L126">        mo.setOwner(source.getOwner());</span>
-<span class="nc" id="L127">        mo.setDescription(source.getDescription());</span>
-<span class="nc" id="L128">        mo.setVal(source.getVal());</span>
-<span class="nc" id="L129">        mo.setGroupName(source.getGroupName());</span>
-<span class="nc bnc" id="L130" title="All 2 branches missed.">        mo.setType(source.getType() != null ? source.getType().name() : null);</span>
-<span class="nc" id="L131">        return mo;</span>
+<span class="nc" id="L147">        var mo = new PreferenceMO(source.getKey());</span>
+<span class="nc" id="L148">        mo.setpKey(source.getPersistentKey());</span>
+<span class="nc" id="L149">        mo.setOwner(source.getOwner());</span>
+<span class="nc" id="L150">        mo.setDescription(source.getDescription());</span>
+<span class="nc" id="L151">        mo.setVal(source.getVal());</span>
+<span class="nc" id="L152">        mo.setGroupName(source.getGroupName());</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        mo.setType(source.getType() != null ? source.getType().name() : null);</span>
+<span class="nc" id="L154">        return mo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

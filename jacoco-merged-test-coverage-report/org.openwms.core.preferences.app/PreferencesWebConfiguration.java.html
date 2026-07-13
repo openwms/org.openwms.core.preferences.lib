@@ -21,7 +21,13 @@ import org.ameba.http.PermitAllCorsConfigurationSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import tools.jackson.databind.json.JsonMapper;
+
+import java.util.List;
 
 /**
  * A PreferencesWebConfiguration is the microservice Spring web configuration, active by default.
@@ -29,12 +35,27 @@ import org.springframework.web.filter.CorsFilter;
  * @author Heiko Scherrer
  */
 @Configuration
-<span class="fc" id="L32">public class PreferencesWebConfiguration {</span>
+<span class="fc" id="L38">public class PreferencesWebConfiguration {</span>
 
     @Profile(SpringProfiles.DEVELOPMENT_PROFILE)
     @Bean
     Filter corsFiler() {
-<span class="nc" id="L37">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
+<span class="nc" id="L43">        return new CorsFilter(new PermitAllCorsConfigurationSource());</span>
+    }
+
+    /**
+     * Register an unrestricted Jackson converter for the custom {@code application/*+json} vendor media types. Actuator and Spring
+     * HATEOAS bind type-specific {@code ObjectMapper}s to the shared converter, which makes it serve only those registered types.
+     * This converter, appended last, keeps their precedence while still serializing the plain Preference value objects.
+     */
+    @Bean
+    WebMvcConfigurer preferencesMessageConverterConfigurer(JsonMapper jsonMapper) {
+<span class="fc" id="L53">        return new WebMvcConfigurer() {</span>
+            @Override
+            public void extendMessageConverters(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters) {
+<span class="fc" id="L56">                converters.add(new JacksonJsonHttpMessageConverter(jsonMapper));</span>
+<span class="fc" id="L57">            }</span>
+        };
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

@@ -15,7 +15,7 @@
  */
 package org.openwms.core.preferences.app;
 
-import org.openwms.core.SpringProfiles;
+import org.ameba.app.SpringProfiles;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

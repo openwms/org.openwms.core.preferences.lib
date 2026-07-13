@@ -23,6 +23,7 @@ import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.preferences.api.PreferencesApi;
 import org.openwms.core.preferences.api.PreferencesConstants;
 import org.openwms.core.preferences.api.UserPreferenceVO;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,18 +46,20 @@ public class UserPreferencesController extends AbstractWebController {
     private final Translator translator;
     private final PreferenceVOMapper preferenceVOMapper;
 
-<span class="fc" id="L48">    public UserPreferencesController(PreferencesService preferencesService, Translator translator, PreferenceVOMapper preferenceVOMapper) {</span>
-<span class="fc" id="L49">        this.preferencesService = preferencesService;</span>
-<span class="fc" id="L50">        this.translator = translator;</span>
-<span class="fc" id="L51">        this.preferenceVOMapper = preferenceVOMapper;</span>
-<span class="fc" id="L52">    }</span>
+    public UserPreferencesController(MessageSource messageSource, PreferencesService preferencesService, Translator translator,
+            PreferenceVOMapper preferenceVOMapper) {
+<span class="fc" id="L51">        super(messageSource);</span>
+<span class="fc" id="L52">        this.preferencesService = preferencesService;</span>
+<span class="fc" id="L53">        this.translator = translator;</span>
+<span class="fc" id="L54">        this.preferenceVOMapper = preferenceVOMapper;</span>
+<span class="fc" id="L55">    }</span>
 
     @GetMapping(value = PreferencesApi.API_PREFERENCES, params = &quot;user&quot;)
     public ResponseEntity&lt;List&lt;UserPreferenceVO&gt;&gt; findByUser(
             @RequestParam(&quot;user&quot;) @NotBlank String user
     ) {
-<span class="nc" id="L58">        return ResponseEntity.ok(</span>
-<span class="nc" id="L59">                preferenceVOMapper.toUserVOList(new ArrayList&lt;&gt;(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)))</span>
+<span class="nc" id="L61">        return ResponseEntity.ok(</span>
+<span class="nc" id="L62">                preferenceVOMapper.toUserVOList(new ArrayList&lt;&gt;(preferencesService.findForOwnerAndScope(user, PropertyScope.USER)))</span>
         );
     }
 
@@ -65,11 +68,11 @@ public class UserPreferencesController extends AbstractWebController {
             @RequestParam(&quot;user&quot;) @NotBlank String user,
             @RequestParam(&quot;key&quot;) @NotBlank String key
     ) {
-<span class="nc" id="L68">        return ResponseEntity.ok(</span>
-<span class="nc" id="L69">                preferenceVOMapper.toUserVO(</span>
-<span class="nc" id="L70">                        preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)</span>
-<span class="nc" id="L71">                                .orElseThrow(() -&gt;</span>
-<span class="nc" id="L72">                                        new NotFoundException(</span>
+<span class="nc" id="L71">        return ResponseEntity.ok(</span>
+<span class="nc" id="L72">                preferenceVOMapper.toUserVO(</span>
+<span class="nc" id="L73">                        preferencesService.findForOwnerAndScopeAndKey(user, PropertyScope.USER, key)</span>
+<span class="nc" id="L74">                                .orElseThrow(() -&gt;</span>
+<span class="nc" id="L75">                                        new NotFoundException(</span>
                                                 translator,
                                                 PreferencesConstants.NOT_FOUND_BY_OWNER_AND_SCOPE_AND_KEY,
                                                 new Serializable[]{key, user, PropertyScope.USER}, key, user, PropertyScope.USER

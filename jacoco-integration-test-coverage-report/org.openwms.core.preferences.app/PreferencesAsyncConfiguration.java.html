@@ -16,15 +16,16 @@
 package org.openwms.core.preferences.app;
 
 import org.ameba.amqp.RabbitTemplateConfigurable;
-import org.openwms.core.SpringProfiles;
+import org.ameba.app.SpringProfiles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
+import org.springframework.amqp.rabbit.config.StatefulRetryOperationsInterceptor;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.amqp.support.converter.SerializerMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
@@ -36,52 +37,52 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.interceptor.StatefulRetryOperationsInterceptor;
-import org.springframework.retry.support.RetryTemplate;
+import org.springframework.core.retry.RetryPolicy;
+import org.springframework.core.retry.RetryTemplate;
 
+import java.time.Duration;
 import java.util.Objects;
 
 import static org.ameba.LoggingCategories.BOOT;
 
 /**
  * A PreferencesAsyncConfiguration contains the microservice' asynchronous configuration that is activated on Spring Profile
- * {@link SpringProfiles#ASYNCHRONOUS_PROFILE}.
+ * {@link SpringProfiles#AMQP}.
  *
  * @author Heiko Scherrer
  */
-@Profile(SpringProfiles.ASYNCHRONOUS_PROFILE)
+@Profile(SpringProfiles.AMQP)
 @RefreshScope
 @EnableRabbit
 @Configuration
-<span class="fc" id="L57">public class PreferencesAsyncConfiguration {</span>
+<span class="fc" id="L58">public class PreferencesAsyncConfiguration {</span>
 
-<span class="fc" id="L59">    private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);</span>
+<span class="fc" id="L60">    private static final Logger BOOT_LOGGER = LoggerFactory.getLogger(BOOT);</span>
 
     @RefreshScope
     @ConditionalOnExpression(&quot;'${owms.preferences.serialization}'=='json'&quot;)
     @Bean
     MessageConverter messageConverter() {
-<span class="fc" id="L65">        var messageConverter = new Jackson2JsonMessageConverter();</span>
-<span class="fc" id="L66">        BOOT_LOGGER.info(&quot;Using JSON serialization over AMQP&quot;);</span>
-<span class="fc" id="L67">        return messageConverter;</span>
+<span class="fc" id="L66">        var messageConverter = new JacksonJsonMessageConverter();</span>
+<span class="fc" id="L67">        BOOT_LOGGER.info(&quot;Using JSON serialization over AMQP&quot;);</span>
+<span class="fc" id="L68">        return messageConverter;</span>
     }
 
     @RefreshScope
     @ConditionalOnExpression(&quot;'${owms.preferences.serialization}'=='barray'&quot;)
     @Bean
     MessageConverter serializerMessageConverter() {
-<span class="nc" id="L74">        var messageConverter = new SerializerMessageConverter();</span>
-<span class="nc" id="L75">        BOOT_LOGGER.info(&quot;Using byte array serialization over AMQP&quot;);</span>
-<span class="nc" id="L76">        return messageConverter;</span>
+<span class="nc" id="L75">        var messageConverter = new SerializerMessageConverter();</span>
+<span class="nc" id="L76">        BOOT_LOGGER.info(&quot;Using byte array serialization over AMQP&quot;);</span>
+<span class="nc" id="L77">        return messageConverter;</span>
     }
 
     @Bean
     StatefulRetryOperationsInterceptor interceptor() {
-<span class="nc" id="L81">        return RetryInterceptorBuilder.stateful()</span>
-<span class="nc" id="L82">                .maxAttempts(3)</span>
-<span class="nc" id="L83">                .backOffOptions(1000, 2.0, 10000)</span>
-<span class="nc" id="L84">                .build();</span>
+<span class="nc" id="L82">        return RetryInterceptorBuilder.stateful()</span>
+<span class="nc" id="L83">                .maxRetries(2)</span>
+<span class="nc" id="L84">                .backOffOptions(1000, 2.0, 10000)</span>
+<span class="nc" id="L85">                .build();</span>
     }
 
     @RefreshScope
@@ -90,25 +91,25 @@ import static org.ameba.LoggingCategories.BOOT;
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory,
             ObjectProvider&lt;MessageConverter&gt; messageConverter,
             @Autowired(required = false) RabbitTemplateConfigurable rabbitTemplateConfigurable) {
-<span class="fc" id="L93">        var rabbitTemplate = new RabbitTemplate(connectionFactory);</span>
-<span class="fc" id="L94">        var backOffPolicy = new ExponentialBackOffPolicy();</span>
-<span class="fc" id="L95">        backOffPolicy.setMultiplier(2);</span>
-<span class="fc" id="L96">        backOffPolicy.setMaxInterval(15000);</span>
-<span class="fc" id="L97">        backOffPolicy.setInitialInterval(500);</span>
-<span class="fc" id="L98">        var retryTemplate = new RetryTemplate();</span>
-<span class="fc" id="L99">        retryTemplate.setBackOffPolicy(backOffPolicy);</span>
-<span class="fc" id="L100">        rabbitTemplate.setRetryTemplate(retryTemplate);</span>
-<span class="fc" id="L101">        rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));</span>
-<span class="pc bpc" id="L102" title="1 of 2 branches missed.">        if (rabbitTemplateConfigurable != null) {</span>
-<span class="fc" id="L103">            rabbitTemplateConfigurable.configure(rabbitTemplate);</span>
+<span class="fc" id="L94">        var rabbitTemplate = new RabbitTemplate(connectionFactory);</span>
+<span class="fc" id="L95">        var retryTemplate = new RetryTemplate(RetryPolicy.builder()</span>
+<span class="fc" id="L96">                .maxRetries(3)</span>
+<span class="fc" id="L97">                .delay(Duration.ofMillis(500))</span>
+<span class="fc" id="L98">                .multiplier(2.0)</span>
+<span class="fc" id="L99">                .maxDelay(Duration.ofMillis(15000))</span>
+<span class="fc" id="L100">                .build());</span>
+<span class="fc" id="L101">        rabbitTemplate.setRetryTemplate(retryTemplate);</span>
+<span class="fc" id="L102">        rabbitTemplate.setMessageConverter(Objects.requireNonNull(messageConverter.getIfUnique()));</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">        if (rabbitTemplateConfigurable != null) {</span>
+<span class="fc" id="L104">            rabbitTemplateConfigurable.configure(rabbitTemplate);</span>
         }
-<span class="fc" id="L105">        return rabbitTemplate;</span>
+<span class="fc" id="L106">        return rabbitTemplate;</span>
     }
 
     @RefreshScope
     @Bean
     TopicExchange lgExchange(@Value(&quot;${owms.events.core.preferences.exchange-name}&quot;) String exchangeName) {
-<span class="fc" id="L111">        return new TopicExchange(exchangeName, true, false);</span>
+<span class="fc" id="L112">        return new TopicExchange(exchangeName, true, false);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
