@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
     <artifactId>org.openwms.core.preferences.lib</artifactId>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <name>OpenWMS.org CORE: Preferences Library</name>
     <description>The implementation library of the OpenWMS CORE Preferences Service</description>
     <url>https://openwms.github.io/${project.artifactId}/index.html</url>
@@ -34,9 +34,9 @@
     </developers>
 
     <properties>
-        <ameba-lib.version>4.3.1-SNAPSHOT</ameba-lib.version>
+        <ameba-lib.version>4.3.0</ameba-lib.version>
         <core.test.arch.version>1.0.2</core.test.arch.version>
-        <core.version>4.0.0-SNAPSHOT</core.version>
+        <core.version>4.0.0</core.version>
         <spring-cloud-dependencies.version>2025.1.2</spring-cloud-dependencies.version>
         <spring-plugin-core.version>4.1.0</spring-plugin-core.version>
     </properties>
