@@ -139,6 +139,20 @@ jobs:
           DISPATCH_TOKEN: ${{ secrets.PAT }}
       - uses: actions/checkout@v4
 
+  trigger_starter_build:
+    runs-on: ubuntu-latest
+    name: Trigger Starter Build
+    needs: build_job
+    steps:
+      - name: Trigger
+        run: |
+          curl --fail -X POST https://api.github.com/repos/interface21-io/preferences-spring-boot-starter/dispatches \
+          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -H "Authorization: Bearer ${DISPATCH_TOKEN}" \
+          --data '{"event_type": "Remote Trigger", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+        env:
+          DISPATCH_TOKEN: ${{ secrets.PAT }}
+
   sonar_job:
     runs-on: ubuntu-latest
     name: Sonar Analysis
