@@ -45,7 +45,9 @@ class PreferencesAutoConfigurationTest {
                     "spring.application.name=preferences-test",
                     "spring.jpa.mapping-resources=META-INF/preferences-orm.xml",
                     // Decouple from any profiles passed to the surefire JVM, like AMQP in CI
-                    "spring.profiles.active=DEFAULT"
+                    "spring.profiles.active=DEFAULT",
+                    // Decouple from any datasource url passed to the surefire JVM, like the PostgreSQL url in the CI Site step
+                    "spring.datasource.url=jdbc:h2:mem:autoconfig;DB_CLOSE_DELAY=-1"
             );
 
     @Test
