@@ -151,7 +151,7 @@ jobs:
           -H "Authorization: Bearer ${DISPATCH_TOKEN}" \
           --data '{"event_type": "Remote Trigger", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
         env:
-          DISPATCH_TOKEN: ${{ secrets.PAT }}
+          DISPATCH_TOKEN: ${{ secrets.I21PAT }}
 
   sonar_job:
     runs-on: ubuntu-latest
