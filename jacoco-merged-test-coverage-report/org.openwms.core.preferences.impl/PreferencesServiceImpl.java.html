@@ -62,13 +62,14 @@ class PreferencesServiceImpl implements PreferencesService {
     private final Translator translator;
     private final ApplicationContext ctx;
 
-<span class="fc" id="L65">    PreferencesServiceImpl(PreferenceDao fileDao, PreferencePersistencePort persistencePort, FilePreferenceMapper filePreferenceMapper, Translator translator, ApplicationContext ctx) {</span>
-<span class="fc" id="L66">        this.fileDao = fileDao;</span>
-<span class="fc" id="L67">        this.persistencePort = persistencePort;</span>
-<span class="fc" id="L68">        this.filePreferenceMapper = filePreferenceMapper;</span>
-<span class="fc" id="L69">        this.translator = translator;</span>
-<span class="fc" id="L70">        this.ctx = ctx;</span>
-<span class="fc" id="L71">    }</span>
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferencePersistencePort persistencePort, FilePreferenceMapper filePreferenceMapper,
+<span class="fc" id="L66">            Translator translator, ApplicationContext ctx) {</span>
+<span class="fc" id="L67">        this.fileDao = fileDao;</span>
+<span class="fc" id="L68">        this.persistencePort = persistencePort;</span>
+<span class="fc" id="L69">        this.filePreferenceMapper = filePreferenceMapper;</span>
+<span class="fc" id="L70">        this.translator = translator;</span>
+<span class="fc" id="L71">        this.ctx = ctx;</span>
+<span class="fc" id="L72">    }</span>
 
     /**
      * {@inheritDoc}
@@ -76,12 +77,12 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull Preference findByPKey(@NotBlank String pKey) {
-<span class="fc" id="L79">        return findByPKeyInternal(pKey);</span>
+<span class="fc" id="L80">        return findByPKeyInternal(pKey);</span>
     }
 
     private Preference findByPKeyInternal(String pKey) {
-<span class="fc" id="L83">        return persistencePort.findBypKey(pKey).orElseThrow(</span>
-<span class="fc" id="L84">                () -&gt; new NotFoundException(translator, NOT_FOUND_BY_PKEY, new String[]{pKey}, pKey)</span>
+<span class="fc" id="L84">        return persistencePort.findBypKey(pKey).orElseThrow(</span>
+<span class="fc" id="L85">                () -&gt; new NotFoundException(translator, NOT_FOUND_BY_PKEY, new String[]{pKey}, pKey)</span>
         );
     }
 
@@ -91,7 +92,7 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull Collection&lt;Preference&gt; findAll() {
-<span class="fc" id="L94">        return persistencePort.findAll();</span>
+<span class="fc" id="L95">        return persistencePort.findAll();</span>
     }
 
     /**
@@ -100,16 +101,16 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull Collection&lt;Preference&gt; findForOwnerAndScope(String owner, @NotNull PropertyScope scope) {
-<span class="fc" id="L103">        ensureUserPreferenceAccess(owner, scope);</span>
-<span class="fc" id="L104">        var result = persistencePort.findByOwnerAndScope(owner, scope);</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
+<span class="fc" id="L104">        ensureUserPreferenceAccess(owner, scope);</span>
+<span class="fc" id="L105">        var result = persistencePort.findByOwnerAndScope(owner, scope);</span>
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
     }
 
     private void ensureUserPreferenceAccess(String owner, PropertyScope scope) {
-<span class="pc bpc" id="L109" title="1 of 6 branches missed.">        if ((owner == null || owner.isEmpty()) &amp;&amp; scope == PropertyScope.USER) {</span>
-<span class="fc" id="L110">            throw new NotAuthorizedException(translator, NOT_ALLOWED_FETCH_USER_PREFS, new String[0]);</span>
+<span class="pc bpc" id="L110" title="1 of 6 branches missed.">        if ((owner == null || owner.isEmpty()) &amp;&amp; PropertyScope.USER.equals(scope)) {</span>
+<span class="fc" id="L111">            throw new NotAuthorizedException(translator, NOT_ALLOWED_FETCH_USER_PREFS, new String[0]);</span>
         }
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L113">    }</span>
 
     /**
      * {@inheritDoc}
@@ -117,8 +118,8 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public Optional&lt;Preference&gt; findForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
-<span class="fc" id="L120">        ensureUserPreferenceAccess(owner, scope);</span>
-<span class="fc" id="L121">        return persistencePort.findByOwnerAndScopeAndKey(owner, scope, key);</span>
+<span class="fc" id="L121">        ensureUserPreferenceAccess(owner, scope);</span>
+<span class="fc" id="L122">        return persistencePort.findByOwnerAndScopeAndKey(owner, scope, key);</span>
     }
 
     /**
@@ -127,9 +128,9 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull List&lt;Preference&gt; findForScopeOwnerGroupName(String owner, @NotNull PropertyScope scope, @NotBlank String groupName) {
-<span class="nc" id="L130">        ensureUserPreferenceAccess(owner, scope);</span>
-<span class="nc" id="L131">        var result = persistencePort.findByOwnerAndScopeAndGroupName(owner, scope, groupName);</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
+<span class="nc" id="L131">        ensureUserPreferenceAccess(owner, scope);</span>
+<span class="nc" id="L132">        var result = persistencePort.findByOwnerAndScopeAndGroupName(owner, scope, groupName);</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        return result == null ? Collections.emptyList() : result;</span>
     }
 
     /**
@@ -138,7 +139,7 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public boolean existsForOwnerAndScopeAndKey(String owner, @NotNull PropertyScope scope, @NotBlank String key) {
-<span class="fc" id="L141">        return persistencePort.findByOwnerAndScopeAndKey(owner, scope, key).isPresent();</span>
+<span class="fc" id="L142">        return persistencePort.findByOwnerAndScopeAndKey(owner, scope, key).isPresent();</span>
     }
 
     /**
@@ -147,29 +148,29 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull Preference create(@NotNull Preference preference) {
-<span class="pc bpc" id="L150" title="1 of 2 branches missed.">        if (preference.hasPersistentKey()) {</span>
-<span class="nc" id="L151">            throw new ResourceExistsException(translator, ALREADY_EXISTS,</span>
-<span class="nc" id="L152">                    new String[]{preference.getPersistentKey()},</span>
-<span class="nc" id="L153">                    preference.getPersistentKey());</span>
+<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (preference.hasPersistentKey()) {</span>
+<span class="nc" id="L152">            throw new ResourceExistsException(translator, ALREADY_EXISTS,</span>
+<span class="nc" id="L153">                    new String[]{preference.getPersistentKey()},</span>
+<span class="nc" id="L154">                    preference.getPersistentKey());</span>
         }
-<span class="fc" id="L155">        verifyDoesNotExist(preference.getOwner(), preference.getScope(), preference.getKey());</span>
-<span class="fc" id="L156">        return saveInternal(preference, PreferencesEvent.Type.CREATED);</span>
+<span class="fc" id="L156">        verifyDoesNotExist(preference.getOwner(), preference.getScope(), preference.getKey());</span>
+<span class="fc" id="L157">        return saveInternal(preference, PreferencesEvent.Type.CREATED);</span>
     }
 
     private Preference saveInternal(Preference preference, PreferencesEvent.Type type) {
-<span class="fc" id="L160">        var saved = persistencePort.save(preference);</span>
-<span class="fc" id="L161">        ctx.publishEvent(new PreferencesEvent(saved, type));</span>
-<span class="fc" id="L162">        return saved;</span>
+<span class="fc" id="L161">        var saved = persistencePort.save(preference);</span>
+<span class="fc" id="L162">        ctx.publishEvent(new PreferencesEvent(saved, type));</span>
+<span class="fc" id="L163">        return saved;</span>
     }
 
     private void verifyDoesNotExist(String owner, PropertyScope scope, String key) {
-<span class="fc" id="L166">        var opt = persistencePort.findByOwnerAndScopeAndKey(owner, scope, key);</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">        if (opt.isPresent()) {</span>
-<span class="nc" id="L168">            throw new ResourceExistsException(translator, ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,</span>
+<span class="fc" id="L167">        var opt = persistencePort.findByOwnerAndScopeAndKey(owner, scope, key);</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (opt.isPresent()) {</span>
+<span class="nc" id="L169">            throw new ResourceExistsException(translator, ALREADY_EXISTS_WITH_OWNER_AND_SCOPE_AND_KEY,</span>
                     new Serializable[]{key, owner, scope},
                     key, owner, scope);
         }
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L173">    }</span>
 
     /**
      * {@inheritDoc}
@@ -177,10 +178,10 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public @NotNull Preference update(@NotBlank String pKey, @NotNull Preference preference) {
-<span class="fc" id="L180">        var existing = findByPKeyInternal(pKey);</span>
-<span class="fc" id="L181">        LOGGER.debug(&quot;Overriding existing Preference [{}] with [{}]&quot;, existing, preference);</span>
-<span class="fc" id="L182">        preference.setPKey(existing.getPersistentKey());</span>
-<span class="fc" id="L183">        return saveInternal(preference, PreferencesEvent.Type.UPDATED);</span>
+<span class="fc" id="L181">        var existing = findByPKeyInternal(pKey);</span>
+<span class="fc" id="L182">        LOGGER.debug(&quot;Overriding existing Preference [{}] with [{}]&quot;, existing, preference);</span>
+<span class="fc" id="L183">        preference.setPKey(existing.getPersistentKey());</span>
+<span class="fc" id="L184">        return saveInternal(preference, PreferencesEvent.Type.UPDATED);</span>
     }
 
     /**
@@ -189,10 +190,10 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public void delete(@NotBlank String pKey) {
-<span class="fc" id="L192">        var existing = findByPKeyInternal(pKey);</span>
-<span class="fc" id="L193">        persistencePort.delete(existing);</span>
-<span class="fc" id="L194">        ctx.publishEvent(new PreferencesEvent(existing, PreferencesEvent.Type.DELETED));</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L193">        var existing = findByPKeyInternal(pKey);</span>
+<span class="fc" id="L194">        persistencePort.delete(existing);</span>
+<span class="fc" id="L195">        ctx.publishEvent(new PreferencesEvent(existing, PreferencesEvent.Type.DELETED));</span>
+<span class="fc" id="L196">    }</span>
 
     /**
      * {@inheritDoc}
@@ -200,14 +201,14 @@ class PreferencesServiceImpl implements PreferencesService {
     @Override
     @Measured
     public void reloadInitialPreferences() {
-<span class="fc" id="L203">        var fromFile = fileDao.findAll();</span>
-<span class="fc" id="L204">        var persistedPrefs = persistencePort.findAll().stream()</span>
-<span class="pc" id="L205">                .collect(Collectors.toMap(Preference::getPrefKey, p -&gt; p));</span>
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        for (var pref : fromFile) {</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">            if (!persistedPrefs.containsKey(pref.getPrefKey())) {</span>
-<span class="nc" id="L208">                saveInternal(filePreferenceMapper.toDomain(pref), PreferencesEvent.Type.CREATED);</span>
+<span class="fc" id="L204">        var fromFile = fileDao.findAll();</span>
+<span class="fc" id="L205">        var persistedPrefs = persistencePort.findAll().stream()</span>
+<span class="pc" id="L206">                .collect(Collectors.toMap(Preference::getPrefKey, p -&gt; p));</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">        for (var pref : fromFile) {</span>
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (!persistedPrefs.containsKey(pref.getPrefKey())) {</span>
+<span class="nc" id="L209">                saveInternal(filePreferenceMapper.toDomain(pref), PreferencesEvent.Type.CREATED);</span>
             }
-<span class="nc" id="L210">        }</span>
-<span class="fc" id="L211">    }</span>
+<span class="nc" id="L211">        }</span>
+<span class="fc" id="L212">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

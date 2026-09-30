@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.23">
-<title>ModulePreference</title>
+<title>RolePreference</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,38 +439,38 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_modulepreference">ModulePreference</h2>
+<h2 id="_rolepreference">RolePreference</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <code>ModulePreference</code> is a <code>Preference</code> that is only valid within a single module (microservice).</p>
+<p>A <code>RolePreference</code> is a <code>Preference</code> that is only valid for all users assigned to a role.</p>
 </div>
 <div class="sect2">
-<h3 id="_find_all_modulepreferences_of_a_module_module_preferences_findbymodule">Find all ModulePreferences of a Module (module-preferences-findbymodule)</h3>
+<h3 id="_find_all_rolepreferences_of_a_role_role_preferences_findbyrole">Find all RolePreferences of a Role (role-preferences-findbyrole)</h3>
 <div class="paragraph">
-<p>Send a HTTP GET request with the module name as query parameter to find all existing <code>ModulePreferences</code> of that module.</p>
+<p>Send a HTTP GET request with the role name as query parameter to find all existing <code>RolePreferences</code> of that role.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?module=module1 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?role=role1 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The server responds with an array of all <code>ModulePreferences</code>, that might be empty if no <code>ModulePreferences</code> exist.</p>
+<p>The server responds with an array of all <code>RolePreferences</code>, that might be empty if no <code>RolePreferences</code> exist.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 248
+Content-Length: 242
 
 [ {
-  "@class" : "org.openwms.core.preferences.api.ModulePreferenceVO",
-  "description" : "Module description",
+  "@class" : "org.openwms.core.preferences.api.RolePreferenceVO",
+  "description" : "Role description",
   "groupName" : "GLOBAL",
-  "key" : "key5",
-  "owner" : "module1",
-  "pKey" : "1004",
+  "key" : "key4",
+  "owner" : "role1",
+  "pKey" : "1003",
   "type" : "STRING",
   "value" : "current val"
 } ]</code></pre>
@@ -478,51 +478,51 @@ Content-Length: 248
 </div>
 </div>
 <div class="sect2">
-<h3 id="_find_a_modulepreference_by_key_module_preferences_findbymoduleandkey">Find a ModulePreference by Key (module-preferences-findbymoduleandkey)</h3>
+<h3 id="_find_a_rolepreference_by_key_role_preferences_findbyroleandkey">Find a RolePreference by Key (role-preferences-findbyroleandkey)</h3>
 <div class="paragraph">
-<p>Send a HTTP GET request with the key and the module name as query parameters to find and return the <code>ModulePreference</code>.</p>
+<p>Send a HTTP GET request with the key and the role name as query parameters to find and return the <code>RolePreference</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?module=module1&amp;key=key5 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /v1/preferences?role=role1&amp;key=key4 HTTP/1.1
 Host: localhost:8080</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The server returns the <code>ModulePreference</code> if exists.</p>
+<p>The server returns the <code>RolePreference</code> if exists.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/hal+json
-Content-Length: 244
+Content-Length: 238
 
 {
-  "@class" : "org.openwms.core.preferences.api.ModulePreferenceVO",
-  "description" : "Module description",
+  "@class" : "org.openwms.core.preferences.api.RolePreferenceVO",
+  "description" : "Role description",
   "groupName" : "GLOBAL",
-  "key" : "key5",
-  "owner" : "module1",
-  "pKey" : "1004",
+  "key" : "key4",
+  "owner" : "role1",
+  "pKey" : "1003",
   "type" : "STRING",
   "value" : "current val"
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>or responds with a <code>404 NOT-FOUND</code> if the <code>ModulePreference</code> does not exist.</p>
+<p>or responds with a <code>404 NOT-FOUND</code> if the <code>RolePreference</code> does not exist.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 404 Not Found
 Content-Type: application/hal+json
-Content-Length: 262
+Content-Length: 254
 
 {
   "httpStatus" : "404",
-  "message" : "Preference key [UNKNOWN] and owner [module1] and scope [MODULE] does not exist",
+  "message" : "Preference key [UNKNOWN] and owner [role1] and scope [ROLE] does not exist",
   "messageKey" : "owms.core.preferences.notFoundByOwnerAndScopeAndKey",
-  "obj" : [ "UNKNOWN", "module1", "MODULE" ],
+  "obj" : [ "UNKNOWN", "role1", "ROLE" ],
   "class" : "String"
 }</code></pre>
 </div>
@@ -533,7 +533,7 @@ Content-Length: 262
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2026-07-13 07:16:01 UTC
+Last updated 2026-09-30 21:41:57 UTC
 </div>
 </div>
 </body>

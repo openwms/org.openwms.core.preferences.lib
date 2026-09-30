@@ -15,9 +15,13 @@
  */
 package org.openwms.core.preferences.app;
 
+import org.openwms.core.preferences.PropertyScopeRegistrar;
+import org.openwms.core.preferences.impl.DefaultPropertyScopeRegistrar;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.TypeExcludeFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -36,7 +40,20 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @AutoConfiguration(afterName = &quot;org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration&quot;)
 public class PreferencesAutoConfiguration {
 
-<span class="fc" id="L39">    PreferencesAutoConfiguration() {}</span>
+<span class="fc" id="L43">    PreferencesAutoConfiguration() {}</span>
+
+    /**
+     * Registers the four generic built-in scopes APPLICATION, MODULE, ROLE, and USER. Backs off as soon as the consumer defines
+     * any own {@link PropertyScopeRegistrar} bean; the consumer then controls the complete scope set and must also register the
+     * built-in scopes it still wants to use.
+     *
+     * @return the default registrar contributing the built-in scopes
+     */
+    @Bean
+    @ConditionalOnMissingBean(PropertyScopeRegistrar.class)
+    PropertyScopeRegistrar defaultPropertyScopeRegistrar() {
+<span class="fc" id="L55">        return new DefaultPropertyScopeRegistrar();</span>
+    }
 
     /**
      * Registers all Spring components of the Preferences library, including the module, web, async, distributed and mongo configurations.
@@ -46,7 +63,7 @@ public class PreferencesAutoConfiguration {
             @ComponentScan.Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
             @ComponentScan.Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class)
     })
-<span class="fc" id="L49">    static class PreferencesComponentsConfiguration {}</span>
+<span class="fc" id="L66">    static class PreferencesComponentsConfiguration {}</span>
 
     /**
      * Activates the default JPA persistence backend with Spring Data repositories, auditing and transaction management. Not active with
@@ -57,6 +74,6 @@ public class PreferencesAutoConfiguration {
     @EnableJpaRepositories(basePackages = &quot;org.openwms.core.preferences.impl.jpa&quot;)
     @EnableJpaAuditing
     @EnableTransactionManagement
-<span class="fc" id="L60">    static class PreferencesJpaConfiguration {}</span>
+<span class="fc" id="L77">    static class PreferencesJpaConfiguration {}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

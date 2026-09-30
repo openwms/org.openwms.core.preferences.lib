@@ -94,12 +94,12 @@
 <text text-anchor="start" x="30" y="-32.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">c_current_value</text>
 <polygon fill="none" stroke="#000000" points="166,-25 166,-47 250,-47 250,-25 166,-25"/>
 <text text-anchor="start" x="169" y="-32.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[4096]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-6 10,-25 92,-25 92,-6 10,-6"/>
-<polygon fill="none" stroke="#000000" points="10,-6 10,-25 92,-25 92,-6 10,-6"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-6 10,-25 79,-25 79,-6 10,-6"/>
+<polygon fill="none" stroke="#000000" points="10,-6 10,-25 79,-25 79,-6 10,-6"/>
 <text text-anchor="start" x="13" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="92,-6 92,-25 166,-25 166,-6 92,-6"/>
-<polygon fill="none" stroke="#000000" points="92,-6 92,-25 166,-25 166,-6 92,-6"/>
-<text text-anchor="start" x="156.8862" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="79,-6 79,-25 166,-25 166,-6 79,-6"/>
+<polygon fill="none" stroke="#000000" points="79,-6 79,-25 166,-25 166,-6 79,-6"/>
+<text text-anchor="start" x="130.6105" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="166,-6 166,-25 250,-25 250,-6 166,-6"/>
 <polygon fill="none" stroke="#000000" points="166,-6 166,-25 250,-25 250,-6 166,-6"/>
 <text text-anchor="start" x="231.4053" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
