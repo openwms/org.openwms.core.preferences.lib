@@ -62,7 +62,8 @@ class PreferencesServiceImpl implements PreferencesService {
     private final Translator translator;
     private final ApplicationContext ctx;
 
-    PreferencesServiceImpl(PreferenceDao fileDao, PreferencePersistencePort persistencePort, FilePreferenceMapper filePreferenceMapper, Translator translator, ApplicationContext ctx) {
+    PreferencesServiceImpl(PreferenceDao fileDao, PreferencePersistencePort persistencePort, FilePreferenceMapper filePreferenceMapper,
+            Translator translator, ApplicationContext ctx) {
         this.fileDao = fileDao;
         this.persistencePort = persistencePort;
         this.filePreferenceMapper = filePreferenceMapper;
@@ -106,7 +107,7 @@ class PreferencesServiceImpl implements PreferencesService {
     }
 
     private void ensureUserPreferenceAccess(String owner, PropertyScope scope) {
-        if ((owner == null || owner.isEmpty()) && scope == PropertyScope.USER) {
+        if ((owner == null || owner.isEmpty()) && PropertyScope.USER.equals(scope)) {
             throw new NotAuthorizedException(translator, NOT_ALLOWED_FETCH_USER_PREFS, new String[0]);
         }
     }

@@ -21,11 +21,7 @@ import org.ameba.http.MeasuredRestController;
 import org.ameba.i18n.Translator;
 import org.openwms.core.http.AbstractWebController;
 import org.openwms.core.http.Index;
-import org.openwms.core.preferences.api.ApplicationPreferenceVO;
-import org.openwms.core.preferences.api.ModulePreferenceVO;
 import org.openwms.core.preferences.api.PreferenceVO;
-import org.openwms.core.preferences.api.RolePreferenceVO;
-import org.openwms.core.preferences.api.UserPreferenceVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -66,13 +62,15 @@ public class PreferencesController extends AbstractWebController {
     private final PreferencesService preferencesService;
     private final Translator translator;
     private final PreferenceVOMapper preferenceVOMapper;
+    private final PropertyScopes propertyScopes;
 
     public PreferencesController(MessageSource messageSource, PreferencesService preferencesService, Translator translator,
-            PreferenceVOMapper preferenceVOMapper) {
+            PreferenceVOMapper preferenceVOMapper, PropertyScopes propertyScopes) {
         super(messageSource);
         this.preferencesService = preferencesService;
         this.translator = translator;
         this.preferenceVOMapper = preferenceVOMapper;
+        this.propertyScopes = propertyScopes;
     }
 
     @GetMapping(API_PREFERENCES + "/index")
@@ -148,13 +146,11 @@ public class PreferencesController extends AbstractWebController {
     }
 
     private PropertyScope convert(String scope) {
-        PropertyScope propertyScope;
         try {
-            propertyScope = PropertyScope.valueOf(scope);
+            return propertyScopes.resolve(scope);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(translator.translate(PROPERTY_SCOPE_NOT_DEFINED, new String[]{scope}, scope));
         }
-        return propertyScope;
     }
 
     @Transactional
@@ -166,7 +162,7 @@ public class PreferencesController extends AbstractWebController {
         Preference result;
         if (strict == null || !strict) {
             var existingPrefOpt = preferencesService.findForOwnerAndScopeAndKey(
-                    preference.getOwner(), PreferenceVOMapper.resolveScope(preference), preference.getKey()
+                    preference.getOwner(), preferenceVOMapper.resolveScope(preference), preference.getKey()
             );
             if (existingPrefOpt.isPresent() && preference.getpKey() != null) {
                 if (!existingPrefOpt.get().getPersistentKey().equals(preference.getpKey())) {
@@ -200,13 +196,7 @@ public class PreferencesController extends AbstractWebController {
     }
 
     private void ensurePreferenceNotExists(PreferenceVO preference) {
-        var scope = switch (preference) {
-            case UserPreferenceVO ignored -> PropertyScope.USER;
-            case RolePreferenceVO ignored -> PropertyScope.ROLE;
-            case ModulePreferenceVO ignored -> PropertyScope.MODULE;
-            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
-            case null, default -> throw new IllegalArgumentException("Not implemented Preference type");
-        };
+        var scope = preferenceVOMapper.resolveScope(preference);
         if (preferencesService.existsForOwnerAndScopeAndKey(preference.getOwner(), scope, preference.getKey())) {
             throw new ResourceExistsException(
                     translator,

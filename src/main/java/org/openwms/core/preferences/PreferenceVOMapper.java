@@ -23,6 +23,7 @@ import org.openwms.core.preferences.api.PreferenceVO;
 import org.openwms.core.preferences.api.RolePreferenceVO;
 import org.openwms.core.preferences.api.UserPreferenceVO;
 import org.openwms.core.preferences.api.messages.PreferenceMO;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,14 +37,38 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public abstract class PreferenceVOMapper {
 
-    public static <T extends PreferenceVO> PropertyScope resolveScope(T preference) {
-        return switch (preference) {
-            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION;
-            case ModulePreferenceVO ignored -> PropertyScope.MODULE;
-            case RolePreferenceVO ignored -> PropertyScope.ROLE;
-            case UserPreferenceVO ignored -> PropertyScope.USER;
-            default -> throw new IllegalStateException("Unexpected value: " + preference);
+    private PropertyScopes propertyScopes;
+
+    @Autowired
+    public void setPropertyScopes(PropertyScopes propertyScopes) {
+        this.propertyScopes = propertyScopes;
+    }
+
+    /**
+     * Resolves the {@link PropertyScope} of the given VO through the {@link PropertyScopes} registry. The four typed VO
+     * subclasses map onto the built-in scope names; a base {@link PreferenceVO} carries a custom scope by name. In both cases
+     * the scope must be registered: if the consumer excluded a built-in scope from its registrar, the corresponding typed VO
+     * is rejected consistently with the generic endpoints.
+     *
+     * @param preference the VO to resolve the scope for
+     * @param <T> the VO type
+     * @return the resolved PropertyScope
+     * @throws IllegalArgumentException if the VO carries no scope name or an unregistered one
+     */
+    public <T extends PreferenceVO> PropertyScope resolveScope(T preference) {
+        var scopeName = switch (preference) {
+            case ApplicationPreferenceVO ignored -> PropertyScope.APPLICATION.name();
+            case ModulePreferenceVO ignored -> PropertyScope.MODULE.name();
+            case RolePreferenceVO ignored -> PropertyScope.ROLE.name();
+            case UserPreferenceVO ignored -> PropertyScope.USER.name();
+            default -> {
+                if (preference.getScope() == null || preference.getScope().isBlank()) {
+                    throw new IllegalArgumentException("Preference has no scope name set: " + preference);
+                }
+                yield preference.getScope();
+            }
         };
+        return propertyScopes.resolve(scopeName);
     }
 
     public PreferenceVO toVO(Preference source) {
@@ -51,12 +76,19 @@ public abstract class PreferenceVOMapper {
             return null;
         }
         PreferenceVO p;
-        switch (source.getScope()) {
-            case APPLICATION -> p = new ApplicationPreferenceVO();
-            case MODULE -> p = new ModulePreferenceVO();
-            case ROLE -> p = new RolePreferenceVO();
-            case USER -> p = new UserPreferenceVO();
-            default -> throw new IllegalArgumentException("Source entity preferences type is unknown: " + source.getScope());
+        PropertyScope scope = source.getScope();
+        if (PropertyScope.APPLICATION.equals(scope)) {
+            p = new ApplicationPreferenceVO();
+        } else if (PropertyScope.MODULE.equals(scope)) {
+            p = new ModulePreferenceVO();
+        } else if (PropertyScope.ROLE.equals(scope)) {
+            p = new RolePreferenceVO();
+        } else if (PropertyScope.USER.equals(scope)) {
+            p = new UserPreferenceVO();
+        } else {
+            // Custom scopes are represented by the base PreferenceVO with scope name
+            p = new PreferenceVO();
+            p.setScope(source.getScope().name());
         }
         return fillVO(p, source);
     }
@@ -151,6 +183,7 @@ public abstract class PreferenceVOMapper {
         mo.setVal(source.getVal());
         mo.setGroupName(source.getGroupName());
         mo.setType(source.getType() != null ? source.getType().name() : null);
+        mo.setScope(source.getScope() != null ? source.getScope().name() : null);
         return mo;
     }
 }

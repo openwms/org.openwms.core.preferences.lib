@@ -75,6 +75,11 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
     @Size(max = PreferencesConstants.LENGTH_TYPE)
     private String type;
 
+    /** The scope of the {@code Preference}, used for custom scopes not represented by specific VO subclasses. */
+    @JsonProperty("scope")
+    @Size(max = 32)
+    private String scope;
+
     public String getpKey() {
         return pKey;
     }
@@ -136,6 +141,14 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
         this.type = type;
     }
 
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -153,7 +166,8 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
                 Objects.equals(description, that.description) &&
                 Objects.equals(val, that.val) &&
                 Objects.equals(groupName, that.groupName) &&
-                Objects.equals(type, that.type);
+                Objects.equals(type, that.type) &&
+                Objects.equals(scope, that.scope);
     }
 
     /**
@@ -163,7 +177,7 @@ public class PreferenceVO extends AbstractBase<PreferenceVO> {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type, scope);
     }
 
     /**
