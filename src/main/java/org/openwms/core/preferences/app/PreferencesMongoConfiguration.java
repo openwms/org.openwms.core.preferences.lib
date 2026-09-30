@@ -15,10 +15,16 @@
  */
 package org.openwms.core.preferences.app;
 
+import org.openwms.core.preferences.impl.mongodb.PropertyScopeReadConverter;
+import org.openwms.core.preferences.impl.mongodb.PropertyScopeWriteConverter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import java.util.Arrays;
 
 /**
  * A PreferencesMongoConfiguration activates support for the MongoDB persistent storage.
@@ -26,6 +32,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
  * <ul>
  *     <li>Spring Data MongoDB Support (Repository definitions)</li>
  *     <li>Spring Data MongoDB Auditing</li>
+ *     <li>Custom converters for PropertyScope</li>
  * </ul>
  *
  * @author Heiko Scherrer
@@ -36,4 +43,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 public class PreferencesMongoConfiguration {
 
+    @Bean
+    MongoCustomConversions mongoCustomConversions() {
+        return new MongoCustomConversions(Arrays.asList(
+                new PropertyScopeReadConverter(),
+                new PropertyScopeWriteConverter()
+        ));
+    }
 }

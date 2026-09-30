@@ -15,9 +15,13 @@
  */
 package org.openwms.core.preferences.app;
 
+import org.openwms.core.preferences.PropertyScopeRegistrar;
+import org.openwms.core.preferences.impl.DefaultPropertyScopeRegistrar;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurationExcludeFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.TypeExcludeFilter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -37,6 +41,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class PreferencesAutoConfiguration {
 
     PreferencesAutoConfiguration() {}
+
+    /**
+     * Registers the four generic built-in scopes APPLICATION, MODULE, ROLE, and USER. Backs off as soon as the consumer defines
+     * any own {@link PropertyScopeRegistrar} bean; the consumer then controls the complete scope set and must also register the
+     * built-in scopes it still wants to use.
+     *
+     * @return the default registrar contributing the built-in scopes
+     */
+    @Bean
+    @ConditionalOnMissingBean(PropertyScopeRegistrar.class)
+    PropertyScopeRegistrar defaultPropertyScopeRegistrar() {
+        return new DefaultPropertyScopeRegistrar();
+    }
 
     /**
      * Registers all Spring components of the Preferences library, including the module, web, async, distributed and mongo configurations.

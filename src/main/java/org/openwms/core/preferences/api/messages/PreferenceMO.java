@@ -44,6 +44,8 @@ public class PreferenceMO implements Serializable {
     private String groupName;
     /** The type of the {@code Preference}. */
     private String type;
+    /** The scope of the {@code Preference} as the registered scope name. */
+    private String scope;
 
     PreferenceMO() { }
 
@@ -112,6 +114,14 @@ public class PreferenceMO implements Serializable {
         this.type = type;
     }
 
+    public String getScope() {
+        return scope;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -129,7 +139,8 @@ public class PreferenceMO implements Serializable {
                 Objects.equals(description, that.description) &&
                 Objects.equals(val, that.val) &&
                 Objects.equals(groupName, that.groupName) &&
-                Objects.equals(type, that.type);
+                Objects.equals(type, that.type) &&
+                Objects.equals(scope, that.scope);
     }
 
     /**
@@ -139,6 +150,6 @@ public class PreferenceMO implements Serializable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type);
+        return Objects.hash(super.hashCode(), pKey, key, owner, description, val, groupName, type, scope);
     }
 }

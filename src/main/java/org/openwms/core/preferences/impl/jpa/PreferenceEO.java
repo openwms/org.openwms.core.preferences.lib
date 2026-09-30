@@ -18,8 +18,6 @@ package org.openwms.core.preferences.impl.jpa;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -73,7 +71,7 @@ public class PreferenceEO extends ApplicationEntity implements Serializable {
     private boolean fromFile;
 
     /** Scope of this preference. */
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = PropertyScopeConverter.class)
     @NotNull
     @Column(name = "C_SCOPE", nullable = false)
     protected PropertyScope scope;

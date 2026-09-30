@@ -20,16 +20,27 @@ import org.mapstruct.Mapper;
 import org.openwms.core.preferences.Preference;
 import org.openwms.core.preferences.PreferenceType;
 import org.openwms.core.preferences.PropertyScope;
+import org.openwms.core.preferences.PropertyScopes;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 
 /**
- * A FilePreferenceMapper maps from {@link GenericPreference} (XML file) to {@link Preference} (domain model).
+ * A FilePreferenceMapper maps from {@link GenericPreference} (XML file) to {@link Preference} (domain model). The scope of each
+ * file-based preference is validated against the {@link PropertyScopes} registry: loading a preference with a scope the consumer
+ * has not registered fails fast at startup instead of creating data that is unreachable through the API.
  *
  * @author Heiko Scherrer
  */
 @Mapper(componentModel = "spring")
 public abstract class FilePreferenceMapper {
+
+    private PropertyScopes propertyScopes;
+
+    @Autowired
+    public void setPropertyScopes(PropertyScopes propertyScopes) {
+        this.propertyScopes = propertyScopes;
+    }
 
     public Preference toDomain(GenericPreference source) {
         if (source == null) {
@@ -38,22 +49,22 @@ public abstract class FilePreferenceMapper {
         return switch (source) {
             case ApplicationPreference p -> createBuilder(p)
                     .key(p.getKey())
-                    .scope(PropertyScope.APPLICATION)
+                    .scope(propertyScopes.resolve(PropertyScope.APPLICATION.name()))
                     .build();
             case ModulePreference p -> createBuilder(p)
                     .key(p.getKey())
                     .owner(p.getOwner())
-                    .scope(PropertyScope.MODULE)
+                    .scope(propertyScopes.resolve(PropertyScope.MODULE.name()))
                     .build();
             case RolePreference p -> createBuilder(p)
                     .key(p.getKey())
                     .owner(p.getOwner())
-                    .scope(PropertyScope.ROLE)
+                    .scope(propertyScopes.resolve(PropertyScope.ROLE.name()))
                     .build();
             case UserPreference p -> createBuilder(p)
                     .key(p.getKey())
                     .owner(p.getOwner())
-                    .scope(PropertyScope.USER)
+                    .scope(propertyScopes.resolve(PropertyScope.USER.name()))
                     .build();
             default -> throw new IllegalArgumentException("Source XML preferences type is unknown: " + source.getClass());
         };

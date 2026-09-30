@@ -18,11 +18,17 @@ package org.openwms.core.preferences.app;
 import org.junit.jupiter.api.Test;
 import org.openwms.core.preferences.PreferencesController;
 import org.openwms.core.preferences.PreferencesService;
+import org.openwms.core.preferences.PropertyScopeRegistrar;
+import org.openwms.core.preferences.PropertyScopes;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration;
 import org.springframework.boot.jackson.autoconfigure.JacksonAutoConfiguration;
 import org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,6 +41,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PreferencesAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+            // Registers a TypeExcludeFilter delegate like a @SpringBootTest bootstrap does, so @TestConfiguration classes from
+            // sibling tests (the scope IT registrars) are not picked up by the library's component scan
+            .withInitializer(ctx -> ctx.getBeanFactory().registerSingleton("testConfigurationExcludeFilter", new TestConfigurationExcludeFilter()))
             .withConfiguration(AutoConfigurations.of(
                     DataSourceAutoConfiguration.class,
                     HibernateJpaAutoConfiguration.class,
@@ -57,6 +66,47 @@ class PreferencesAutoConfigurationTest {
             assertThat(ctx).hasSingleBean(PreferencesService.class);
             assertThat(ctx).hasSingleBean(PreferencesController.class);
             assertThat(ctx).hasBean("preferenceRepository");
+            // Without a consumer registrar the default backs in and registers exactly the four built-in scopes
+            assertThat(ctx).hasSingleBean(PropertyScopes.class);
+            var scopes = ctx.getBean(PropertyScopes.class);
+            assertThat(scopes.all()).hasSize(4);
+            assertThat(scopes.isRegistered("APPLICATION")).isTrue();
+            assertThat(scopes.isRegistered("USER")).isTrue();
         });
+    }
+
+    @Test
+    void shall_back_off_default_registrar_when_consumer_defines_one() {
+        contextRunner
+                .withBean("phenixScopeRegistrar", PropertyScopeRegistrar.class, () -> () -> java.util.List.of("WAREHOUSE"))
+                .run(ctx -> {
+                    assertThat(ctx).hasNotFailed();
+                    var scopes = ctx.getBean(PropertyScopes.class);
+                    assertThat(scopes.all()).hasSize(1);
+                    assertThat(scopes.isRegistered("WAREHOUSE")).isTrue();
+                    assertThat(scopes.isRegistered("APPLICATION")).isFalse();
+                });
+    }
+
+    /**
+     * Mirrors the TypeExcludeFilter contribution of a @SpringBootTest bootstrap: excludes @TestConfiguration classes from
+     * component scanning, keeping the ApplicationContextRunner isolated from sibling tests' registrar beans.
+     */
+    static class TestConfigurationExcludeFilter extends TypeExcludeFilter {
+
+        @Override
+        public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) {
+            return metadataReader.getAnnotationMetadata().isAnnotated(TestConfiguration.class.getName());
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof TestConfigurationExcludeFilter;
+        }
+
+        @Override
+        public int hashCode() {
+            return TestConfigurationExcludeFilter.class.hashCode();
+        }
     }
 }
